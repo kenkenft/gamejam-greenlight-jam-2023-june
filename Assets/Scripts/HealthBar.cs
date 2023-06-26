@@ -5,17 +5,24 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    [SerializeField] private int _maxHP, _currHP;
-    public Slider BarSlider;
+    public Slider[] PlayerSliders;
 
-    void Start()
+    void OnEnable()
     {
-        UpdateHealthBar(0);
-    }
-    public void UpdateHealthBar(int amount)
+        CharacterDisplay.HealthAffected += UpdateHealthBar;
+    }     
+
+    void OnDisable()
     {
-        _currHP -= amount;
-        _currHP = Mathf.Clamp(_currHP, 0, _maxHP);
-        BarSlider.value = (float)_currHP/ (float)_maxHP;
+        CharacterDisplay.HealthAffected -= UpdateHealthBar;
+    }     
+    
+    public void UpdateHealthBar(int[] data)
+    {
+        PlayerSliders[data[0]].value = (float)data[2]/ (float)data[1];
+        if(data[1] <= 0)
+        {
+            Debug.Log("Player " + data[0] + " defeated!");
+        }
     } 
 }
