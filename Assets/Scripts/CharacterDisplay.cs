@@ -6,7 +6,7 @@ public class CharacterDisplay : MonoBehaviour
 {
     public int HealthBarNum;
     private int SubSystemAmount;
-    private int[] _healthSystemData = new int[12], 
+    [SerializeField] private int[] _healthSystemData = new int[12], 
     // Assumes HealthSystemData is as follows: 
     // [HPMax, HPCurr, HPHeadMax, HPHeadCurr, 
     // HPChestMax, HPChestCurr, HPLeftArmMax, HPLeftArmCurr,
@@ -43,7 +43,8 @@ public class CharacterDisplay : MonoBehaviour
             _healthSystemData[2 + tempInt] = SOCS.HPSubSystems[i];
             _healthSystemData[3 + tempInt] = SOCS.HPSubSystems[i];
         }
-        _healthSystemData[0] = (50/100) * (_healthSystemData[2] + _healthSystemData[4] + _healthSystemData[6] + _healthSystemData[8] + _healthSystemData[10]);
+        tempInt = (_healthSystemData[2] + _healthSystemData[4] + _healthSystemData[6] + _healthSystemData[8] + _healthSystemData[10]);
+        _healthSystemData[0] = tempInt + (tempInt /2);
         _healthSystemData[1] = _healthSystemData[0];
     }
 
