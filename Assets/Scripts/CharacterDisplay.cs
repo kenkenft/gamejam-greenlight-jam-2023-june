@@ -5,13 +5,13 @@ using UnityEngine;
 public class CharacterDisplay : MonoBehaviour
 {
     public int HealthBarNum;
-    private int SubSystemAmount;
-    [SerializeField] private int[] _healthSystemData = new int[12], 
+    private int _subSystemAmount;
+    public int[] HealthSystemData = new int[12], 
     // Assumes HealthSystemData is as follows: 
     // [HPMax, HPCurr, HPHeadMax, HPHeadCurr, 
     // HPChestMax, HPChestCurr, HPLeftArmMax, HPLeftArmCurr,
     // HPRightArmMax, HPRightArmCurr, HPLegsMax, HPLegsCurr]
-    _healthBarData = new int[3]; 
+    HealthBarData = new int[3]; 
     // Assumes HealthBarData is as follows:
     // [HealthBarNum, HPMax, HPCurr]
 
@@ -28,24 +28,24 @@ public class CharacterDisplay : MonoBehaviour
 
     void SetUp()
     {
-        SubSystemAmount = SOCS.HPSubSystems.Length;
+        _subSystemAmount = SOCS.HPSubSystems.Length;
         SetUpSystemHealth();
-        _healthBarData[0] = HealthBarNum;
+        HealthBarData[0] = HealthBarNum;
         UpdateHealthBar();
     }
 
     void SetUpSystemHealth()
     {
         int tempInt;
-        for(int i = 0; i < SubSystemAmount; i++)
+        for(int i = 0; i < _subSystemAmount; i++)
         {
             tempInt = i * 2;
-            _healthSystemData[2 + tempInt] = SOCS.HPSubSystems[i];
-            _healthSystemData[3 + tempInt] = SOCS.HPSubSystems[i];
+            HealthSystemData[2 + tempInt] = SOCS.HPSubSystems[i];
+            HealthSystemData[3 + tempInt] = SOCS.HPSubSystems[i];
         }
-        tempInt = (_healthSystemData[2] + _healthSystemData[4] + _healthSystemData[6] + _healthSystemData[8] + _healthSystemData[10]);
-        _healthSystemData[0] = tempInt + (tempInt /2);
-        _healthSystemData[1] = _healthSystemData[0];
+        tempInt = (HealthSystemData[2] + HealthSystemData[4] + HealthSystemData[6] + HealthSystemData[8] + HealthSystemData[10]);
+        HealthSystemData[0] = tempInt + (tempInt /2);
+        HealthSystemData[1] = HealthSystemData[0];
     }
 
     public void UpdateCharacterHealth(int[] newDataChanges)
@@ -57,25 +57,25 @@ public class CharacterDisplay : MonoBehaviour
 
     void ApplyHealthChanges(int[] newDataChanges)
     {
-        for(int i = 1; i < SubSystemAmount; i++)
+        for(int i = 1; i < _subSystemAmount; i++)
         {
             int tempInt = (i - 1) * 2;
             if(newDataChanges[i] == 1)
             {
-                _healthSystemData[3 + tempInt] += newDataChanges[0];
-                _healthSystemData[3 + tempInt] = Mathf.Clamp(_healthSystemData[3 + tempInt], 0, _healthSystemData[2 + tempInt]);
+                HealthSystemData[3 + tempInt] += newDataChanges[0];
+                HealthSystemData[3 + tempInt] = Mathf.Clamp(HealthSystemData[3 + tempInt], 0, HealthSystemData[2 + tempInt]);
             }
         }
 
-        _healthSystemData[1] += newDataChanges[0];
-        _healthSystemData[1] = Mathf.Clamp(_healthSystemData[1], 0, _healthSystemData[0]);
+        HealthSystemData[1] += newDataChanges[0];
+        HealthSystemData[1] = Mathf.Clamp(HealthSystemData[1], 0, HealthSystemData[0]);
     }
 
     void UpdateHealthBar()
     {
         
-        _healthBarData[1] = _healthSystemData[0];   // Store HPMax
-        _healthBarData[2] = _healthSystemData[1];   // Store HPCurr 
-        HealthAffected?.Invoke(_healthBarData);
+        HealthBarData[1] = HealthSystemData[0];   // Store HPMax
+        HealthBarData[2] = HealthSystemData[1];   // Store HPCurr 
+        HealthAffected?.Invoke(HealthBarData);
     }
 }
