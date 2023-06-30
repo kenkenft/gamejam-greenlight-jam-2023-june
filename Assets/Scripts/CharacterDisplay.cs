@@ -15,8 +15,14 @@ public class CharacterDisplay : MonoBehaviour
     // Assumes HealthBarData is as follows:
     // [HealthBarNum, HPMax, HPCurr]
 
-    //truthy array that tracks whether a specific status effects is active
-    // [hasHyperArmour, isBlocking, is]
+    // int array that stores bonus modifiers. 100 = 100% = 1.0 = no change.
+    public Dictionary<string, int> TempEffects = new Dictionary<string, int>(){
+                                                        {"HyperArmour", 0},
+                                                        {"Blocking", 0},
+                                                        {"Flinching", 0},
+                                                        {"BlockBroken", 0},
+                                                        {"AttackFail", 0}
+                                                        };
 
     public Dictionary<string, int> HeadBuffs = new Dictionary<string, int>(){
                                                         {"None", 1},
