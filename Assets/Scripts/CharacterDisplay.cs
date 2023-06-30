@@ -15,6 +15,16 @@ public class CharacterDisplay : MonoBehaviour
     // Assumes HealthBarData is as follows:
     // [HealthBarNum, HPMax, HPCurr]
 
+    //truthy array that tracks whether a specific status effects is active
+    // [hasHyperArmour, isBlocking, is]
+
+    public Dictionary<string, int> HeadBuffs = new Dictionary<string, int>(){
+                                                        {"None", 1},
+                                                        {"Repair", 0},
+                                                        {"Defense", 0},
+                                                        {"Move", 0},
+                                                        {"Attack", 0}
+                                                        }; 
     public SOCharacterStats SOCS;
 
     [HideInInspector]
@@ -77,5 +87,28 @@ public class CharacterDisplay : MonoBehaviour
         HealthBarData[1] = HealthSystemData[0];   // Store HPMax
         HealthBarData[2] = HealthSystemData[1];   // Store HPCurr 
         HealthAffected?.Invoke(HealthBarData);
+    }
+
+    public void SetActiveHeadBuff(string targetBuff)
+    {
+        //Enables target buff, and disables all others.
+         foreach(var buff in HeadBuffs)
+         {
+            if(buff.Key == targetBuff)
+                HeadBuffs[buff.Key] = 1;
+            else
+                HeadBuffs[buff.Key] = 0;
+         }
+
+    }
+
+    public string GetActiveHeadBuff()
+    {
+        foreach(var buff in HeadBuffs)
+         {
+            if(buff.Value == 1)
+                return buff.Key;
+         }
+         return "None"; // In the event an improper string is given, just send back "None"
     }
 }
