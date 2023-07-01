@@ -117,4 +117,20 @@ public class CharacterDisplay : MonoBehaviour
          }
          return "None"; // In the event an improper string is given, just send back "None"
     }
+
+    public void SetTempEffectActive(string targetEffect, int state)
+    {
+        TempEffects[targetEffect] = state;
+    }
+
+    public int GetTempEffectActive(string targetEffect)
+    {
+        foreach(var tempEffect in TempEffects)
+        {
+            if(tempEffect.Key == targetEffect)
+                return tempEffect.Value;
+        }
+
+        return 0;   // In the event an improper string is given, just send back 0
+    }
 }
