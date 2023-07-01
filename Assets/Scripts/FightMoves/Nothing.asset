@@ -19,7 +19,7 @@ MonoBehaviour:
   MainTarget: 0
   Priority: 5
   Range: 0
-  MainEffectValue: 0
+  MainEffectValue: 00000000
   MoveType: 2
   DefaultSubSystemTargets: 0000000000000000000000000000000000000000
   HasExtraTargets: 0000000000000000

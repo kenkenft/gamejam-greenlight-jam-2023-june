@@ -14,6 +14,9 @@ public class CharacterDisplay : MonoBehaviour
     HealthBarData = new int[3]; 
     // Assumes HealthBarData is as follows:
     // [HealthBarNum, HPMax, HPCurr]
+    private string[] buffTypes = {"None", "Repair", "Defense", "Move", "Attack"},
+                     effectTypes = {"HyperArmour", "Blocking", "Flinching", "BlockBroken", "AttackFail"};
+
 
     // int array that stores bonus modifiers. 100 = 100% = 1.0 = no change.
     public Dictionary<string, int> TempEffects = new Dictionary<string, int>(){
@@ -37,20 +40,20 @@ public class CharacterDisplay : MonoBehaviour
     public delegate void OnIntArrayRequested(int[] intArray);
     public static OnIntArrayRequested HealthAffected;
 
-    void OnEnable()
-    {
-        if(HealthBarNum == 0)
-            MatchFlowManager.PlayerStatusRequested += GetCharacterData;
-        if(HealthBarNum == 1)
-            MatchFlowManager.CPUStatusRequested += GetCharacterData;
-    }
-    void OnDisable()
-    {
-        if(HealthBarNum == 0)
-            MatchFlowManager.PlayerStatusRequested -= GetCharacterData;
-        if(HealthBarNum == 1)
-            MatchFlowManager.CPUStatusRequested -= GetCharacterData;
-    }
+    // void OnEnable()
+    // {
+    //     if(HealthBarNum == 0)
+    //         MatchFlowManager.PlayerStatusRequested += GetCharacterData;
+    //     if(HealthBarNum == 1)
+    //         MatchFlowManager.CPUStatusRequested += GetCharacterData;
+    // }
+    // void OnDisable()
+    // {
+    //     if(HealthBarNum == 0)
+    //         MatchFlowManager.PlayerStatusRequested -= GetCharacterData;
+    //     if(HealthBarNum == 1)
+    //         MatchFlowManager.CPUStatusRequested -= GetCharacterData;
+    // }
 
     void Start()
     {
@@ -112,7 +115,6 @@ public class CharacterDisplay : MonoBehaviour
 
     public void SetActiveHeadBuff(int targetBuffID)
     {
-        string[] buffTypes = {"None", "Repair", "Defense", "Move", "Attack"};
         string targetBuff = buffTypes[targetBuffID];
 
         List<string> keyList = new List<string>(HeadBuffs.Keys);
@@ -146,47 +148,47 @@ public class CharacterDisplay : MonoBehaviour
             return 0;   // Enquired buff is not active
     }
 
-    public void SetTempEffectActive(string targetEffect, int state)
+    public void SetTempEffectActive(int targetEffect, int state)
     {
-        TempEffects[targetEffect] = state;
+        TempEffects[effectTypes[targetEffect]] = state;
     }
 
-    public int GetTempEffectActive(string targetEffect)
+    public int GetTempEffectActive(int targetEffect)
     {
         foreach(var tempEffect in TempEffects)
         {
-            if(tempEffect.Key == targetEffect)
+            if(tempEffect.Key == effectTypes[targetEffect])
                 return tempEffect.Value;
         }
 
         return 0;   // In the event an improper string is given, just send back 0
     }
 
-    public int GetCharacterData(string targetCharacterProperty, string DictKey = "Default")
-    {
-        int result = 0;
+    // public int GetCharacterData(string targetCharacterProperty, string DictKey = "Default")
+    // {
+    //     int result = 0;
 
-        switch(targetCharacterProperty)
-        {
-            case "HeadBuffs":
-            {
-                result = CheckWhichHeadBuff(DictKey);
-                break;
-            }
-            case "TempEffects":
-            {
-                result = GetTempEffectActive(DictKey);
-                break;
-            }
-            case "HealthBarNum":
-            {
-                result = HealthBarNum;
-                break;
-            }
-            default:
-                break;
-        }
+    //     switch(targetCharacterProperty)
+    //     {
+    //         case "HeadBuffs":
+    //         {
+    //             result = CheckWhichHeadBuff(DictKey);
+    //             break;
+    //         }
+    //         case "TempEffects":
+    //         {
+    //             result = GetTempEffectActive(DictKey);
+    //             break;
+    //         }
+    //         case "HealthBarNum":
+    //         {
+    //             result = HealthBarNum;
+    //             break;
+    //         }
+    //         default:
+    //             break;
+    //     }
 
-        return result;
-    }
+    //     return result;
+    // }
 }

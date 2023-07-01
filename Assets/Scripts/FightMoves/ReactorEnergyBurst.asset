@@ -20,10 +20,10 @@ MonoBehaviour:
   MainTarget: 1
   Priority: 1
   Range: 3
-  MainEffectValue: 20
+  MainEffectValue: 14000000
   MoveType: 3
   DefaultSubSystemTargets: 0000000000000000000000000000000000000000
   HasExtraTargets: 0100000001000000
   Requirements: 120000000000000001000000000000000000000000000000
   TempEffects: 00000000000000000000000000000000
-  SecondaryEffects: 0100000032000000
+  SecondaryEffects: 01000000ffffffff32000000

@@ -18,7 +18,7 @@ public class SOFightMoves : ScriptableObject
     [Range(0,10)]
     public int Range;
 
-    public int MainEffectValue;
+    public int[] MainEffectValue = new int[5];
 
     public enum MoveCategories{
                             buff, defend, movement, modifyHealth 
@@ -29,5 +29,5 @@ public class SOFightMoves : ScriptableObject
                  HasExtraTargets = new int [2], //truthy int array {hasExtraTargets, extraTargetAmount}
                  Requirements = new int[6], // int array {energyCost, needHead, needChest, needLArm, needRArm, needLegs} // needHead/Chest etc: 0 - not needed; 1 - mandatory; 2 - At least one of these parts i.e. logical OR
                  TempEffects = new int[4], // int truthy array {givesHyperArmour, givesBlocking, inflictsFlinch, inflictsKnockback}
-                 SecondaryEffects = new int[2]; // int truthy array {hasSecondaryEffect, effectValue}
+                 SecondaryEffects = new int[5]; // int truthy array {hasSecondaryEffect, effectValue}
 }

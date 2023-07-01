@@ -6,17 +6,14 @@ public class MatchFlowManager : MonoBehaviour
 {
     public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
     private int _priorityOutcome = 0;
-    private int[] _isMoveBuffActive = {0,0};    //truthy values. 0 is inactive/false; 1 is active/enabled
-    enum PriorityOutcome{
-                            player, opponent, draw
-                        };
+
     public SOFightMoves PlayerMove, CPUMove;
     public SOFightMoves[] CPUMoveList;
     private SOFightMoves[] _selectedFightMoves = new SOFightMoves[2];
 
-    [HideInInspector] public delegate int StringForInt(string targetCharacterProperty, string dictKey = "None");
-    [HideInInspector] public static StringForInt PlayerStatusRequested; 
-    [HideInInspector] public static StringForInt CPUStatusRequested; 
+    // [HideInInspector] public delegate int StringForInt(string targetCharacterProperty, string dictKey = "None");
+    // [HideInInspector] public static StringForInt PlayerStatusRequested; 
+    // [HideInInspector] public static StringForInt CPUStatusRequested; 
     
     void OnEnable()
     {
@@ -66,8 +63,8 @@ public class MatchFlowManager : MonoBehaviour
         // Debug.Log("Player priority buff active: " + fighters[0].GetCharacterData("HeadBuffs", "Move"));
         // Debug.Log("CPU priority buff active: " + fighters[1].GetCharacterData("HeadBuffs", "Move"));
 
-        int priorityPlayer = PlayerMove.Priority + fighters[0].GetCharacterData("HeadBuffs", "Move"), 
-            priorityCPU = CPUMove.Priority + fighters[1].GetCharacterData("HeadBuffs", "Move");
+        int priorityPlayer = PlayerMove.Priority + fighters[0].CheckWhichHeadBuff("Move"), 
+            priorityCPU = CPUMove.Priority + fighters[1].CheckWhichHeadBuff("Move");
 
         if( priorityPlayer > priorityCPU)
             return 0;   // Player moves first
@@ -79,8 +76,8 @@ public class MatchFlowManager : MonoBehaviour
 
     void CheckHyperArmourCapabilities()
     {
-        fighters[0].SetTempEffectActive("HyperArmour", PlayerMove.TempEffects[0]);
-        fighters[1].SetTempEffectActive("HyperArmour", CPUMove.TempEffects[0]);
+        fighters[0].SetTempEffectActive(1, PlayerMove.TempEffects[0]);
+        fighters[1].SetTempEffectActive(1, CPUMove.TempEffects[0]);
         // Debug.Log("Player HyperArmour Active: " + fighters[0].GetCharacterData("TempEffects", "HyperArmour"));
         // Debug.Log("CPU HyperArmour Active: " + fighters[1].GetCharacterData("TempEffects", "HyperArmour"));
     }
@@ -131,7 +128,7 @@ public class MatchFlowManager : MonoBehaviour
             case 0: // Buff
             {
                 Debug.Log("Player " + playerID + " move type: BUFF");
-                ApplyBuff(playerID, _selectedFightMoves[orderIndex].MainEffectValue);    // Assumes MainEffectValue is the buffType id
+                ApplyBuff(playerID, _selectedFightMoves[orderIndex].MainEffectValue[0]);    // Assumes MainEffectValue[0] is the buffType id
                 break;
             }
             case 1: // Defensive move
@@ -178,11 +175,11 @@ public class MatchFlowManager : MonoBehaviour
             // Attacking move
             Debug.Log("Attacking move selected. Player " + playerID + " is attacking other Player");
 
-            int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue, potentialDamage = 0, 
+            int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue[0], potentialDamage = 0, 
                 buffDefenseBonus = 0, blockDefenseBonus = 0, 
                 blockThreshold = 0;
 
-            int[] damage = {0, 0, 0, 0, 0}; 
+            int[] damage = {0, 0, 0, 0, 0, 0}; 
             
             potentialDamage = (attackPercentage * fighters[1 - playerID].HealthSystemData[0]) / 100;  // damage is as a percentage of max health
             
@@ -226,7 +223,7 @@ public class MatchFlowManager : MonoBehaviour
 
             for(int i = 0; i < targetedBodyPartIndexes.Count - 1; i++)
             {
-                damage[targetedBodyPartIndexes[i]] =  potentialDamage;
+                damage[targetedBodyPartIndexes[i] + 1] =  -1 * potentialDamage;
                 Debug.Log("Damage to body part " + targetedBodyPartIndexes[i] + " : " + potentialDamage);
             }
 
@@ -234,8 +231,8 @@ public class MatchFlowManager : MonoBehaviour
             //Get other player's defense data.
             
             // damage = 0 // include all bonuses and such
-
-            fighters[1-playerID].UpdateCharacterHealth(damage);
+            damage[0] = -potentialDamage;
+            fighters[1 - playerID].UpdateCharacterHealth(damage);
         }
     }
 }
