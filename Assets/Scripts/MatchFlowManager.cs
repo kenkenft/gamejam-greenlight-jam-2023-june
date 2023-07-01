@@ -7,6 +7,7 @@ public class MatchFlowManager : MonoBehaviour
     public CharacterDisplay[] fighters;
     bool isPlayerFirst = false;
     public SOFightMoves PlayerMove, CPUMove;
+    public SOFightMoves[] CPUMoveList;
     
     void OnEnable()
     {
@@ -22,8 +23,15 @@ public class MatchFlowManager : MonoBehaviour
     {
         PlayerMove = playerMove; // ToDO
 
-        Debug.Log("Move Clicked: " + PlayerMove.Name);
-        // CPUMove = ComputerMove(); // ToDO
+        // Debug.Log("Player Move Clicked: " + PlayerMove.Name);
+        
+        StartMoveResolution();
+    }
+
+    void StartMoveResolution()
+    {
+        CPUMove = ComputerMove(); // ToDO
+        // Debug.Log("CPU Move: " + CPUMove.Name);
         // isPlayerFirst = ResolvePriority(); // ToDO
         // CheckHyperArmourCapabilities(); // ToDO
         // ResolveOrder(); // ToDO
@@ -33,6 +41,11 @@ public class MatchFlowManager : MonoBehaviour
         // GenerateEnergy(); // ToDo
         // PassiveHealing(); // ToDo
         // StartNextTurn(); // ToDo
+    }
+
+    SOFightMoves ComputerMove()
+    {
+        return CPUMoveList[Random.Range(0, CPUMoveList.Length - 1)];
     }
 
 

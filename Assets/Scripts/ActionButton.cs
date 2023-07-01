@@ -11,7 +11,7 @@ public class ActionButton : MonoBehaviour
     
     void OnMouseUp()
     {
-      Debug.Log(this.gameObject.name + " pressed!");
+    //   Debug.Log(this.gameObject.name + " pressed!");
     //  SFXRequested?.Invoke("Click");
         FightMoveSelected?.Invoke(fightMove);
     }
