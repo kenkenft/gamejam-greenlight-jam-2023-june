@@ -37,6 +37,21 @@ public class CharacterDisplay : MonoBehaviour
     public delegate void OnIntArrayRequested(int[] intArray);
     public static OnIntArrayRequested HealthAffected;
 
+    void OnEnable()
+    {
+        if(HealthBarNum == 0)
+            MatchFlowManager.PlayerStatusRequested += GetCharacterData;
+        if(HealthBarNum == 1)
+            MatchFlowManager.CPUStatusRequested += GetCharacterData;
+    }
+    void OnDisable()
+    {
+        if(HealthBarNum == 0)
+            MatchFlowManager.PlayerStatusRequested -= GetCharacterData;
+        if(HealthBarNum == 1)
+            MatchFlowManager.CPUStatusRequested -= GetCharacterData;
+    }
+
     void Start()
     {
         SetUp();
@@ -118,6 +133,14 @@ public class CharacterDisplay : MonoBehaviour
          return "None"; // In the event an improper string is given, just send back "None"
     }
 
+    public int CheckWhichHeadBuff(string targetBuff)
+    {
+        if(GetActiveHeadBuff() == targetBuff)
+            return 1;   // Enquired buff is active
+        else
+            return 0;   // Enquired buff is not active
+    }
+
     public void SetTempEffectActive(string targetEffect, int state)
     {
         TempEffects[targetEffect] = state;
@@ -132,5 +155,33 @@ public class CharacterDisplay : MonoBehaviour
         }
 
         return 0;   // In the event an improper string is given, just send back 0
+    }
+
+    public int GetCharacterData(string targetCharacterProperty, string DictKey = "Default")
+    {
+        int result = 0;
+
+        switch(targetCharacterProperty)
+        {
+            case "HeadBuffs":
+            {
+                result = CheckWhichHeadBuff(DictKey);
+                break;
+            }
+            case "TempEffects":
+            {
+                result = GetTempEffectActive(DictKey);
+                break;
+            }
+            case "HealthBarNum":
+            {
+                result = HealthBarNum;
+                break;
+            }
+            default:
+                break;
+        }
+
+        return result;
     }
 }

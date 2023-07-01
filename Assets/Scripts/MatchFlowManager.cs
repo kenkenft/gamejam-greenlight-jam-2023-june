@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class MatchFlowManager : MonoBehaviour
 {
-    public CharacterDisplay[] fighters;
-    bool isPlayerFirst = false;
+    public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
+    private int _priorityOutcome = 0;
+    private int[] _isMoveBuffActive = {0,0};    //truthy values. 0 is inactive/false; 1 is active/enabled
+    enum PriorityOutcome{
+                            player, opponent, draw
+                        };
     public SOFightMoves PlayerMove, CPUMove;
     public SOFightMoves[] CPUMoveList;
+
+    [HideInInspector] public delegate int StringForInt(string targetCharacterProperty, string dictKey = "None");
+    [HideInInspector] public static StringForInt PlayerStatusRequested; 
+    [HideInInspector] public static StringForInt CPUStatusRequested; 
     
     void OnEnable()
     {
@@ -34,7 +42,8 @@ public class MatchFlowManager : MonoBehaviour
         // Debug.Log("CPU Move: " + CPUMove.Name);
         // isPlayerFirst = ResolvePriority(); // ToDO
         // CheckHyperArmourCapabilities(); // ToDO
-        // ResolveOrder(); // ToDO
+        _priorityOutcome = ResolveOrder(); // ToDO
+        // Debug.Log("Priority outcome: " + _priorityOutcome);
         // CheckCharacterDead(); // ToDO
         // CheckTimeExpire(); // ToDO
         // RemoveTempEffects(); // ToDO
@@ -47,6 +56,32 @@ public class MatchFlowManager : MonoBehaviour
     {
         return CPUMoveList[Random.Range(0, CPUMoveList.Length - 1)];
     }
+
+    int ResolveOrder()
+    {
+        //Check Player boosts
+        
+        // _isMoveBuffActive[PlayerStatusRequested("HealthBarNum")] = PlayerStatusRequested.Invoke("HeadBuff", "Move");
+        // _isMoveBuffActive[CPUStatusRequested("HealthBarNum")] = CPUStatusRequested.Invoke("HeadBuff", "Move");
+
+        // Debug.Log("Player priority buff active: " + _isMoveBuffActive[PlayerStatusRequested("HealthBarNum")]);
+        // Debug.Log("CPU priority buff active: " + _isMoveBuffActive[CPUStatusRequested("HealthBarNum")]);
+
+        // Debug.Log("Player priority buff active: " + fighters[0].GetCharacterData("HeadBuffs", "Move"));
+        // Debug.Log("CPU priority buff active: " + fighters[1].GetCharacterData("HeadBuffs", "Move"));
+
+        int priorityPlayer = PlayerMove.Priority + fighters[0].GetCharacterData("HeadBuffs", "Move"), 
+            priorityCPU = CPUMove.Priority + fighters[1].GetCharacterData("HeadBuffs", "Move");
+
+        if( priorityPlayer > priorityCPU)
+            return 0;   // Player moves first
+        else if(priorityPlayer < priorityCPU)
+            return 1;   // Opponent moves first
+        else
+            return 2;   // Draw
+
+        
+    } 
 
 
 }
