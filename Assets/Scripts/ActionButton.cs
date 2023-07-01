@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class ActionButton : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public SOFightMoves fightMove;
+
+    [HideInInspector] public delegate void FightMoveSent(SOFightMoves fightMove);
+    [HideInInspector] public static FightMoveSent FightMoveSelected;
+    
+    void OnMouseUp()
     {
-        
+      Debug.Log(this.gameObject.name + " pressed!");
+    //  SFXRequested?.Invoke("Click");
+        FightMoveSelected?.Invoke(fightMove);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

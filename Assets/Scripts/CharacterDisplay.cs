@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterDisplay : MonoBehaviour
 {
     public int HealthBarNum;
-    private int _subSystemAmount;
+    private int _subSystemAmount, _energyStored = 30, _buffEnergyCost = 0;
     public int[] HealthSystemData = new int[12], 
     // Assumes HealthSystemData is as follows: 
     // [HPMax, HPCurr, HPHeadMax, HPHeadCurr, 
