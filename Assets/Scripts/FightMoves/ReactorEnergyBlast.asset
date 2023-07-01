@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67bfdd294663f234db0e576aa0994399, type: 3}
+  m_Name: ReactorEnergyBlast
+  m_EditorClassIdentifier: 
+  ID: Mech13
+  Name: Reactor Energy Blast
+  Description: Brace and overclock chest reactor to unleash a devastating blast of
+    energy. However, chest becomes more extremely vulnerable to damage.
+  Icon: {fileID: 0}
+  MainTarget: 1
+  Priority: 0
+  Range: 5
+  MainEffectValue: 40
+  MoveType: 3
+  DefaultSubSystemTargets: 0100000001000000010000000100000001000000
+  HasExtraTargets: 0000000000000000
+  Requirements: 320000000000000001000000000000000000000001000000
+  TempEffects: 00000000000000000000000000000000
+  SecondaryEffects: 01000000fa000000
