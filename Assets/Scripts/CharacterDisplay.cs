@@ -110,15 +110,20 @@ public class CharacterDisplay : MonoBehaviour
         HealthAffected?.Invoke(HealthBarData);
     }
 
-    public void SetActiveHeadBuff(string targetBuff)
+    public void SetActiveHeadBuff(int targetBuffID)
     {
+        string[] buffTypes = {"None", "Repair", "Defense", "Move", "Attack"};
+        string targetBuff = buffTypes[targetBuffID];
+
+        List<string> keyList = new List<string>(HeadBuffs.Keys);
         //Enables target buff, and disables all others.
-         foreach(var buff in HeadBuffs)
+        //  foreach(string buffKey in HeadBuffs.Keys)
+        foreach(string buffKey in keyList)
          {
-            if(buff.Key == targetBuff)
-                HeadBuffs[buff.Key] = 1;
+            if(buffKey == targetBuff)
+                HeadBuffs[buffKey] = 1;
             else
-                HeadBuffs[buff.Key] = 0;
+                HeadBuffs[buffKey] = 0;
          }
 
     }

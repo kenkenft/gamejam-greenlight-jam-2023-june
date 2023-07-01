@@ -78,10 +78,10 @@ public class MatchFlowManager : MonoBehaviour
 
     void CheckHyperArmourCapabilities()
     {
-        // fighters[0].SetTempEffectActive("HyperArmour", PlayerMove.TempEffects[0]);
-        // fighters[1].SetTempEffectActive("HyperArmour", CPUMove.TempEffects[0]);
-        Debug.Log("Player HyperArmour Active: " + fighters[0].GetCharacterData("TempEffects", "HyperArmour"));
-        Debug.Log("CPU HyperArmour Active: " + fighters[1].GetCharacterData("TempEffects", "HyperArmour"));
+        fighters[0].SetTempEffectActive("HyperArmour", PlayerMove.TempEffects[0]);
+        fighters[1].SetTempEffectActive("HyperArmour", CPUMove.TempEffects[0]);
+        // Debug.Log("Player HyperArmour Active: " + fighters[0].GetCharacterData("TempEffects", "HyperArmour"));
+        // Debug.Log("CPU HyperArmour Active: " + fighters[1].GetCharacterData("TempEffects", "HyperArmour"));
     }
 
     void ResolveMoves()
@@ -126,21 +126,25 @@ public class MatchFlowManager : MonoBehaviour
             case 0: // Buff
             {
                 Debug.Log("Player " + playerID + " move type: BUFF");
+                ApplyBuff(playerID, targetMove.MainEffectValue);    // Assumes MainEffectValue is the buffType id
                 break;
             }
             case 1: // Defensive move
             {
                 Debug.Log("Player " + playerID + " move type: DEFENSIVE");
+                // ApplyDefense();
                 break;
             }
             case 2: // Movement
             {
                 Debug.Log("Player " + playerID + " move type: MOVEMENT");
+                // MoveCharacter();
                 break;
             }
             case 3: // Modify Health
             {
                 Debug.Log("Player " + playerID + " move type: MODIFY HEALTH");
+                // MOdifyHealth();
                 break;
             }
             default:
@@ -149,5 +153,10 @@ public class MatchFlowManager : MonoBehaviour
                 break;
             }
         }
+    } // End of ApplyMove()
+
+    void ApplyBuff(int playerID, int buffTypeID)
+    {
+        fighters[playerID].SetActiveHeadBuff(buffTypeID);   // Assumes MainEffectValue is the buffType id
     }
 }
