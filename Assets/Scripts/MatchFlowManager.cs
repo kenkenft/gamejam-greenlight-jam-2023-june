@@ -42,7 +42,7 @@ public class MatchFlowManager : MonoBehaviour
         // Debug.Log("CPU Move: " + CPUMove.Name);
         _priorityOutcome = ResolvePriority(); // ToDO
         // Debug.Log("Priority outcome: " + _priorityOutcome);
-        // CheckHyperArmourCapabilities(); // ToDO
+        CheckHyperArmourCapabilities(); // ToDO
         // ResolveOrder(); // ToDO
         // CheckCharacterDead(); // ToDO
         // CheckTimeExpire(); // ToDO
@@ -59,13 +59,8 @@ public class MatchFlowManager : MonoBehaviour
 
     int ResolvePriority()
     {
-        //Check Player boosts
-        
         // _isMoveBuffActive[PlayerStatusRequested("HealthBarNum")] = PlayerStatusRequested.Invoke("HeadBuff", "Move");
         // _isMoveBuffActive[CPUStatusRequested("HealthBarNum")] = CPUStatusRequested.Invoke("HeadBuff", "Move");
-
-        // Debug.Log("Player priority buff active: " + _isMoveBuffActive[PlayerStatusRequested("HealthBarNum")]);
-        // Debug.Log("CPU priority buff active: " + _isMoveBuffActive[CPUStatusRequested("HealthBarNum")]);
 
         // Debug.Log("Player priority buff active: " + fighters[0].GetCharacterData("HeadBuffs", "Move"));
         // Debug.Log("CPU priority buff active: " + fighters[1].GetCharacterData("HeadBuffs", "Move"));
@@ -79,9 +74,13 @@ public class MatchFlowManager : MonoBehaviour
             return 1;   // Opponent moves first
         else
             return 2;   // Draw
-
-        
     } 
 
-
+    void CheckHyperArmourCapabilities()
+    {
+        // fighters[0].SetTempEffectActive("HyperArmour", PlayerMove.TempEffects[0]);
+        // fighters[1].SetTempEffectActive("HyperArmour", CPUMove.TempEffects[0]);
+        Debug.Log("Player HyperArmour Active: " + fighters[0].GetCharacterData("TempEffects", "HyperArmour"));
+        Debug.Log("CPU HyperArmour Active: " + fighters[1].GetCharacterData("TempEffects", "HyperArmour"));
+    }
 }
