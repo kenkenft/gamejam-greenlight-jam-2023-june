@@ -12,6 +12,7 @@ public class MatchFlowManager : MonoBehaviour
                         };
     public SOFightMoves PlayerMove, CPUMove;
     public SOFightMoves[] CPUMoveList;
+    private SOFightMoves[] _selectedFightMoves = new SOFightMoves[2];
 
     [HideInInspector] public delegate int StringForInt(string targetCharacterProperty, string dictKey = "None");
     [HideInInspector] public static StringForInt PlayerStatusRequested; 
@@ -91,15 +92,19 @@ public class MatchFlowManager : MonoBehaviour
             case 0:
             {
                 Debug.Log("Player moves first");
-                ApplyMove(0);
-                ApplyMove(1);
+                _selectedFightMoves[0] = PlayerMove;
+                _selectedFightMoves[1] = CPUMove;
+                ApplyMove(0, fighters[0].HealthBarNum);
+                ApplyMove(1, fighters[1].HealthBarNum);
                 break;
             }
             case 1:
             {
                 Debug.Log("Opponent moves first");
-                ApplyMove(1);
-                ApplyMove(0);
+                _selectedFightMoves[0] = CPUMove;
+                _selectedFightMoves[1] = PlayerMove;
+                ApplyMove(0, fighters[1].HealthBarNum);
+                ApplyMove(1, fighters[0].HealthBarNum);
                 break; 
             }
             case 2:
@@ -113,20 +118,20 @@ public class MatchFlowManager : MonoBehaviour
         
     } // End of ResolveMoves()
 
-    void ApplyMove(int playerID)
+    void ApplyMove(int orderIndex, int playerID)
     {
-        SOFightMoves targetMove;
-        if(playerID == 0)
-            targetMove = PlayerMove;
-        else
-            targetMove = CPUMove;
+        // SOFightMoves targetMove;
+        // if(playerID == 0)
+        //     targetMove = PlayerMove;
+        // else
+        //     targetMove = CPUMove;
 
-        switch((int)targetMove.MoveType)
+        switch((int)_selectedFightMoves[orderIndex].MoveType)
         {
             case 0: // Buff
             {
                 Debug.Log("Player " + playerID + " move type: BUFF");
-                ApplyBuff(playerID, targetMove.MainEffectValue);    // Assumes MainEffectValue is the buffType id
+                ApplyBuff(playerID, _selectedFightMoves[orderIndex].MainEffectValue);    // Assumes MainEffectValue is the buffType id
                 break;
             }
             case 1: // Defensive move
@@ -144,7 +149,7 @@ public class MatchFlowManager : MonoBehaviour
             case 3: // Modify Health
             {
                 Debug.Log("Player " + playerID + " move type: MODIFY HEALTH");
-                // MOdifyHealth();
+                ModifyHealth(orderIndex, playerID);
                 break;
             }
             default:
@@ -158,5 +163,20 @@ public class MatchFlowManager : MonoBehaviour
     void ApplyBuff(int playerID, int buffTypeID)
     {
         fighters[playerID].SetActiveHeadBuff(buffTypeID);   // Assumes MainEffectValue is the buffType id
+    }
+
+    void ModifyHealth(int orderIndex, int playerID)
+    {
+        // CheckTarget()
+        if((int)_selectedFightMoves[orderIndex].MainTarget == 0)
+        {
+            // Healing move
+            Debug.Log("Healing move selected. Player " + playerID);
+        }
+        else
+        {
+            // Attacking move
+            Debug.Log("Attacking move selected. Player " + playerID + " is attacking other Player");
+        }
     }
 }
