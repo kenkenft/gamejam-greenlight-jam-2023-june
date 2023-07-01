@@ -6,8 +6,8 @@ public class MatchFlowManager : MonoBehaviour
 {
     public CharacterDisplay[] fighters;
     bool isPlayerFirst = false;
-    //public Move PlayerMove, CPUMove
-    /*void SetPlayerMove(Move playerMove)
+    //public SOFightMove PlayerMove, CPUMove
+    /*void SetPlayerMove(SOFightMove playerMove)
     {
         // PlayerMove = playerMove; // ToDO
         // CPUMove = ComputerMove(); // ToDO
