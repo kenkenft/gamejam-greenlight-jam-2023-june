@@ -177,6 +177,65 @@ public class MatchFlowManager : MonoBehaviour
         {
             // Attacking move
             Debug.Log("Attacking move selected. Player " + playerID + " is attacking other Player");
+
+            int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue, potentialDamage = 0, 
+                buffDefenseBonus = 0, blockDefenseBonus = 0, 
+                blockThreshold = 0;
+
+            int[] damage = {0, 0, 0, 0, 0}; 
+            
+            potentialDamage = (attackPercentage * fighters[1 - playerID].HealthSystemData[0]) / 100;  // damage is as a percentage of max health
+            
+            Debug.Log("Potential damage: " + potentialDamage);
+            // Reduce incoming damage by head buff defense value
+            if(fighters[1-playerID].GetActiveHeadBuff() == "Defense")
+                potentialDamage -= ((60 * potentialDamage) / 100);
+            
+            // Check if opponent is blocking
+            // if(fighters[1-playerID].GetTempEffectActive("Blocking") == 1)
+            // {
+            //     if(potentialDamage < )
+            // }
+            
+            // Check which body parts are default targets and extra targets
+
+            List<int> targetedBodyPartIndexes = new List<int>();
+            
+            for(int i = 0; i < _selectedFightMoves[orderIndex].DefaultSubSystemTargets.Length; i++)
+            {
+                if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1)
+                    targetedBodyPartIndexes.Add(i);
+            }
+
+            if(_selectedFightMoves[orderIndex].HasExtraTargets[0] == 1)
+            {
+                List<int> extraBodyPartIndexes = new List<int>(){0, 1, 2, 3, 4};
+
+                foreach(int bodyPart in targetedBodyPartIndexes)
+                {
+                    extraBodyPartIndexes.Remove(bodyPart);
+                } 
+
+                for(int i = 0; i < _selectedFightMoves[orderIndex].HasExtraTargets[1]; i++)
+                {
+                    int rand = Random.Range(0,extraBodyPartIndexes.Count-1);
+                    targetedBodyPartIndexes.Add(extraBodyPartIndexes[rand]);
+                    extraBodyPartIndexes.Remove(rand);
+                }
+            }
+
+            for(int i = 0; i < targetedBodyPartIndexes.Count - 1; i++)
+            {
+                damage[targetedBodyPartIndexes[i]] =  potentialDamage;
+                Debug.Log("Damage to body part " + targetedBodyPartIndexes[i] + " : " + potentialDamage);
+            }
+
+            
+            //Get other player's defense data.
+            
+            // damage = 0 // include all bonuses and such
+
+            fighters[1-playerID].UpdateCharacterHealth(damage);
         }
     }
 }

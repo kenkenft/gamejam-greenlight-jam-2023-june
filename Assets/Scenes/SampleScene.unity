@@ -986,7 +986,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -57, y: 43}
+  m_AnchoredPosition: {x: 57, y: 43}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &518438075
@@ -2885,13 +2885,6 @@ MonoBehaviour:
   CPUMove: {fileID: 0}
   CPUMoveList:
   - {fileID: 11400000, guid: 42e16284c357d424ea8aea810671dc7f, type: 2}
-  - {fileID: 11400000, guid: 0e7defec800c30042946dca18767c173, type: 2}
-  - {fileID: 11400000, guid: 0c9014b0285b2804d8c6ebc2132d891d, type: 2}
-  - {fileID: 11400000, guid: 65d5ddf15d4e9a6489ae936c94632e0d, type: 2}
-  - {fileID: 11400000, guid: 3aa2b74a3bffa8748a5f7cd81873d7c8, type: 2}
-  - {fileID: 11400000, guid: 941e16d1613185441b0d2b0480b10266, type: 2}
-  - {fileID: 11400000, guid: 4ad65bf52d245ec41bafde4b9645964d, type: 2}
-  - {fileID: 11400000, guid: 5f0cf37676e64454c95616b657887fd0, type: 2}
 --- !u!4 &1674461456
 Transform:
   m_ObjectHideFlags: 0
