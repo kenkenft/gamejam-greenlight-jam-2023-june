@@ -40,10 +40,10 @@ public class MatchFlowManager : MonoBehaviour
     {
         CPUMove = ComputerMove(); // ToDO
         // Debug.Log("CPU Move: " + CPUMove.Name);
-        // isPlayerFirst = ResolvePriority(); // ToDO
-        // CheckHyperArmourCapabilities(); // ToDO
-        _priorityOutcome = ResolveOrder(); // ToDO
+        _priorityOutcome = ResolvePriority(); // ToDO
         // Debug.Log("Priority outcome: " + _priorityOutcome);
+        // CheckHyperArmourCapabilities(); // ToDO
+        // ResolveOrder(); // ToDO
         // CheckCharacterDead(); // ToDO
         // CheckTimeExpire(); // ToDO
         // RemoveTempEffects(); // ToDO
@@ -57,7 +57,7 @@ public class MatchFlowManager : MonoBehaviour
         return CPUMoveList[Random.Range(0, CPUMoveList.Length - 1)];
     }
 
-    int ResolveOrder()
+    int ResolvePriority()
     {
         //Check Player boosts
         
