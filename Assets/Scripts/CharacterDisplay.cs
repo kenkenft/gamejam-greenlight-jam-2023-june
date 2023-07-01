@@ -155,11 +155,13 @@ public class CharacterDisplay : MonoBehaviour
 
     public int GetTempEffectActive(int targetEffect)
     {
+        Debug.Log("targetEffect: " + effectTypes[targetEffect]);
         foreach(var tempEffect in TempEffects)
         {
             if(tempEffect.Key == effectTypes[targetEffect])
                 return tempEffect.Value;
         }
+        Debug.Log("Nothing found return 0");
 
         return 0;   // In the event an improper string is given, just send back 0
     }

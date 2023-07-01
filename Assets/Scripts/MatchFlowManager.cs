@@ -76,8 +76,8 @@ public class MatchFlowManager : MonoBehaviour
 
     void CheckHyperArmourCapabilities()
     {
-        fighters[0].SetTempEffectActive(1, PlayerMove.TempEffects[0]);
-        fighters[1].SetTempEffectActive(1, CPUMove.TempEffects[0]);
+        fighters[0].SetTempEffectActive(0, PlayerMove.TempEffects[0]);
+        fighters[1].SetTempEffectActive(0, CPUMove.TempEffects[0]);
         // Debug.Log("Player HyperArmour Active: " + fighters[0].GetCharacterData("TempEffects", "HyperArmour"));
         // Debug.Log("CPU HyperArmour Active: " + fighters[1].GetCharacterData("TempEffects", "HyperArmour"));
     }
@@ -134,7 +134,7 @@ public class MatchFlowManager : MonoBehaviour
             case 1: // Defensive move
             {
                 Debug.Log("Player " + playerID + " move type: DEFENSIVE");
-                // ApplyDefense();
+                ApplyDefense(playerID);
                 break;
             }
             case 2: // Movement
@@ -162,6 +162,11 @@ public class MatchFlowManager : MonoBehaviour
         fighters[playerID].SetActiveHeadBuff(buffTypeID);   // Assumes MainEffectValue is the buffType id
     }
 
+    void ApplyDefense(int playerID)
+    {
+        fighters[playerID].SetTempEffectActive(1, 1);
+    }
+
     void ModifyHealth(int orderIndex, int playerID)
     {
         // CheckTarget()
@@ -175,24 +180,32 @@ public class MatchFlowManager : MonoBehaviour
             // Attacking move
             Debug.Log("Attacking move selected. Player " + playerID + " is attacking other Player");
 
-            int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue[0], potentialDamage = 0, 
-                buffDefenseBonus = 0, blockDefenseBonus = 0, 
-                blockThreshold = 0;
-
+            int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue[0], potentialDamage = 0;
             int[] damage = {0, 0, 0, 0, 0, 0}; 
             
             potentialDamage = (attackPercentage * fighters[1 - playerID].HealthSystemData[0]) / 100;  // damage is as a percentage of max health
             
-            Debug.Log("Potential damage: " + potentialDamage);
+            
             // Reduce incoming damage by head buff defense value
-            if(fighters[1-playerID].GetActiveHeadBuff() == "Defense")
+            if(fighters[1 - playerID].GetActiveHeadBuff() == "Defense")
                 potentialDamage -= ((60 * potentialDamage) / 100);
             
             // Check if opponent is blocking
-            // if(fighters[1-playerID].GetTempEffectActive("Blocking") == 1)
-            // {
-            //     if(potentialDamage < )
-            // }
+            if(fighters[1-playerID].GetTempEffectActive(1) == 1)
+            {
+                Debug.Log("Opponent is blocking!");
+                int blockThreshold = (_selectedFightMoves[1 - orderIndex].MainEffectValue[1] * fighters[1 - playerID].HealthSystemData[0]) / 100;
+                if(potentialDamage <= blockThreshold)
+                    potentialDamage -= (_selectedFightMoves[1 - orderIndex].MainEffectValue[0] * potentialDamage) / 100;
+                else
+                {
+                    fighters[1 - playerID].SetTempEffectActive(3, 1);
+                    potentialDamage += (_selectedFightMoves[1 - orderIndex].SecondaryEffects[2] * potentialDamage) / 100;
+                }
+                    
+            }
+
+            Debug.Log("Potential damage: " + potentialDamage);
             
             // Check which body parts are default targets and extra targets
 
