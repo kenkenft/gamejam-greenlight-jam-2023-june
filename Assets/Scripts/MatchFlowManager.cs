@@ -43,7 +43,7 @@ public class MatchFlowManager : MonoBehaviour
         _priorityOutcome = ResolvePriority(); // ToDO
         // Debug.Log("Priority outcome: " + _priorityOutcome);
         CheckHyperArmourCapabilities(); // ToDO
-        // ResolveOrder(); // ToDO
+        ResolveMoves(); // ToDO
         // CheckCharacterDead(); // ToDO
         // CheckTimeExpire(); // ToDO
         // RemoveTempEffects(); // ToDO
@@ -82,5 +82,72 @@ public class MatchFlowManager : MonoBehaviour
         // fighters[1].SetTempEffectActive("HyperArmour", CPUMove.TempEffects[0]);
         Debug.Log("Player HyperArmour Active: " + fighters[0].GetCharacterData("TempEffects", "HyperArmour"));
         Debug.Log("CPU HyperArmour Active: " + fighters[1].GetCharacterData("TempEffects", "HyperArmour"));
+    }
+
+    void ResolveMoves()
+    {
+        switch(_priorityOutcome)
+        {
+            case 0:
+            {
+                Debug.Log("Player moves first");
+                ApplyMove(0);
+                ApplyMove(1);
+                break;
+            }
+            case 1:
+            {
+                Debug.Log("Opponent moves first");
+                ApplyMove(1);
+                ApplyMove(0);
+                break; 
+            }
+            case 2:
+            {
+                Debug.Log("Both moves equal priority. Analysing further");
+                break; 
+            }
+            default:
+                break;
+        } // End of switch(_priorityOutcome)
+        
+    } // End of ResolveMoves()
+
+    void ApplyMove(int playerID)
+    {
+        SOFightMoves targetMove;
+        if(playerID == 0)
+            targetMove = PlayerMove;
+        else
+            targetMove = CPUMove;
+
+        switch((int)targetMove.MoveType)
+        {
+            case 0: // Buff
+            {
+                Debug.Log("Player " + playerID + " move type: BUFF");
+                break;
+            }
+            case 1: // Defensive move
+            {
+                Debug.Log("Player " + playerID + " move type: DEFENSIVE");
+                break;
+            }
+            case 2: // Movement
+            {
+                Debug.Log("Player " + playerID + " move type: MOVEMENT");
+                break;
+            }
+            case 3: // Modify Health
+            {
+                Debug.Log("Player " + playerID + " move type: MODIFY HEALTH");
+                break;
+            }
+            default:
+            {
+                Debug.Log("The move is neither a buff, defense, movement, or health modifier :(");
+                break;
+            }
+        }
     }
 }
