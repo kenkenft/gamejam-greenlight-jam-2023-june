@@ -43,7 +43,7 @@ public class MatchFlowManager : MonoBehaviour
         CheckHyperArmourCapabilities(); // ToDO
         ResolveMoves(); // ToDO
         RemoveTempEffects(); // ToDO
-        // CheckCharacterDead(); // ToDO
+        CheckCharacterDead(); // ToDO
         // CheckTimeExpire(); // ToDO
         
         // GenerateEnergy(); // ToDo
@@ -261,4 +261,46 @@ public class MatchFlowManager : MonoBehaviour
         }
     } // End of RemoveTempEffects
 
+    void CheckCharacterDead()
+    {
+        bool[] isFighterDead = {false, false};
+        // Check for character deaths in order to trigger endgame
+        // If player dies, it is a loss; if only the kaiju dies, then the player wins.
+        for(int i = 0; i < fighters.Length; i++)
+        {
+            int[] systemHealthData = fighters[i].HealthSystemData;
+            
+            // Check whether all subsystems are at zero health
+            for(int j = systemHealthData.Length - 1; j > 1; j -= 2)
+            {
+                if(systemHealthData[j] != 0)
+                {
+                    Debug.Log("Exiting full subsystem failure check at j = " + j);
+                    break;
+                }
+                else if(j == 3 && systemHealthData[j] == 0)
+                    isFighterDead[i] = true;
+            }
+
+            //Check whether overall hp has dropped to 0
+            if(isFighterDead[i] || fighters[i].HealthSystemData[1] == 0)
+            {    
+                Debug.Log("isFighterDead[" + i + "] is initially " + isFighterDead[i]);
+                isFighterDead[i] = true;  
+
+                Debug.Log("isFighterDead[" + i + "] is now set to " + isFighterDead[i]);
+                break;  // Exit int i = 0 loop
+            } 
+        }
+
+        if(!isFighterDead[0] && !isFighterDead [1])
+        {
+            Debug.Log("Both characters are still alive. Continue match");
+        }
+        else
+        {
+            Debug.Log("Someone died. Triggering Endgame");
+        }
+
+    }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class CharacterDisplay : MonoBehaviour
 {
-    public int HealthBarNum;
-    private int _subSystemAmount, _energyStored = 30, _buffEnergyCost = 0;
+    public int HealthBarNum, SubSystemAmount, EnergyStored = 30, BuffEnergyCost = 0;
     public int[] HealthSystemData = new int[12], 
     // Assumes HealthSystemData is as follows: 
     // [HPMax, HPCurr, HPHeadMax, HPHeadCurr, 
@@ -62,7 +61,7 @@ public class CharacterDisplay : MonoBehaviour
 
     void SetUp()
     {
-        _subSystemAmount = SOCS.HPSubSystems.Length;
+        SubSystemAmount = SOCS.HPSubSystems.Length;
         SetUpSystemHealth();
         HealthBarData[0] = HealthBarNum;
         UpdateHealthBar();
@@ -71,7 +70,7 @@ public class CharacterDisplay : MonoBehaviour
     void SetUpSystemHealth()
     {
         int tempInt;
-        for(int i = 0; i < _subSystemAmount; i++)
+        for(int i = 0; i < SubSystemAmount; i++)
         {
             tempInt = i * 2;
             HealthSystemData[2 + tempInt] = SOCS.HPSubSystems[i];
@@ -92,7 +91,7 @@ public class CharacterDisplay : MonoBehaviour
     void ApplyHealthChanges(int[] newDataChanges)
     {
         // Assumes newDataChanges is a size 6 int array.
-        for(int i = 1; i < _subSystemAmount; i++)
+        for(int i = 1; i < SubSystemAmount; i++)
         {
             int tempInt = i * 2;
             if(newDataChanges[i] != 0)
