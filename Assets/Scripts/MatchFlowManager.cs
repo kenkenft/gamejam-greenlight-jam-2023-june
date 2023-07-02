@@ -310,12 +310,15 @@ public class MatchFlowManager : MonoBehaviour
     {
         int[] playerEnergyAndSubSystemsData = {0, 0, 0, 0, 0, 0};
         playerEnergyAndSubSystemsData[0] = fighters[0].EnergyStored;
+        Debug.Log("EnergyStored: "+ playerEnergyAndSubSystemsData[0]);
 
-        for(int i = playerEnergyAndSubSystemsData.Length; i > 0 ; i--)
+        for(int i = 1; i < playerEnergyAndSubSystemsData.Length ; i++)
         {
-            int index = (i * 2) - 1;
+            int index = (i * 2) + 1 ;
             if(fighters[0].HealthSystemData[index] > 0)
                 playerEnergyAndSubSystemsData[i] = 1;
+
+            Debug.Log("playerEnergyAndSubSystemsData[" + i +"]: "+ playerEnergyAndSubSystemsData[i]);
         }
 
         ButtonStatusUpdated?.Invoke(playerEnergyAndSubSystemsData);
