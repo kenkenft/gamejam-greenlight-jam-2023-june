@@ -9,6 +9,16 @@ public class ActionButton : MonoBehaviour
     [HideInInspector] public delegate void FightMoveSent(SOFightMoves fightMove);
     [HideInInspector] public static FightMoveSent FightMoveSelected;
     
+    void OnEnable()
+    {
+        MatchFlowManager.ButtonStatusUpdated += AbleToDoMove;
+    }
+
+    void OnDisable()
+    {
+        MatchFlowManager.ButtonStatusUpdated -= AbleToDoMove;
+    }
+    
     void OnMouseUp()
     {
     //   Debug.Log(this.gameObject.name + " pressed!");
@@ -16,4 +26,86 @@ public class ActionButton : MonoBehaviour
         FightMoveSelected?.Invoke(fightMove);
     }
 
+    void AbleToDoMove(int[] playerEnergyAndSubSystemsData)
+    {
+        // playerEnergyAndSubSystemsData // index 0 is the amount of energy available; indexes 1 through 5 are truthy values (0 is broken; 1 is not broken)
+        bool isRequirementMet = true;
+        // Check if enough energy is available
+        if(playerEnergyAndSubSystemsData[0] > fightMove.Requirements[0])
+            isRequirementMet = false;
+
+        //Check if required subsystems are still active
+        isRequirementMet = CheckSubSystems(playerEnergyAndSubSystemsData,  isRequirementMet);
+
+        if(isRequirementMet)
+        {    
+            Debug.Log("Requirement MET for fightmove: " + fightMove.Name);
+            this.gameObject.GetComponent<SpriteRenderer>().color = GameProperties.ColourPalleteRGBA["Special"];
+        }
+        else
+        {
+            Debug.Log("Requirement NOT MET for fightmove: " + fightMove.Name);
+            this.gameObject.GetComponent<SpriteRenderer>().color = GameProperties.ColourPalleteRGBA["DarkGrey"];
+        }
+    }
+
+    bool CheckSubSystems(int[] playerEnergyAndSubSystemsData , bool isRequirementMet)
+    {
+        if(isRequirementMet)
+        {
+            List<int> mandatoryRequirements = new List<int>(), flexibleRequirements = new List<int>();
+            // Parse list into mandatory and flexible
+            for(int i = playerEnergyAndSubSystemsData.Length; i > 0 ; i--)
+            {
+                switch(fightMove.Requirements[i])
+                {
+                    case 1:
+                    {
+                        mandatoryRequirements.Add(i);
+                        break;
+                    }
+                    case 2:
+                    {
+                        flexibleRequirements.Add(i);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+
+            // Check for mandatory subsystems i.e. playerEnergyAndSubSystemsData[i] = 1
+            isRequirementMet = CheckSubSystemRequirement(playerEnergyAndSubSystemsData, mandatoryRequirements, true);
+            
+            // Check for requirements where it requires only one of the arms i.e. playerEnergyAndSubSystemsData[i] = 2
+            if(isRequirementMet)
+                isRequirementMet = CheckSubSystemRequirement(playerEnergyAndSubSystemsData, flexibleRequirements, false);
+        } 
+
+        return isRequirementMet;
+    }   // End of CheckSubSystems
+
+    bool CheckSubSystemRequirement(int[] playerEnergyAndSubSystemsData, List<int> requirements, bool isMandatory)
+    {
+        if(isMandatory)
+        {
+            for(int i = 0; i < requirements.Count ; i++)
+            {
+                int index = requirements[i];
+                if(playerEnergyAndSubSystemsData[index] == 0)
+                    return false;   // i.e. At least one mandatory subsystem is broken
+            }
+        }
+        else
+        {
+            for(int i = 0; i < requirements.Count ; i++)
+            {
+                int index = requirements[i];
+                if(playerEnergyAndSubSystemsData[index] == 1)
+                    return true;    // i.e. At least one of the valid subsystem candidates is available for the flexible requirement
+            }
+            return false;   // i.e. All valid subsystem candidate that could be used for the flexible requirement are broken
+        }
+        return true;    // i.e All mandatory subsystems are active
+    }   // End of CheckSubSystemRequirement
 }

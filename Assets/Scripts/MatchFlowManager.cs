@@ -14,6 +14,9 @@ public class MatchFlowManager : MonoBehaviour
     // [HideInInspector] public delegate int StringForInt(string targetCharacterProperty, string dictKey = "None");
     // [HideInInspector] public static StringForInt PlayerStatusRequested; 
     // [HideInInspector] public static StringForInt CPUStatusRequested; 
+
+    [HideInInspector] public delegate void SendIntArray(int[] data);
+    [HideInInspector] public static SendIntArray ButtonStatusUpdated;  
     
     void OnEnable()
     {
@@ -27,19 +30,14 @@ public class MatchFlowManager : MonoBehaviour
     
     void SetPlayerMove(SOFightMoves playerMove)
     {
-        PlayerMove = playerMove; // ToDO
-
-        // Debug.Log("Player Move Clicked: " + PlayerMove.Name);
-        
+        PlayerMove = playerMove; // ToDO        
         StartMoveResolution();
     }
 
     void StartMoveResolution()
     {
         CPUMove = ComputerMove(); // ToDO
-        // Debug.Log("CPU Move: " + CPUMove.Name);
         _priorityOutcome = ResolvePriority();
-        // Debug.Log("Priority outcome: " + _priorityOutcome);
         CheckHyperArmourCapabilities();
         ResolveMoves();
         // ApplySecondaryEffects(); // ToDo
@@ -50,6 +48,7 @@ public class MatchFlowManager : MonoBehaviour
         // GenerateEnergy(); // ToDo
         // PassiveHealing(); // ToDo
         // StartNextTurn(); // ToDo
+        UpdateButtonUI();
     }
 
     SOFightMoves ComputerMove()
@@ -59,12 +58,6 @@ public class MatchFlowManager : MonoBehaviour
 
     int ResolvePriority()
     {
-        // _isMoveBuffActive[PlayerStatusRequested("HealthBarNum")] = PlayerStatusRequested.Invoke("HeadBuff", "Move");
-        // _isMoveBuffActive[CPUStatusRequested("HealthBarNum")] = CPUStatusRequested.Invoke("HeadBuff", "Move");
-
-        // Debug.Log("Player priority buff active: " + fighters[0].GetCharacterData("HeadBuffs", "Move"));
-        // Debug.Log("CPU priority buff active: " + fighters[1].GetCharacterData("HeadBuffs", "Move"));
-
         int priorityPlayer = PlayerMove.Priority + fighters[0].CheckWhichHeadBuff("Move"), 
             priorityCPU = CPUMove.Priority + fighters[1].CheckWhichHeadBuff("Move");
 
@@ -80,8 +73,6 @@ public class MatchFlowManager : MonoBehaviour
     {
         fighters[0].SetTempEffectActive(0, PlayerMove.TempEffects[0]);
         fighters[1].SetTempEffectActive(0, CPUMove.TempEffects[0]);
-        // Debug.Log("Player HyperArmour Active: " + fighters[0].GetCharacterData("TempEffects", "HyperArmour"));
-        // Debug.Log("CPU HyperArmour Active: " + fighters[1].GetCharacterData("TempEffects", "HyperArmour"));
     }
 
     void ResolveMoves()
@@ -314,4 +305,20 @@ public class MatchFlowManager : MonoBehaviour
         }
 
     }
+
+    void UpdateButtonUI()
+    {
+        int[] playerEnergyAndSubSystemsData = {0, 0, 0, 0, 0, 0};
+        playerEnergyAndSubSystemsData[0] = fighters[0].EnergyStored;
+
+        for(int i = playerEnergyAndSubSystemsData.Length; i > 0 ; i--)
+        {
+            int index = (i * 2) - 1;
+            if(fighters[0].HealthSystemData[index] > 0)
+                playerEnergyAndSubSystemsData[i] = 1;
+        }
+
+        ButtonStatusUpdated?.Invoke(playerEnergyAndSubSystemsData);
+    }
+
 }
