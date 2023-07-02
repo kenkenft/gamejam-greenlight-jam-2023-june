@@ -42,9 +42,10 @@ public class MatchFlowManager : MonoBehaviour
         // Debug.Log("Priority outcome: " + _priorityOutcome);
         CheckHyperArmourCapabilities(); // ToDO
         ResolveMoves(); // ToDO
+        RemoveTempEffects(); // ToDO
         // CheckCharacterDead(); // ToDO
         // CheckTimeExpire(); // ToDO
-        // RemoveTempEffects(); // ToDO
+        
         // GenerateEnergy(); // ToDo
         // PassiveHealing(); // ToDo
         // StartNextTurn(); // ToDo
@@ -185,30 +186,11 @@ public class MatchFlowManager : MonoBehaviour
             
             potentialDamage = (attackPercentage * fighters[1 - playerID].HealthSystemData[0]) / 100;  // damage is as a percentage of max health
             
-            
-            // Reduce incoming damage by head buff defense value
-            if(fighters[1 - playerID].GetActiveHeadBuff() == "Defense")
-                potentialDamage -= ((60 * potentialDamage) / 100);
-            
-            // Check if opponent is blocking
-            if(fighters[1-playerID].GetTempEffectActive(1) == 1)
-            {
-                Debug.Log("Opponent is blocking!");
-                int blockThreshold = (_selectedFightMoves[1 - orderIndex].MainEffectValue[1] * fighters[1 - playerID].HealthSystemData[0]) / 100;
-                if(potentialDamage <= blockThreshold)
-                    potentialDamage -= (_selectedFightMoves[1 - orderIndex].MainEffectValue[0] * potentialDamage) / 100;
-                else
-                {
-                    fighters[1 - playerID].SetTempEffectActive(3, 1);
-                    potentialDamage += (_selectedFightMoves[1 - orderIndex].SecondaryEffects[2] * potentialDamage) / 100;
-                }
-                    
-            }
+            potentialDamage = ApplyDefenseReductions(orderIndex, playerID, potentialDamage);
 
-            Debug.Log("Potential damage: " + potentialDamage);
+            // Debug.Log("Potential damage: " + potentialDamage);
             
             // Check which body parts are default targets and extra targets
-
             List<int> targetedBodyPartIndexes = new List<int>();
             
             for(int i = 0; i < _selectedFightMoves[orderIndex].DefaultSubSystemTargets.Length; i++)
@@ -240,12 +222,51 @@ public class MatchFlowManager : MonoBehaviour
                 Debug.Log("Damage to body part " + targetedBodyPartIndexes[i] + " : " + potentialDamage);
             }
 
+            // ToDo ApplySecondary effects
             
-            //Get other player's defense data.
             
             // damage = 0 // include all bonuses and such
             damage[0] = -potentialDamage;
             fighters[1 - playerID].UpdateCharacterHealth(damage);
         }
-    }
+    } // End of ModifyHealth
+
+    int ApplyDefenseReductions(int orderIndex, int playerID, int potentialDamage)
+    {
+        // Apply bonus defense reduction from HeadBufff: Defense 
+        if(fighters[1 - playerID].GetActiveHeadBuff() == "Defense")
+                potentialDamage -= ((60 * potentialDamage) / 100);
+            
+        // Check if opponent is blocking
+        if(fighters[1-playerID].GetTempEffectActive(1) == 1)
+        {
+            Debug.Log("Opponent is blocking!");
+            int blockThreshold = (_selectedFightMoves[1 - orderIndex].MainEffectValue[1] * fighters[1 - playerID].HealthSystemData[0]) / 100;
+            if(potentialDamage <= blockThreshold)
+                potentialDamage -= (_selectedFightMoves[1 - orderIndex].MainEffectValue[0] * potentialDamage) / 100;
+            else
+            {
+                fighters[1 - playerID].SetTempEffectActive(3, 1);
+                potentialDamage += (_selectedFightMoves[1 - orderIndex].SecondaryEffects[2] * potentialDamage) / 100;
+            } 
+        }
+
+        return potentialDamage;
+    } // End of ApplyDefenseReductions
+
+    // void GetTargetedSubSystems()
+    // {
+
+    // }
+
+    void RemoveTempEffects()
+    {
+        foreach(CharacterDisplay fighter in fighters)
+        {
+            List<string> keyList = new List<string>(fighter.TempEffects.Keys);
+            foreach(string key in keyList)
+                fighter.TempEffects[key] = 0;
+        }
+    } // End of RemoveTempEffects
+
 }
