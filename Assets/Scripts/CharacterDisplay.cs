@@ -91,13 +91,13 @@ public class CharacterDisplay : MonoBehaviour
     void ApplyHealthChanges(int[] newDataChanges)
     {
         // Assumes newDataChanges is a size 6 int array.
-        for(int i = 1; i < SubSystemAmount; i++)
+        for(int i = SubSystemAmount; i > 0 ; i--)
         {
             int tempInt = i * 2;
             if(newDataChanges[i] != 0)
             {
-                HealthSystemData[3 + tempInt] += newDataChanges[i];
-                HealthSystemData[3 + tempInt] = Mathf.Clamp(HealthSystemData[3 + tempInt], 0, HealthSystemData[2 + tempInt]);
+                HealthSystemData[1 + tempInt] += newDataChanges[i];
+                HealthSystemData[1 + tempInt] = Mathf.Clamp(HealthSystemData[1 + tempInt], 0, HealthSystemData[tempInt]);
             }
         }
 
