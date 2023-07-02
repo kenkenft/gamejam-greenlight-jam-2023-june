@@ -187,45 +187,14 @@ public class MatchFlowManager : MonoBehaviour
             potentialDamage = (attackPercentage * fighters[1 - playerID].HealthSystemData[0]) / 100;  // damage is as a percentage of max health
             
             potentialDamage = ApplyDefenseReductions(orderIndex, playerID, potentialDamage);
-
-            // Debug.Log("Potential damage: " + potentialDamage);
             
-            // Check which body parts are default targets and extra targets
-            List<int> targetedBodyPartIndexes = new List<int>();
-            
-            for(int i = 0; i < _selectedFightMoves[orderIndex].DefaultSubSystemTargets.Length; i++)
-            {
-                if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1)
-                    targetedBodyPartIndexes.Add(i);
-            }
+            // Check which body parts are default targets and extra targets       
+            List<int> targetedBodyPartIndexes = GetTargetedSubSystems(orderIndex);            
 
-            if(_selectedFightMoves[orderIndex].HasExtraTargets[0] == 1)
-            {
-                List<int> extraBodyPartIndexes = new List<int>(){0, 1, 2, 3, 4};
-
-                foreach(int bodyPart in targetedBodyPartIndexes)
-                {
-                    extraBodyPartIndexes.Remove(bodyPart);
-                } 
-
-                for(int i = 0; i < _selectedFightMoves[orderIndex].HasExtraTargets[1]; i++)
-                {
-                    int rand = Random.Range(0,extraBodyPartIndexes.Count-1);
-                    targetedBodyPartIndexes.Add(extraBodyPartIndexes[rand]);
-                    extraBodyPartIndexes.Remove(rand);
-                }
-            }
-
-            for(int i = 0; i < targetedBodyPartIndexes.Count - 1; i++)
-            {
-                damage[targetedBodyPartIndexes[i] + 1] =  -1 * potentialDamage;
-                Debug.Log("Damage to body part " + targetedBodyPartIndexes[i] + " : " + potentialDamage);
-            }
+            for(int i = 0; i < targetedBodyPartIndexes.Count; i++)
+                damage[targetedBodyPartIndexes[i] + 1] =  -potentialDamage;
 
             // ToDo ApplySecondary effects
-            
-            
-            // damage = 0 // include all bonuses and such
             damage[0] = -potentialDamage;
             fighters[1 - playerID].UpdateCharacterHealth(damage);
         }
@@ -254,10 +223,33 @@ public class MatchFlowManager : MonoBehaviour
         return potentialDamage;
     } // End of ApplyDefenseReductions
 
-    // void GetTargetedSubSystems()
-    // {
+    List<int> GetTargetedSubSystems(int orderIndex)
+    {
+        List<int> targetedBodyPartIndexes = new List<int>();
+        for(int i = 0; i < _selectedFightMoves[orderIndex].DefaultSubSystemTargets.Length; i++)
+        {
+            if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1)
+                targetedBodyPartIndexes.Add(i);
+        }
 
-    // }
+        if(_selectedFightMoves[orderIndex].HasExtraTargets[0] == 1)
+        {
+            List<int> extraBodyPartIndexes = new List<int>(){0, 1, 2, 3, 4};
+
+            foreach(int bodyPart in targetedBodyPartIndexes)
+            {
+                extraBodyPartIndexes.Remove(bodyPart);
+            } 
+
+            for(int i = 0; i < _selectedFightMoves[orderIndex].HasExtraTargets[1]; i++)
+            {
+                int rand = Random.Range(0,extraBodyPartIndexes.Count-1);
+                targetedBodyPartIndexes.Add(extraBodyPartIndexes[rand]);
+                extraBodyPartIndexes.Remove(rand);
+            }
+        }
+        return targetedBodyPartIndexes;
+    }
 
     void RemoveTempEffects()
     {
