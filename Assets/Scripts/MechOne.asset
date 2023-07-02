@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5469da8ae6d3e194c8cbf01fb53db2ce, type: 3}
   m_Name: MechOne
   m_EditorClassIdentifier: 
-  HPSubSystems: 0a000000140000000f0000000f00000014000000
+  HPSubSystems: e8030000d0070000dc050000dc050000d0070000

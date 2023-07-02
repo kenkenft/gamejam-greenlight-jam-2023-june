@@ -38,12 +38,13 @@ public class MatchFlowManager : MonoBehaviour
     {
         CPUMove = ComputerMove(); // ToDO
         // Debug.Log("CPU Move: " + CPUMove.Name);
-        _priorityOutcome = ResolvePriority(); // ToDO
+        _priorityOutcome = ResolvePriority();
         // Debug.Log("Priority outcome: " + _priorityOutcome);
-        CheckHyperArmourCapabilities(); // ToDO
-        ResolveMoves(); // ToDO
-        RemoveTempEffects(); // ToDO
-        CheckCharacterDead(); // ToDO
+        CheckHyperArmourCapabilities();
+        ResolveMoves();
+        // ApplySecondaryEffects(); // ToDo
+        RemoveTempEffects();
+        CheckCharacterDead();
         // CheckTimeExpire(); // ToDO
         
         // GenerateEnergy(); // ToDo
@@ -179,50 +180,65 @@ public class MatchFlowManager : MonoBehaviour
         else
         {
             // Attacking move
-            Debug.Log("Attacking move selected. Player " + playerID + " is attacking other Player");
-
-            int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue[0], potentialDamage = 0;
             int[] damage = {0, 0, 0, 0, 0, 0}; 
             
-            potentialDamage = (attackPercentage * fighters[1 - playerID].HealthSystemData[0]) / 100;  // damage is as a percentage of max health
-            
-            potentialDamage = ApplyDefenseReductions(orderIndex, playerID, potentialDamage);
-            
             // Check which body parts are default targets and extra targets       
-            List<int> targetedBodyPartIndexes = GetTargetedSubSystems(orderIndex);            
+            List<int> targetedBodyPartIndexes = GetTargetedSubSystems(orderIndex);                        
+            damage = CalculateRawDamage(orderIndex, playerID, targetedBodyPartIndexes);
+            damage = ApplyDefenseReductions(orderIndex, playerID, damage);
 
-            for(int i = 0; i < targetedBodyPartIndexes.Count; i++)
-                damage[targetedBodyPartIndexes[i] + 1] =  -potentialDamage;
+            for(int i = 0; i < damage.Length; i++)
+                damage[i] *= -1;
 
             // ToDo ApplySecondary effects
-            damage[0] = -potentialDamage;
             fighters[1 - playerID].UpdateCharacterHealth(damage);
         }
     } // End of ModifyHealth
 
-    int ApplyDefenseReductions(int orderIndex, int playerID, int potentialDamage)
+    int[] ApplyDefenseReductions(int orderIndex, int playerID, int[] potentialDamage)
     {
         // Apply bonus defense reduction from HeadBufff: Defense 
         if(fighters[1 - playerID].GetActiveHeadBuff() == "Defense")
-                potentialDamage -= ((60 * potentialDamage) / 100);
+        {
+            for(int i = 0; i < potentialDamage.Length; i++)
+                potentialDamage[i] -= ((60 * potentialDamage[i]) / 100);
+        }
             
         // Check if opponent is blocking
         if(fighters[1-playerID].GetTempEffectActive(1) == 1)
         {
-            Debug.Log("Opponent is blocking!");
+            
             int blockThreshold = (_selectedFightMoves[1 - orderIndex].MainEffectValue[1] * fighters[1 - playerID].HealthSystemData[0]) / 100;
-            if(potentialDamage <= blockThreshold)
-                potentialDamage -= (_selectedFightMoves[1 - orderIndex].MainEffectValue[0] * potentialDamage) / 100;
+            // Debug.Log("Opponent is blocking! Threshold: " + blockThreshold);
+
+            if(potentialDamage[0] <= blockThreshold)
+            {
+                for(int i = 0; i < potentialDamage.Length; i++)
+                    potentialDamage[i] -= (_selectedFightMoves[1 - orderIndex].MainEffectValue[0] * potentialDamage[i]) / 100;
+            }
             else
             {
                 fighters[1 - playerID].SetTempEffectActive(3, 1);
-                potentialDamage += (_selectedFightMoves[1 - orderIndex].SecondaryEffects[2] * potentialDamage) / 100;
+                for(int i = 0; i < potentialDamage.Length; i++)
+                    potentialDamage[i] += (_selectedFightMoves[1 - orderIndex].SecondaryEffects[2] * potentialDamage[i]) / 100;
             } 
         }
 
         return potentialDamage;
     } // End of ApplyDefenseReductions
 
+    int[] CalculateRawDamage(int orderIndex, int playerID, List<int> targetedSubsystems)
+    {
+        int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue[0];
+        int[] rawDamage = {0, 0, 0, 0, 0, 0}; 
+        for(int i = 0; i < targetedSubsystems.Count; i++)
+        {    
+            int tempInt = targetedSubsystems[i] + 1;
+            rawDamage[tempInt] =  (attackPercentage * fighters[1 - playerID].HealthSystemData[(tempInt * 2)]) / 100;
+            rawDamage[0] += rawDamage[tempInt];
+        };
+        return rawDamage;
+    }
     List<int> GetTargetedSubSystems(int orderIndex)
     {
         List<int> targetedBodyPartIndexes = new List<int>();
@@ -232,6 +248,7 @@ public class MatchFlowManager : MonoBehaviour
                 targetedBodyPartIndexes.Add(i);
         }
 
+        //Randomly chooses extra bodyparts to target. Temporarily here until I implement targetting system 
         if(_selectedFightMoves[orderIndex].HasExtraTargets[0] == 1)
         {
             List<int> extraBodyPartIndexes = new List<int>(){0, 1, 2, 3, 4};
@@ -274,10 +291,7 @@ public class MatchFlowManager : MonoBehaviour
             for(int j = systemHealthData.Length - 1; j > 1; j -= 2)
             {
                 if(systemHealthData[j] != 0)
-                {
-                    Debug.Log("Exiting full subsystem failure check at j = " + j);
                     break;
-                }
                 else if(j == 3 && systemHealthData[j] == 0)
                     isFighterDead[i] = true;
             }
@@ -285,10 +299,7 @@ public class MatchFlowManager : MonoBehaviour
             //Check whether overall hp has dropped to 0
             if(isFighterDead[i] || fighters[i].HealthSystemData[1] == 0)
             {    
-                Debug.Log("isFighterDead[" + i + "] is initially " + isFighterDead[i]);
                 isFighterDead[i] = true;  
-
-                Debug.Log("isFighterDead[" + i + "] is now set to " + isFighterDead[i]);
                 break;  // Exit int i = 0 loop
             } 
         }
