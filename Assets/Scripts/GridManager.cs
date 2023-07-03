@@ -10,11 +10,13 @@ public class GridManager : MonoBehaviour
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
+        MatchFlowManager.MovementCommited += MoveCharacterHere;
     }
 
     void OnDisable()
     {
         GameManager.RoundHasStarted -= SetUp;
+        MatchFlowManager.MovementCommited -= MoveCharacterHere;
     }
 
     void SetUp()
@@ -31,9 +33,14 @@ public class GridManager : MonoBehaviour
 
     void SetInitialPositions()
     {
-        int[] middleTiles = FindMiddleTiles();
+        int[] middleTiles = FindMiddleTiles(), targetData = {0, 0};
         for(int i = 0; i < middleTiles.Length; i++)
-            MoveCharacterHere(i, middleTiles[i]);
+        {
+            targetData[0] = i;
+            targetData[1] = middleTiles[i];
+            MoveCharacterHere(targetData);
+            // MoveCharacterHere(i, middleTiles[i]);
+        }   
     }
 
     int[] FindMiddleTiles()
@@ -56,13 +63,23 @@ public class GridManager : MonoBehaviour
         return middleTiles;
     }
 
-    public void MoveCharacterHere(int fighterID, int targetTile)
+    // public void MoveCharacterHere(int fighterID, int targetTile)
+    // {
+    //     CharacterDisplay fighter = Fighters[fighterID];
+    //     Tiles[fighter.CurrentTileID].SetOccupant(false);
+    //     Tiles[targetTile].SetOccupant(true, fighter);
+    //     fighter.CurrentTileID = targetTile;
+    // }
+    public void MoveCharacterHere(int[] targetData)
     {
-        CharacterDisplay fighter = Fighters[fighterID];
+        CharacterDisplay fighter = Fighters[targetData[0]];
         Tiles[fighter.CurrentTileID].SetOccupant(false);
-        Tiles[targetTile].SetOccupant(true, fighter);
-        fighter.CurrentTileID = targetTile;
+        Tiles[targetData[1]].SetOccupant(true, fighter);
+        fighter.CurrentTileID = targetData[1];
     }
 
-
+    public bool IsTileOccupied(int targetTile)
+    {
+        return Tiles[targetTile].hasOccupant;
+    }
 }
