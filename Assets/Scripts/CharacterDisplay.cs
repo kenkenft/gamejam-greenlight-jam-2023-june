@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class CharacterDisplay : MonoBehaviour
 {
-    public int HealthBarNum, SubSystemAmount, EnergyStored = 30, BuffEnergyCost = 0;
+    public int HealthBarNum, SubSystemAmount, StartEnergy, BuffEnergyCost = 0, EnergyPerTurn = 20;
     public int[] HealthSystemData = new int[12], 
     // Assumes HealthSystemData is as follows: 
     // [HPMax, HPCurr, HPHeadMax, HPHeadCurr, 
     // HPChestMax, HPChestCurr, HPLeftArmMax, HPLeftArmCurr,
     // HPRightArmMax, HPRightArmCurr, HPLegsMax, HPLegsCurr]
-    HealthBarData = new int[3]; 
+    HealthBarData = new int[3], 
     // Assumes HealthBarData is as follows:
     // [HealthBarNum, HPMax, HPCurr]
+    EnergyData = new int[3];
+    // Assumes EnergyData is as follows:
+    // [EnergyStored, BuffEnergyCost, EnergyPerTurn]
     private string[] buffTypes = {"None", "Repair", "Defense", "Move", "Attack"},
                      effectTypes = {"HyperArmour", "Blocking", "Flinching", "BlockBroken", "AttackFail"};
 
@@ -33,6 +36,7 @@ public class CharacterDisplay : MonoBehaviour
                                                         {"Move", 0},
                                                         {"Attack", 0}
                                                         }; 
+
     public SOCharacterStats SOCS;
 
     [HideInInspector]
@@ -58,9 +62,9 @@ public class CharacterDisplay : MonoBehaviour
         SetUpSystemHealth();
         HealthBarData[0] = HealthBarNum;
         UpdateHealthBar();
-
-        EnergyStored = 60;
-
+        EnergyData[0] = StartEnergy;
+        EnergyData[1] = BuffEnergyCost;
+        EnergyData[2] = EnergyPerTurn;
         SetActiveHeadBuff(0);
     }
 
@@ -161,6 +165,15 @@ public class CharacterDisplay : MonoBehaviour
         Debug.Log("Nothing found return 0");
 
         return 0;   // In the event an improper string is given, just send back 0
+    }
+
+    public void GenerateEnergy()
+    {
+        int EnergyGenerated = EnergyData[2] - ( (EnergyData[1] * EnergyData[2]) / 100); // Generated energy after applying buff penalty cost
+        EnergyData[0] += EnergyGenerated;
+        EnergyData[0] = Mathf.Clamp(EnergyData[0], 0, 100);
+
+        Debug.Log(gameObject.name + " Energy generated: " + EnergyGenerated + ". Total energy: " + EnergyData[0] + "%"); 
     }
 
     // public int GetCharacterData(string targetCharacterProperty, string DictKey = "Default")

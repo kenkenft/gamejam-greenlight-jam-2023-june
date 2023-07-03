@@ -34,6 +34,7 @@ public class MatchFlowManager : MonoBehaviour
     {
         Debug.Log("MatchFlowManager.SetUp called");
         RemoveTempEffects();
+        GenerateEnergy();
         StartNextTurn();
     }
     
@@ -54,7 +55,7 @@ public class MatchFlowManager : MonoBehaviour
         CheckCharacterDead();
         // CheckTimeExpire(); // ToDO
         
-        // GenerateEnergy(); // ToDo
+        GenerateEnergy();
         // PassiveHealing(); // ToDo
         StartNextTurn(); // ToDo
         // UpdateButtonUI();
@@ -130,7 +131,7 @@ public class MatchFlowManager : MonoBehaviour
             case 0: // Buff
             {
                 Debug.Log("Player " + playerID + " move type: BUFF");
-                ApplyBuff(playerID, _selectedFightMoves[orderIndex].MainEffectValue[0]);    // Assumes MainEffectValue[0] is the buffType id
+                ApplyBuff(playerID, orderIndex, _selectedFightMoves[orderIndex].MainEffectValue[0]);    // Assumes MainEffectValue[0] is the buffType id
                 break;
             }
             case 1: // Defensive move
@@ -159,9 +160,10 @@ public class MatchFlowManager : MonoBehaviour
         }
     } // End of ApplyMove()
 
-    void ApplyBuff(int playerID, int buffTypeID)
+    void ApplyBuff(int playerID, int orderIndex, int buffTypeID)
     {
         fighters[playerID].SetActiveHeadBuff(buffTypeID);   // Assumes MainEffectValue is the buffType id
+        fighters[playerID].EnergyData[1] = _selectedFightMoves[orderIndex].SecondaryEffects[1]; // Update buff's energy cost
     }
 
     void ApplyDefense(int playerID)
@@ -326,7 +328,7 @@ public class MatchFlowManager : MonoBehaviour
     void UpdateButtonUI()
     {
         int[] playerEnergyAndSubSystemsData = {0, 0, 0, 0, 0, 0};
-        playerEnergyAndSubSystemsData[0] = fighters[0].EnergyStored;
+        playerEnergyAndSubSystemsData[0] = fighters[0].EnergyData[0];
         // Debug.Log("EnergyStored: "+ playerEnergyAndSubSystemsData[0]);
 
         for(int i = 1; i < playerEnergyAndSubSystemsData.Length ; i++)
@@ -339,6 +341,12 @@ public class MatchFlowManager : MonoBehaviour
         }
 
         ButtonStatusUpdated?.Invoke(playerEnergyAndSubSystemsData);
+    }
+
+    void GenerateEnergy()
+    {
+        fighters[0].GenerateEnergy();
+        fighters[1].GenerateEnergy();
     }
 
 }
