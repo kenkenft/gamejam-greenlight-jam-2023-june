@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [HideInInspector] 
+    public delegate void OnSomeEvent();
+    public static OnSomeEvent DisableButtonsRequested;
+
+
+    void OnEnable()
     {
-        
+        ActionButton.MoveSelected += DisableAllMoveButtons; 
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnDisable()
     {
-        
+        ActionButton.MoveSelected -= DisableAllMoveButtons; 
     }
+
+    public void DisableAllMoveButtons()
+    {
+        DisableButtonsRequested?.Invoke();
+    }
+
 }

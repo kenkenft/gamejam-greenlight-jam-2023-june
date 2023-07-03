@@ -7,29 +7,31 @@ public class ActionButton : MonoBehaviour
 {
     public SOFightMoves fightMove;
 
-    [HideInInspector] public delegate void FightMoveSent(SOFightMoves fightMove);
-    [HideInInspector] public static FightMoveSent FightMoveSelected;
+    [HideInInspector] 
+    public delegate void FightMoveSent(SOFightMoves fightMove);
+    public static FightMoveSent FightMoveSelected;
+
+    public delegate void OnSomeEvent();
+    public static OnSomeEvent MoveSelected;
     
     void OnEnable()
     {
         MatchFlowManager.ButtonStatusUpdated += AbleToDoMove;
+        UIManager.DisableButtonsRequested += DisableButton;
+
     }
 
     void OnDisable()
     {
         MatchFlowManager.ButtonStatusUpdated -= AbleToDoMove;
+        UIManager.DisableButtonsRequested -= DisableButton;
     }
-    
-    // void OnMouseUp()
-    // {
-    // //   Debug.Log(this.gameObject.name + " pressed!");
-    // //  SFXRequested?.Invoke("Click");
-    //     FightMoveSelected?.Invoke(fightMove);
-    // }
 
     public void SendSelectedMove()
     {
-        FightMoveSelected?.Invoke(fightMove);
+        // SFXRequested?.Invoke("Click");
+        MoveSelected?.Invoke(); // Should invoke UIManager.DisableAllMoveButtons()
+        FightMoveSelected?.Invoke(fightMove); // Should invoke MatchFlowManager.SetPlayerMove()
     }
 
     void AbleToDoMove(int[] playerEnergyAndSubSystemsData)
@@ -124,4 +126,9 @@ public class ActionButton : MonoBehaviour
         }
         return true;    // i.e All mandatory subsystems are active
     }   // End of CheckSubSystemRequirement
+
+    public void DisableButton()
+    {
+        gameObject.GetComponent<Button>().interactable = false;
+    }
 }
