@@ -33,10 +33,7 @@ public class GridManager : MonoBehaviour
     {
         int[] middleTiles = FindMiddleTiles();
         for(int i = 0; i < middleTiles.Length; i++)
-        {   
-            Fighters[i].CurrentTileID = -1; // Set character current tile to -1 to avoid triggering previous tile check in MoveCharacterHere
             MoveCharacterHere(i, middleTiles[i]);
-        }
     }
 
     int[] FindMiddleTiles()
@@ -61,13 +58,8 @@ public class GridManager : MonoBehaviour
 
     public void MoveCharacterHere(int fighterID, int targetTile)
     {
-        // ToDo CharacterDisplay will need a new variable, CurrentTileID, so that when they are moved, the previous tile can be found and set to unoccupied
-        // ToDo Get Character's previous tile that they just left, and set to unoccupied
         CharacterDisplay fighter = Fighters[fighterID];
-        // Erase previous tile occupant data except during setup.
-        if(fighter.CurrentTileID > -1)
-             Tiles[fighter.CurrentTileID].SetOccupant(false);
-
+        Tiles[fighter.CurrentTileID].SetOccupant(false);
         Tiles[targetTile].SetOccupant(true, fighter);
         fighter.CurrentTileID = targetTile;
     }
