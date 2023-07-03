@@ -25,22 +25,10 @@ public class GridTile : MonoBehaviour
 
     void SetOccupantXPosition()
     {
-        // Vector2 newAnchorPosition = CurrentOccupant.gameObject.GetComponent<RectTransform>().anchoredPosition;
-        // newAnchorPosition[0] = gameObject.GetComponent<RectTransform>().anchoredPosition[0];
-
-        // CurrentOccupant.gameObject.GetComponent<RectTransform>().anchoredPosition = newAnchorPosition;
-
         RectTransform OccupantTransform = CurrentOccupant.gameObject.GetComponent<RectTransform>(); 
-        Vector3 newPosition = OccupantTransform.position;
-        OccupantTransform.SetParent(this.gameObject.GetComponent<RectTransform>());
-        Debug.Log("Current position X:" + newPosition[0] + " Y: " + newPosition[1] + " Z: " + newPosition[2]);
-
-        // newPosition[0] = this.gameObject.GetComponent<RectTransform>().position.x;
-        // newPosition[0] = 1f;
-        // OccupantTransform.position = newPosition;
-        OccupantTransform.position = gameObject.GetComponent<RectTransform>().position;
-
-        Debug.Log("New position X:" + OccupantTransform.position.x + " Y: " + OccupantTransform.position.y + " Z: " + OccupantTransform.position.z);
+        RectTransform TileTransform = gameObject.GetComponent<RectTransform>(); 
         
+        OccupantTransform.SetParent(TileTransform); // This is needed, otherwise the reposition is weird.
+        OccupantTransform.position = TileTransform.position;        
     }
 }
