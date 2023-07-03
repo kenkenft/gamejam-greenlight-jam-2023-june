@@ -286,10 +286,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthBarNum: 0
   SubSystemAmount: 0
-  EnergyStored: 30
+  StartEnergy: 0
   BuffEnergyCost: 0
+  EnergyPerTurn: 25
   HealthSystemData: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   HealthBarData: 000000000000000000000000
+  EnergyData: 000000000000000000000000
   SOCS: {fileID: 11400000, guid: c6199eaa6efb9c14ba5864b1b205b75f, type: 2}
 --- !u!114 &21393364
 MonoBehaviour:
@@ -1027,10 +1029,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HealthBarNum: 1
   SubSystemAmount: 0
-  EnergyStored: 30
+  StartEnergy: 0
   BuffEnergyCost: 0
+  EnergyPerTurn: 25
   HealthSystemData: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   HealthBarData: 000000000000000000000000
+  EnergyData: 000000000000000000000000
   SOCS: {fileID: 11400000, guid: d8d5061d80d67b84a9aad66cf1cb3156, type: 2}
 --- !u!114 &518438076
 MonoBehaviour:
@@ -2924,7 +2928,7 @@ MonoBehaviour:
   PlayerMove: {fileID: 0}
   CPUMove: {fileID: 0}
   CPUMoveList:
-  - {fileID: 11400000, guid: 65d5ddf15d4e9a6489ae936c94632e0d, type: 2}
+  - {fileID: 11400000, guid: 42e16284c357d424ea8aea810671dc7f, type: 2}
 --- !u!4 &1674461456
 Transform:
   m_ObjectHideFlags: 0
