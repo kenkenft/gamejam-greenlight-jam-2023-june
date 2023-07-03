@@ -20,10 +20,15 @@ public class ActionButton : MonoBehaviour
         MatchFlowManager.ButtonStatusUpdated -= AbleToDoMove;
     }
     
-    void OnMouseUp()
+    // void OnMouseUp()
+    // {
+    // //   Debug.Log(this.gameObject.name + " pressed!");
+    // //  SFXRequested?.Invoke("Click");
+    //     FightMoveSelected?.Invoke(fightMove);
+    // }
+
+    public void SendSelectedMove()
     {
-    //   Debug.Log(this.gameObject.name + " pressed!");
-    //  SFXRequested?.Invoke("Click");
         FightMoveSelected?.Invoke(fightMove);
     }
 
@@ -45,11 +50,13 @@ public class ActionButton : MonoBehaviour
         {    
             Debug.Log("Requirement MET for fightmove: " + fightMove.Name);
             gameObject.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["Special"];
+            gameObject.GetComponent<Button>().interactable = true;
         }
         else
         {
             Debug.Log("Requirement NOT MET for fightmove: " + fightMove.Name);
             gameObject.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["DarkGrey"];
+            gameObject.GetComponent<Button>().interactable = false;
         }
     }
 
