@@ -39,32 +39,29 @@ public class CharacterDisplay : MonoBehaviour
     public delegate void OnIntArrayRequested(int[] intArray);
     public static OnIntArrayRequested HealthAffected;
 
-    // void OnEnable()
-    // {
-    //     if(HealthBarNum == 0)
-    //         MatchFlowManager.PlayerStatusRequested += GetCharacterData;
-    //     if(HealthBarNum == 1)
-    //         MatchFlowManager.CPUStatusRequested += GetCharacterData;
-    // }
-    // void OnDisable()
-    // {
-    //     if(HealthBarNum == 0)
-    //         MatchFlowManager.PlayerStatusRequested -= GetCharacterData;
-    //     if(HealthBarNum == 1)
-    //         MatchFlowManager.CPUStatusRequested -= GetCharacterData;
-    // }
-
-    void Start()
+    void OnEnable()
     {
-        SetUp();
+        // GameManager.CharacterSetUpRequested += SetUp;
+        GameManager.RoundHasStarted += SetUp;
+    }
+    void OnDisable()
+    {
+        // GameManager.CharacterSetUpRequested -= SetUp;
+        GameManager.RoundHasStarted -= SetUp;
+
     }
 
     void SetUp()
     {
+        Debug.Log("CharacterDisplay.SetUp called");
         SubSystemAmount = SOCS.HPSubSystems.Length;
         SetUpSystemHealth();
         HealthBarData[0] = HealthBarNum;
         UpdateHealthBar();
+
+        EnergyStored = 60;
+
+        SetActiveHeadBuff(0);
     }
 
     void SetUpSystemHealth()

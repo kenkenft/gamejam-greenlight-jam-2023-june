@@ -131,6 +131,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c9014b0285b2804d8c6ebc2132d891d, type: 2}
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 
       objectReference: {fileID: 11400000, guid: 0c9014b0285b2804d8c6ebc2132d891d, type: 2}
@@ -868,6 +872,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 3aa2b74a3bffa8748a5f7cd81873d7c8, type: 2}
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 
       objectReference: {fileID: 11400000, guid: 3aa2b74a3bffa8748a5f7cd81873d7c8, type: 2}
@@ -1491,6 +1499,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 5f0cf37676e64454c95616b657887fd0, type: 2}
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 
@@ -2327,6 +2339,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 0e7defec800c30042946dca18767c173, type: 2}
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 
       objectReference: {fileID: 11400000, guid: 0e7defec800c30042946dca18767c173, type: 2}
@@ -2432,6 +2448,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 4ad65bf52d245ec41bafde4b9645964d, type: 2}
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 
@@ -2878,8 +2898,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1674461456}
   - component: {fileID: 1674461455}
+  - component: {fileID: 1674461457}
   m_Layer: 0
-  m_Name: MatchFlowManager
+  m_Name: ManagerScriptsObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2919,6 +2940,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1674461457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674461454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f5c3223952942f45adcafafe53538e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1715421304
 GameObject:
   m_ObjectHideFlags: 0
@@ -2995,6 +3028,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 941e16d1613185441b0d2b0480b10266, type: 2}
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 
@@ -3101,6 +3138,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 65d5ddf15d4e9a6489ae936c94632e0d, type: 2}
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 
@@ -3670,6 +3711,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1715421305}
     m_Modifications:
+    - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
+      propertyPath: FightMove
+      value: 
+      objectReference: {fileID: 11400000, guid: 42e16284c357d424ea8aea810671dc7f, type: 2}
     - target: {fileID: 1346047801124331939, guid: 74408a9350d180344a8a4da6c89f9160, type: 3}
       propertyPath: fightMove
       value: 

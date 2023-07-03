@@ -90,7 +90,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7245bf563fc5c2b4ba5389cfe321c02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fightMove: {fileID: 0}
+  FightMove: {fileID: 0}
+  FightMoveImage: {fileID: 9149814317842848138}
+  FightMoveButton: {fileID: 1162732067353372898}
 --- !u!114 &1162732067353372898
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,23 +20,32 @@ public class MatchFlowManager : MonoBehaviour
     
     void OnEnable()
     {
+        GameManager.RoundHasStarted += SetUp;
         ActionButton.FightMoveSelected += SetPlayerMove;
     }
 
     void OnDisable()
     {
+        GameManager.RoundHasStarted -= SetUp;
         ActionButton.FightMoveSelected -= SetPlayerMove;
+    }
+
+    void SetUp()
+    {
+        Debug.Log("MatchFlowManager.SetUp called");
+        RemoveTempEffects();
+        StartNextTurn();
     }
     
     void SetPlayerMove(SOFightMoves playerMove)
     {
-        PlayerMove = playerMove; // ToDO        
+        PlayerMove = playerMove;        
         StartMoveResolution();
     }
 
     void StartMoveResolution()
     {
-        CPUMove = ComputerMove(); // ToDO
+        CPUMove = ComputerMove(); // ToDO   //Currently, it randomly chooses a move from available move list
         _priorityOutcome = ResolvePriority();
         CheckHyperArmourCapabilities();
         ResolveMoves();
@@ -47,8 +56,8 @@ public class MatchFlowManager : MonoBehaviour
         
         // GenerateEnergy(); // ToDo
         // PassiveHealing(); // ToDo
-        // StartNextTurn(); // ToDo
-        UpdateButtonUI();
+        StartNextTurn(); // ToDo
+        // UpdateButtonUI();
     }
 
     SOFightMoves ComputerMove()
@@ -306,11 +315,19 @@ public class MatchFlowManager : MonoBehaviour
 
     }
 
+    void StartNextTurn()
+    {
+        // ToDo scripts for any tutorial or cutscene 
+        // e.g. CutSceneTriggered?.Invoke();
+
+        
+        UpdateButtonUI();
+    }
     void UpdateButtonUI()
     {
         int[] playerEnergyAndSubSystemsData = {0, 0, 0, 0, 0, 0};
         playerEnergyAndSubSystemsData[0] = fighters[0].EnergyStored;
-        Debug.Log("EnergyStored: "+ playerEnergyAndSubSystemsData[0]);
+        // Debug.Log("EnergyStored: "+ playerEnergyAndSubSystemsData[0]);
 
         for(int i = 1; i < playerEnergyAndSubSystemsData.Length ; i++)
         {
@@ -318,7 +335,7 @@ public class MatchFlowManager : MonoBehaviour
             if(fighters[0].HealthSystemData[index] > 0)
                 playerEnergyAndSubSystemsData[i] = 1;
 
-            Debug.Log("playerEnergyAndSubSystemsData[" + i +"]: "+ playerEnergyAndSubSystemsData[i]);
+            // Debug.Log("playerEnergyAndSubSystemsData[" + i +"]: "+ playerEnergyAndSubSystemsData[i]);
         }
 
         ButtonStatusUpdated?.Invoke(playerEnergyAndSubSystemsData);

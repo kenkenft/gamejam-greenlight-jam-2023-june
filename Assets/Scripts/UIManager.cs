@@ -11,12 +11,21 @@ public class UIManager : MonoBehaviour
 
     void OnEnable()
     {
+        GameManager.RoundHasStarted += SetUp;
         ActionButton.MoveSelected += DisableAllMoveButtons; 
+        
     }
 
     void OnDisable()
     {
+        GameManager.RoundHasStarted -= SetUp;
         ActionButton.MoveSelected -= DisableAllMoveButtons; 
+    }
+
+    void SetUp()
+    {
+        Debug.Log("UIManager.SetUp called");
+        DisableAllMoveButtons();
     }
 
     public void DisableAllMoveButtons()
