@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
 
     void SetUp()
     {
-        Debug.Log("UIManager.SetUp called");
+        // Debug.Log("UIManager.SetUp called");
         DisableAllMoveButtons();
     }
 

@@ -42,14 +42,17 @@ public class GridManager : MonoBehaviour
         int[] middleTiles = {0, 0};   
         if(tileAmount % 2 == 0)
         {
+            Debug.Log("Even amount of tiles");
             middleTiles[1] = (tileAmount / 2);
             middleTiles[0] = middleTiles[1] - 1;
         }
         else
         {
+            Debug.Log("Odd amount of tiles");
             middleTiles[1] = (int)Mathf.Ceil((tileAmount / 2));
             middleTiles[0] = (int)Mathf.Floor((tileAmount / 2));
         }
+        Debug.Log("Player one will be on tile: " + middleTiles[0] + "Player two will be on tile: " + middleTiles[1]);
         return middleTiles;
     }
 

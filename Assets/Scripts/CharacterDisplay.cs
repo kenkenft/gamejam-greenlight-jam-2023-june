@@ -57,7 +57,7 @@ public class CharacterDisplay : MonoBehaviour
 
     void SetUp()
     {
-        Debug.Log("CharacterDisplay.SetUp called");
+        // Debug.Log("CharacterDisplay.SetUp called");
         SubSystemAmount = SOCS.HPSubSystems.Length;
         SetUpSystemHealth();
         HealthBarData[0] = HealthBarNum;
@@ -156,13 +156,13 @@ public class CharacterDisplay : MonoBehaviour
 
     public int GetTempEffectActive(int targetEffect)
     {
-        Debug.Log("targetEffect: " + effectTypes[targetEffect]);
+        // Debug.Log("targetEffect: " + effectTypes[targetEffect]);
         foreach(var tempEffect in TempEffects)
         {
             if(tempEffect.Key == effectTypes[targetEffect])
                 return tempEffect.Value;
         }
-        Debug.Log("Nothing found return 0");
+        // Debug.Log("Nothing found return 0");
 
         return 0;   // In the event an improper string is given, just send back 0
     }
@@ -173,7 +173,7 @@ public class CharacterDisplay : MonoBehaviour
         EnergyData[0] += EnergyGenerated;
         EnergyData[0] = Mathf.Clamp(EnergyData[0], 0, 100);
 
-        Debug.Log(gameObject.name + " Energy generated: " + EnergyGenerated + ". Total energy: " + EnergyData[0] + "%"); 
+        // Debug.Log(gameObject.name + " Energy generated: " + EnergyGenerated + ". Total energy: " + EnergyData[0] + "%"); 
     }
 
     // public int GetCharacterData(string targetCharacterProperty, string DictKey = "Default")

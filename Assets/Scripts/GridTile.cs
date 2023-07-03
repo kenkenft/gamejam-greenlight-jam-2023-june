@@ -32,13 +32,15 @@ public class GridTile : MonoBehaviour
 
         RectTransform OccupantTransform = CurrentOccupant.gameObject.GetComponent<RectTransform>(); 
         Vector3 newPosition = OccupantTransform.position;
-
+        OccupantTransform.SetParent(this.gameObject.GetComponent<RectTransform>());
         Debug.Log("Current position X:" + newPosition[0] + " Y: " + newPosition[1] + " Z: " + newPosition[2]);
 
-        newPosition[0] = this.gameObject.GetComponent<RectTransform>().position.x;
+        // newPosition[0] = this.gameObject.GetComponent<RectTransform>().position.x;
         // newPosition[0] = 1f;
-        OccupantTransform.position = newPosition;
+        // OccupantTransform.position = newPosition;
+        OccupantTransform.position = gameObject.GetComponent<RectTransform>().position;
 
         Debug.Log("New position X:" + OccupantTransform.position.x + " Y: " + OccupantTransform.position.y + " Z: " + OccupantTransform.position.z);
+        
     }
 }

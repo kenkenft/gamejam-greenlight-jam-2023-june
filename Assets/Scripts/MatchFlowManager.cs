@@ -32,7 +32,7 @@ public class MatchFlowManager : MonoBehaviour
 
     void SetUp()
     {
-        Debug.Log("MatchFlowManager.SetUp called");
+        // Debug.Log("MatchFlowManager.SetUp called");
         RemoveTempEffects();
         GenerateEnergy();
         StartNextTurn();
@@ -95,7 +95,7 @@ public class MatchFlowManager : MonoBehaviour
         {
             case 0:
             {
-                Debug.Log("Player moves first");
+                // Debug.Log("Player moves first");
                 _selectedFightMoves[0] = PlayerMove;
                 _selectedFightMoves[1] = CPUMove;
                 ApplyMove(0, fighters[0].HealthBarNum);
@@ -104,7 +104,7 @@ public class MatchFlowManager : MonoBehaviour
             }
             case 1:
             {
-                Debug.Log("Opponent moves first");
+                // Debug.Log("Opponent moves first");
                 _selectedFightMoves[0] = CPUMove;
                 _selectedFightMoves[1] = PlayerMove;
                 ApplyMove(0, fighters[1].HealthBarNum);
@@ -134,25 +134,25 @@ public class MatchFlowManager : MonoBehaviour
         {
             case 0: // Buff
             {
-                Debug.Log("Player " + playerID + " move type: BUFF");
+                // Debug.Log("Player " + playerID + " move type: BUFF");
                 ApplyBuff(playerID, orderIndex, _selectedFightMoves[orderIndex].MainEffectValue[0]);    // Assumes MainEffectValue[0] is the buffType id
                 break;
             }
             case 1: // Defensive move
             {
-                Debug.Log("Player " + playerID + " move type: DEFENSIVE");
+                // Debug.Log("Player " + playerID + " move type: DEFENSIVE");
                 ApplyDefense(playerID);
                 break;
             }
             case 2: // Movement
             {
-                Debug.Log("Player " + playerID + " move type: MOVEMENT");
+                // Debug.Log("Player " + playerID + " move type: MOVEMENT");
                 // MoveCharacter();
                 break;
             }
             case 3: // Modify Health
             {
-                Debug.Log("Player " + playerID + " move type: MODIFY HEALTH");
+                // Debug.Log("Player " + playerID + " move type: MODIFY HEALTH");
                 ModifyHealth(orderIndex, playerID);
                 break;
             }
