@@ -93,8 +93,9 @@ public class MatchFlowManager : MonoBehaviour
     void ResolveMoves()
     {
         // Remove move's energy cost from character's energy pool regardless of outcome
-        fighters[0].EnergyData[0] -= PlayerMove.Requirements[0]; 
-        fighters[0].EnergyData[0] -= CPUMove.Requirements[0];
+        fighters[0].ConsumeEnergy(PlayerMove.Requirements[0]);
+        // fighters[0].EnergyData[0] -= PlayerMove.Requirements[0]; 
+        fighters[1].ConsumeEnergy(CPUMove.Requirements[0]);
 
         switch(_priorityOutcome)
         {

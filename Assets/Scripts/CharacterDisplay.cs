@@ -13,9 +13,12 @@ public class CharacterDisplay : MonoBehaviour
     HealthBarData = new int[3], 
     // Assumes HealthBarData is as follows:
     // [HealthBarNum, HPMax, HPCurr]
-    EnergyData = new int[3];
+    EnergyData = new int[3],
     // Assumes EnergyData is as follows:
     // [EnergyStored, BuffEnergyCost, EnergyPerTurn]
+    EnergyBarData = new int[3];
+    // Assumes EnergyBarData is as follows:
+    // [HealthBarNum, EnergyMax, EnergyCurr]
     private string[] buffTypes = {"None", "Repair", "Defense", "Move", "Attack"},
                      effectTypes = {"HyperArmour", "Blocking", "Flinching", "BlockBroken", "AttackFail"};
 
@@ -42,6 +45,7 @@ public class CharacterDisplay : MonoBehaviour
     [HideInInspector]
     public delegate void OnIntArrayRequested(int[] intArray);
     public static OnIntArrayRequested HealthAffected;
+    public static OnIntArrayRequested EnergyAffected;
 
     void OnEnable()
     {
@@ -65,6 +69,9 @@ public class CharacterDisplay : MonoBehaviour
         EnergyData[0] = StartEnergy;
         EnergyData[1] = BuffEnergyCost;
         EnergyData[2] = EnergyPerTurn;
+        EnergyBarData[0] = HealthBarNum;
+        EnergyBarData[1] = 100; 
+
         SetActiveHeadBuff(0);
     }
 
@@ -167,11 +174,21 @@ public class CharacterDisplay : MonoBehaviour
         return 0;   // In the event an improper string is given, just send back 0
     }
 
+    public void ConsumeEnergy(int energyUsed)
+    {
+        EnergyData[0] -= energyUsed;
+        EnergyBarData[2] = EnergyData[0];
+        EnergyAffected?.Invoke(EnergyBarData);
+    } 
+
     public void GenerateEnergy()
     {
         int EnergyGenerated = EnergyData[2] - ( (EnergyData[1] * EnergyData[2]) / 100); // Generated energy after applying buff penalty cost
         EnergyData[0] += EnergyGenerated;
         EnergyData[0] = Mathf.Clamp(EnergyData[0], 0, 100);
+        
+        EnergyBarData[2] = EnergyData[0];
+        EnergyAffected?.Invoke(EnergyBarData);
 
         // Debug.Log(gameObject.name + " Energy generated: " + EnergyGenerated + ". Total energy: " + EnergyData[0] + "%"); 
     }
