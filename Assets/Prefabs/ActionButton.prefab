@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9149814317842848138}
   - component: {fileID: 1346047801124331939}
   - component: {fileID: 1162732067353372898}
+  - component: {fileID: 3868401836490541315}
   m_Layer: 0
   m_Name: ActionButton
   m_TagString: Untagged
@@ -91,7 +92,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FightMove: {fileID: 0}
-  FightMoveImage: {fileID: 9149814317842848138}
   FightMoveButton: {fileID: 1162732067353372898}
 --- !u!114 &1162732067353372898
 MonoBehaviour:
@@ -149,3 +149,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &3868401836490541315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9149814317842848133}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10679e0f5cf38964780027bebc4f7342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 9149814317842848138}
+  UIButton: {fileID: 1162732067353372898}

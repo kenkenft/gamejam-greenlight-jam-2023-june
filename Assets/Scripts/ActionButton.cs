@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ActionButton : MonoBehaviour
 {
     public SOFightMoves FightMove;
-    public Image FightMoveImage;
+    // public Image FightMoveImage;
     public Button FightMoveButton;
 
     [HideInInspector] 
@@ -18,7 +18,7 @@ public class ActionButton : MonoBehaviour
     
     void OnEnable()
     {
-        GameManager.RoundHasStarted += SetUp;
+        // GameManager.RoundHasStarted += SetUp;
         MatchFlowManager.ButtonStatusUpdated += AbleToDoMove;
         UIManager.DisableButtonsRequested += DisableButton;
 
@@ -26,17 +26,17 @@ public class ActionButton : MonoBehaviour
 
     void OnDisable()
     {
-        GameManager.RoundHasStarted -= SetUp;
+        // GameManager.RoundHasStarted -= SetUp;
         MatchFlowManager.ButtonStatusUpdated -= AbleToDoMove;
         UIManager.DisableButtonsRequested -= DisableButton;
     }
 
-    void SetUp()
-    {
-        // Debug.Log("ActionButton.SetUp called");
-        FightMoveImage.color = Color.white; // Needs to be white, otherwise image colour overlaps with button's color tint transitions 
-        SetUpButtonColours();
-    }
+    // void SetUp()
+    // {
+    //     // Debug.Log("ActionButton.SetUp called");
+    //     FightMoveImage.color = Color.white; // Needs to be white, otherwise image colour overlaps with button's color tint transitions 
+    //     SetUpButtonColours();
+    // }
 
     public void SendSelectedMove()
     {
@@ -144,16 +144,16 @@ public class ActionButton : MonoBehaviour
         FightMoveButton.interactable = false;
     }
 
-    void SetUpButtonColours()
-    {
-        ColorBlock colorVar = FightMoveButton.colors; 
+    // void SetUpButtonColours()
+    // {
+    //     ColorBlock colorVar = FightMoveButton.colors; 
 
-        colorVar.normalColor = GameProperties.ColourPalleteRGBA["MediumGrey"];
-        colorVar.highlightedColor = GameProperties.ColourPalleteRGBA["Special"]; 
-        colorVar.pressedColor = GameProperties.ColourPalleteRGBA["DarkGrey"];
-        colorVar.selectedColor = GameProperties.ColourPalleteRGBA["LightGrey"];
-        colorVar.disabledColor = GameProperties.ColourPalleteRGBA["Black"];
+    //     colorVar.normalColor = GameProperties.ColourPalleteRGBA["MediumGrey"];
+    //     colorVar.highlightedColor = GameProperties.ColourPalleteRGBA["Special"]; 
+    //     colorVar.pressedColor = GameProperties.ColourPalleteRGBA["DarkGrey"];
+    //     colorVar.selectedColor = GameProperties.ColourPalleteRGBA["LightGrey"];
+    //     colorVar.disabledColor = GameProperties.ColourPalleteRGBA["Black"];
 
-        FightMoveButton.colors = colorVar;
-    }
+    //     FightMoveButton.colors = colorVar;
+    // }
 }

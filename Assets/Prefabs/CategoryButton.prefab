@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 7531738235914657332}
   - component: {fileID: 7531738235914657335}
   - component: {fileID: 792460614664111204}
+  - component: {fileID: 6713481471902462010}
   m_Layer: 0
   m_Name: CategoryButton
   m_TagString: Untagged
@@ -227,4 +228,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9596b0809adfa114cb86aedf0744953a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveType: 0
+  ActionType: 0
+--- !u!114 &6713481471902462010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7531738235914657737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10679e0f5cf38964780027bebc4f7342, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 7531738235914657333}
+  UIButton: {fileID: 7531738235914657332}
