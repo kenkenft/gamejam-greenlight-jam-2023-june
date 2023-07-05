@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class ActionMenuUI : MonoBehaviour
 {
-    public GameObject CategoryTray, ActionTray, SubSystemTargetTray, DirectionTargetTray;
+    public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemTargetTray, DirectionTargetTray;
 
     public enum ActionCategories{
-                            Attack, Defend, Move, Special 
+                            Attack, Defend, Move, Special, None 
                         };
     Dictionary<int, ActionCategories> IntToActionCategory = new Dictionary<int, ActionCategories>(){
                                                                                                         {0, ActionCategories.Attack},
@@ -24,25 +24,93 @@ public class ActionMenuUI : MonoBehaviour
 
     void OnEnable()
     {
+        GameManager.RoundHasStarted += SetUp;
         CategoryButton.OnCategoryButtonPressed += ShowActionTray;
     }
 
     void OnDisable()
     {
+        GameManager.RoundHasStarted += SetUp;
         CategoryButton.OnCategoryButtonPressed -= ShowActionTray;
     }
     
 
     void SetUp()
     {
-        // Hide ActionTray.
-        // Hide SubsystemTargetTray.
-        // Hide DirectionTargetTray.
+        // Hide ActionTray, SubsystemTargetTray, DirectionTargetTray.
+        ToggleActionTray(false);
+        
         // Enable all category buttons.
     }
 
-    public void ShowActionTray(int categoryID)
+    public void ShowActionTray(int actionCategory)
     {
-        Debug.Log("Category button pressed: " + IntToActionCategory[categoryID]);
+        Debug.Log("Category button pressed: " + IntToActionCategory[actionCategory]);
+        ToggleActionTray(true, IntToActionCategory[actionCategory]);
+    }
+
+    void ToggleActionTray(bool targetState, ActionCategories actionType = ActionCategories.None)
+    {
+        if(targetState && actionType != ActionCategories.None)
+        {
+            // Enable ActionTray
+            TrayUIs[1].SetActive(true);
+            // ToDo - Load relevant attack moves and buttons based on ActionType
+            List<SOFightMoves> relevantActions = GetRelevantActions(actionType);
+
+            foreach(SOFightMoves fightMove in relevantActions)
+            {
+                Debug.Log("Action name: " + fightMove.Name);
+            }
+            // Hide SubSystemTargetTray and DirectionTargetTray
+            DisableTraysCascade(2);
+        }
+        else
+        {
+            // Hide ActionTray, SubSystemTargetTray and DirectionTargetTray
+            DisableTraysCascade(1);
+        }
+    }
+
+    List<SOFightMoves> GetRelevantActions(ActionCategories actionType)
+    {
+        List<SOFightMoves> relevantActions = new List<SOFightMoves>();
+        // Get appropriate move List
+        switch(actionType)
+        {
+            case ActionCategories.Attack:
+            {
+                relevantActions = ActionListAttack;
+                break;
+            }
+            case ActionCategories.Defend:
+            {
+                relevantActions = ActionListDefense;
+                break;
+            }
+            case ActionCategories.Move:
+            {
+                relevantActions = ActionListMove;
+                break;
+            }
+            case ActionCategories.Special:
+            {
+                relevantActions = ActionListSpecial;
+                break;
+            }
+            default:
+                break;
+        }
+        return relevantActions;
+    }   // End of SetRelevantActionButtons
+
+    void DisableTraysCascade(int layerStart)
+    {
+        Debug.Log("Disabling from tray: " + TrayUIs[layerStart].name);
+        for(int i = layerStart; i < TrayUIs.Length; i++)
+            {
+                if(TrayUIs[i].activeSelf)
+                    TrayUIs[i].SetActive(false);
+            }
     }
 }

@@ -7,7 +7,7 @@ public class CategoryButton : MonoBehaviour
     public enum ActionCategories{
                             Attack, Defend, Move, Special 
                         };
-    public ActionCategories MoveType;
+    public ActionCategories ActionType;
 
     [HideInInspector] 
     public delegate void SendInt(int data);
@@ -15,7 +15,7 @@ public class CategoryButton : MonoBehaviour
 
     public void OnClick()
     {
-        OnCategoryButtonPressed?.Invoke((int)MoveType);
+        OnCategoryButtonPressed?.Invoke((int)ActionType);
     }
     
 }
