@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ActionMenuUI : MonoBehaviour
 {
     public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemTargetTray, DirectionTargetTray;
+    public Button[] CategoryButtons;
 
     public enum ActionCategories{
                             Attack, Defend, Move, Special, None 
@@ -41,11 +42,13 @@ public class ActionMenuUI : MonoBehaviour
         ToggleActionTray(false);
         
         // Enable all category buttons.
+        ToggleCategoryButtonInteractable(-1);
     }
 
     public void ShowActionTray(int actionCategory)
     {
         Debug.Log("Category button pressed: " + IntToActionCategory[actionCategory]);
+        ToggleCategoryButtonInteractable(actionCategory);
         ToggleActionTray(true, IntToActionCategory[actionCategory]);
     }
 
@@ -62,6 +65,9 @@ public class ActionMenuUI : MonoBehaviour
             {
                 Debug.Log("Action name: " + fightMove.Name);
             }
+                //ToDo - Set Buttons to show the list of relevant actions
+                // Hide leftover action buttons
+
             // Hide SubSystemTargetTray and DirectionTargetTray
             DisableTraysCascade(2);
         }
@@ -112,5 +118,18 @@ public class ActionMenuUI : MonoBehaviour
                 if(TrayUIs[i].activeSelf)
                     TrayUIs[i].SetActive(false);
             }
+    }
+
+    void ToggleCategoryButtonInteractable(int buttonType)
+    {
+        // Will iterate through category button's enum variable ActionType. If the button does not match, then re-enable. 
+        // Otherwise, disable the button. Therefore, to enable ALL buttons, send -1.
+        for(int i = 0; i < CategoryButtons.Length; i++)
+        {
+            if((int)CategoryButtons[i].gameObject.GetComponent<CategoryButton>().ActionType != buttonType)
+                CategoryButtons[i].interactable = true;
+            else
+                CategoryButtons[i].interactable = false;
+        }
     }
 }
