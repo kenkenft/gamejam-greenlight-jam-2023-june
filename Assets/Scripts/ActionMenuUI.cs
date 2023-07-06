@@ -18,11 +18,14 @@ public class ActionMenuUI : MonoBehaviour
                                                                                                         {3, ActionCategories.Special}
                                                                                                     };
 
-    public List<SOFightMoves> ActionListAttack = new List<SOFightMoves>();
-    public List<SOFightMoves> ActionListDefense = new List<SOFightMoves>();
-    public List<SOFightMoves> ActionListMove = new List<SOFightMoves>();
-    public List<SOFightMoves> ActionListSpecial = new List<SOFightMoves>();
+    public List<SOFightMoves> ActionListAttack = new List<SOFightMoves>(), ActionListDefense = new List<SOFightMoves>(), 
+                              ActionListMove = new List<SOFightMoves>(), ActionListSpecial = new List<SOFightMoves>();
 
+    
+    [HideInInspector] 
+    public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
+    public static SOFightMovesRequired ActionTrayActived;
+    
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
@@ -61,10 +64,7 @@ public class ActionMenuUI : MonoBehaviour
             // ToDo - Load relevant attack moves and buttons based on ActionType
             List<SOFightMoves> relevantActions = GetRelevantActions(actionType);
 
-            foreach(SOFightMoves fightMove in relevantActions)
-            {
-                Debug.Log("Action name: " + fightMove.Name);
-            }
+            ActionTrayActived?.Invoke(relevantActions);
                 //ToDo - Set Buttons to show the list of relevant actions
                 // Hide leftover action buttons
 
