@@ -92,6 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FightMove: {fileID: 0}
+  FightMoveImage: {fileID: 9149814317842848138}
   FightMoveButton: {fileID: 1162732067353372898}
 --- !u!114 &1162732067353372898
 MonoBehaviour:

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ActionButton : MonoBehaviour
 {
     public SOFightMoves FightMove;
-    // public Image FightMoveImage;
+    public Image FightMoveImage;
     public Button FightMoveButton;
 
     [HideInInspector] 
@@ -18,7 +18,6 @@ public class ActionButton : MonoBehaviour
     
     void OnEnable()
     {
-        // GameManager.RoundHasStarted += SetUp;
         MatchFlowManager.ButtonStatusUpdated += AbleToDoMove;
         UIManager.DisableButtonsRequested += DisableButton;
 
@@ -26,17 +25,10 @@ public class ActionButton : MonoBehaviour
 
     void OnDisable()
     {
-        // GameManager.RoundHasStarted -= SetUp;
         MatchFlowManager.ButtonStatusUpdated -= AbleToDoMove;
         UIManager.DisableButtonsRequested -= DisableButton;
     }
 
-    // void SetUp()
-    // {
-    //     // Debug.Log("ActionButton.SetUp called");
-    //     FightMoveImage.color = Color.white; // Needs to be white, otherwise image colour overlaps with button's color tint transitions 
-    //     SetUpButtonColours();
-    // }
 
     public void SendSelectedMove()
     {
@@ -47,7 +39,6 @@ public class ActionButton : MonoBehaviour
 
     void AbleToDoMove(int[] playerEnergyAndSubSystemsData)
     {
-        // Debug.Log("Button: " + gameObject.name);
         // playerEnergyAndSubSystemsData // index 0 is the amount of energy available; indexes 1 through 5 are truthy values (0 is broken; 1 is not broken)
         bool isRequirementMet = true;
         // Check if enough energy is available
@@ -63,13 +54,11 @@ public class ActionButton : MonoBehaviour
         if(isRequirementMet)
         {    
             // Debug.Log("Requirement MET for fightmove: " + FightMove.Name);
-            // FightMoveImage.color = GameProperties.ColourPalleteRGBA["Special"];
             FightMoveButton.interactable = true;
         }
         else
         {
             // Debug.Log("Requirement NOT MET for fightmove: " + FightMove.Name);
-            // FightMoveImage.color = GameProperties.ColourPalleteRGBA["DarkGrey"];
             FightMoveButton.interactable = false;
         }
     }
@@ -144,16 +133,10 @@ public class ActionButton : MonoBehaviour
         FightMoveButton.interactable = false;
     }
 
-    // void SetUpButtonColours()
-    // {
-    //     ColorBlock colorVar = FightMoveButton.colors; 
+    public void SetUpActionButton()
+    {
+        FightMoveImage.sprite = FightMove.Icon;
+        FightMoveButton.interactable = true;
+    }
 
-    //     colorVar.normalColor = GameProperties.ColourPalleteRGBA["MediumGrey"];
-    //     colorVar.highlightedColor = GameProperties.ColourPalleteRGBA["Special"]; 
-    //     colorVar.pressedColor = GameProperties.ColourPalleteRGBA["DarkGrey"];
-    //     colorVar.selectedColor = GameProperties.ColourPalleteRGBA["LightGrey"];
-    //     colorVar.disabledColor = GameProperties.ColourPalleteRGBA["Black"];
-
-    //     FightMoveButton.colors = colorVar;
-    // }
 }

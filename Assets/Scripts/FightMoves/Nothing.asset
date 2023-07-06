@@ -15,7 +15,8 @@ MonoBehaviour:
   ID: Mech00
   Name: Nothing
   Description: To be used when player can't or won't do anything.
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 91eb25dd0be096e45b15709a57e13686, type: 3}
+  IconImage: {fileID: 0}
   MainTarget: 0
   Priority: 5
   Range: 0

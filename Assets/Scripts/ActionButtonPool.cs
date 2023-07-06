@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ActionButtonPool : MonoBehaviour
 {
+    
+    public List<ActionButton> ButtonPool;
+    
     void OnEnable()
     {
         ActionMenuUI.ActionTrayActived += SetUpRelevantActionButtons;
@@ -16,9 +19,19 @@ public class ActionButtonPool : MonoBehaviour
 
     void SetUpRelevantActionButtons(List<SOFightMoves> relevantActions)
     {
-        foreach(SOFightMoves fightMove in relevantActions)
+        int relevantActionsAmount = relevantActions.Count, ButtonPoolAmount = ButtonPool.Count; 
+        for(int i = 0; i < ButtonPoolAmount; i++)
         {
-            Debug.Log("Action name: " + fightMove.Name);
+            if(i < relevantActionsAmount)
+            {    
+                ButtonPool[i].FightMove = relevantActions[i];
+                ButtonPool[i].SetUpActionButton();
+                ButtonPool[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                ButtonPool[i].gameObject.SetActive(false);
+            }
         }
     }
 }

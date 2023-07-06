@@ -17,7 +17,8 @@ MonoBehaviour:
   Description: Raises arms to defend, reducing incoming damage below certain threshold.
     If threshold exceeded, damage is still applied and you will be knockbacked 1
     tile.
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 540c33d00097fbe469aa4f30ca9b65f9, type: 3}
+  IconImage: {fileID: 0}
   MainTarget: 0
   Priority: 4
   Range: 0
