@@ -27,12 +27,14 @@ public class MatchFlowManager : MonoBehaviour
     {
         GameManager.RoundHasStarted += SetUp;
         ActionButton.FightMoveSelected += SetPlayerMove;
+        CategoryButton.OnCategorySelected += UpdateButtonUI;
     }
 
     void OnDisable()
     {
         GameManager.RoundHasStarted -= SetUp;
         ActionButton.FightMoveSelected -= SetPlayerMove;
+        CategoryButton.OnCategorySelected -= UpdateButtonUI;
     }
 
     void SetUp()
@@ -356,7 +358,7 @@ public class MatchFlowManager : MonoBehaviour
         // e.g. CutSceneTriggered?.Invoke();
 
         
-        UpdateButtonUI();
+        // UpdateButtonUI();
     }
     void UpdateButtonUI()
     {

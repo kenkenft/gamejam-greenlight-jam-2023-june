@@ -12,10 +12,13 @@ public class CategoryButton : MonoBehaviour
     [HideInInspector] 
     public delegate void SendInt(int data);
     public static SendInt OnCategoryButtonPressed;
+    public delegate void OnSomeEvent();
+    public static OnSomeEvent OnCategorySelected;
 
     public void OnClick()
     {
         OnCategoryButtonPressed?.Invoke((int)ActionType);
+        OnCategorySelected?.Invoke();
     }
     
 }
