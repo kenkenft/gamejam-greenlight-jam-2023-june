@@ -52,6 +52,9 @@
      <Compile Include="Assets\Scripts\CategoryButton.cs" />
      <Compile Include="Assets\Scripts\ColorTintButtonSetUp.cs" />
      <Compile Include="Assets\Scripts\ActionButtonPool.cs" />
+     <Compile Include="Assets\Scripts\ToolipHover.cs" />
+     <Compile Include="Assets\Scripts\TooltipManager.cs" />
+     <Compile Include="Assets\Scripts\TooltipSystem.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

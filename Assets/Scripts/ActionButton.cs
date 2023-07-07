@@ -136,6 +136,9 @@ public class ActionButton : MonoBehaviour
     public void SetUpActionButton()
     {
         FightMoveImage.sprite = FightMove.Icon;
+        //Check for energy requirements
+        // int[] playerEnergyData = DelegateGetsCharacterDisplayEnergyDataFromMatchFlowManager.invoke()
+        // AbleToDoMove(playerEnergyData);
         FightMoveButton.interactable = true;
     }
 
