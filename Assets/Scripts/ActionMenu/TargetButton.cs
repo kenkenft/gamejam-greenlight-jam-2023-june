@@ -16,17 +16,17 @@ public class TargetButton : MonoBehaviour
     {
         if(!IsDefaultTarget)
         {
-            Debug.Log("Button clicked: " + WhichSubSystem);
-            if(IsSelected)
+            // Debug.Log("Button clicked: " + WhichSubSystem);
+            if(!IsSelected)
             {
+                IsSelected = true;
                 int[] targetData = {(int)WhichSubSystem, 1};
-                TargettingButton.interactable = false;
                 TargetButtonClicked?.Invoke(targetData);
             }
             else
             {
+                IsSelected = false;
                 int[] targetData = {(int)WhichSubSystem, 0};
-                TargettingButton.interactable = true;
                 TargetButtonClicked?.Invoke(targetData);
             }
         }

@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class ActionMenuUI : MonoBehaviour
 {
     public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, DirectionTargetTray;
+    
+    public GameObject ActiveTargetTray = null;
+
     public Button[] CategoryButtons;
     public int SelectableSubSystemsCounter = 0;
     public int[] TargetedBodyParts = {0, 0, 0, 0, 0};
@@ -114,7 +117,7 @@ public class ActionMenuUI : MonoBehaviour
 
     void DisableTraysCascade(int layerStart)
     {
-        Debug.Log("Disabling from tray: " + TrayUIs[layerStart].name);
+        // Debug.Log("Disabling from tray: " + TrayUIs[layerStart].name);
         for(int i = layerStart; i < TrayUIs.Length; i++)
             {
                 if(TrayUIs[i].activeSelf)
@@ -142,28 +145,28 @@ public class ActionMenuUI : MonoBehaviour
         {
             case GameProperties.TargetType.Self:
             {
-                Debug.Log("Move target: " + selectedMove.MainTarget);
+                // Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays(2);
-                SetUpTargetTrayDefaults(2, selectedMove);    // Set up default targets, and selectable body parts counter
+                SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
                 break;
             }
             case GameProperties.TargetType.Opponent:
             {
-                Debug.Log("Move target: " + selectedMove.MainTarget);
+                // Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays(3);
-                SetUpTargetTrayDefaults(3, selectedMove);
+                SetUpTargetTrayDefaults(selectedMove);
                 break;
             }
             case GameProperties.TargetType.Grid:
             {
-                Debug.Log("Move target: " + selectedMove.MainTarget);
+                // Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays(4);
-                SetUpTargetTrayDefaults(4, selectedMove);
+                SetUpTargetTrayDefaults(selectedMove);
                 break;
             }
             case GameProperties.TargetType.None:
             {
-                Debug.Log("Move target: " + selectedMove.MainTarget);
+                // Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays();
                 break;
             }
@@ -178,6 +181,8 @@ public class ActionMenuUI : MonoBehaviour
         {
             TrayUIs[i].SetActive(i == targetTrayIndex);
             // Debug.Log( TrayUIs[i].name + ": " + TrayUIs[i].activeSelf);
+            if(i == targetTrayIndex)
+                ActiveTargetTray = TrayUIs[i];
         }
     }
 
@@ -192,10 +197,10 @@ public class ActionMenuUI : MonoBehaviour
         return null;
     }
 
-    void SetUpTargetTrayDefaults(int targetTrayIndex, SOFightMoves selectedMove)
+    void SetUpTargetTrayDefaults(SOFightMoves selectedMove)
     {
         SelectableSubSystemsCounter = selectedMove.HasExtraTargets[1];
-        SelectableSubSystemsCounterText = FindCounterText(TrayUIs[targetTrayIndex]);
+        SelectableSubSystemsCounterText = FindCounterText(ActiveTargetTray);
         SetCounterText();
 
         // ToDo Select default targets
@@ -209,8 +214,22 @@ public class ActionMenuUI : MonoBehaviour
             SelectableSubSystemsCounter--;
         else
             SelectableSubSystemsCounter++;
-        
+        // ToDo Method to set button interactable to false when SelectableSubSystemsCounter is false 
+        ToggleButtonsInteractable();
         SetCounterText();
+    }
+
+    void ToggleButtonsInteractable()
+    {
+        TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
+        bool targetState = SelectableSubSystemsCounter > 0; 
+            // For target buttons that are not default targets and are no already selected, sets button.interactable state to true 
+            // if there's there's still requried targets to select. Otherwise set to false to prevent additional selections.
+            foreach(TargetButton button in buttons)
+            {
+                if(!button.IsDefaultTarget && !button.IsSelected)
+                    button.gameObject.GetComponent<Button>().interactable = targetState;
+            }
     }
 
     void SetCounterText()
