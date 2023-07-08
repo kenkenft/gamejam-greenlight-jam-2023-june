@@ -256,9 +256,13 @@ public class ActionMenuUI : MonoBehaviour
             button.IsDefaultTarget = isDefaultTarget;
             button.IsSelected = isDefaultTarget;
             button.TargettingButton.interactable = !isDefaultTarget;
-            //if(isDefaultTarget) 
-            // ToDo Set ColorTintButtonSetUp to special colour sets 
+            if(isDefaultTarget)
+                button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsDefault);
+            else
+                button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
         }
+        ToggleButtonsInteractable();
+        
     }
 
 }
