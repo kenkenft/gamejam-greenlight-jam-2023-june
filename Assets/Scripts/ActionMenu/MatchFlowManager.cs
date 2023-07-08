@@ -143,11 +143,6 @@ public class MatchFlowManager : MonoBehaviour
 
     void ApplyMove(int orderIndex, int playerID)
     {
-        // SOFightMoves targetMove;
-        // if(playerID == 0)
-        //     targetMove = PlayerMove;
-        // else
-        //     targetMove = CPUMove;
 
         switch((int)_selectedFightMoves[orderIndex].MoveType)
         {
@@ -292,27 +287,27 @@ public class MatchFlowManager : MonoBehaviour
         List<int> targetedBodyPartIndexes = new List<int>();
         for(int i = 0; i < _selectedFightMoves[orderIndex].DefaultSubSystemTargets.Length; i++)
         {
-            if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1)
+            if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1 || _playerTargetedBodyParts[i] == 1)
                 targetedBodyPartIndexes.Add(i);
         }
 
         //Randomly chooses extra bodyparts to target. Temporarily here until I implement targetting system 
-        if(_selectedFightMoves[orderIndex].HasExtraTargets[0] == 1)
-        {
-            List<int> extraBodyPartIndexes = new List<int>(){0, 1, 2, 3, 4};
+        // if(_selectedFightMoves[orderIndex].HasExtraTargets[0] == 1)
+        // {
+        //     List<int> extraBodyPartIndexes = new List<int>(){0, 1, 2, 3, 4};
 
-            foreach(int bodyPart in targetedBodyPartIndexes)
-            {
-                extraBodyPartIndexes.Remove(bodyPart);
-            } 
+        //     foreach(int bodyPart in targetedBodyPartIndexes)
+        //     {
+        //         extraBodyPartIndexes.Remove(bodyPart);
+        //     } 
 
-            for(int i = 0; i < _selectedFightMoves[orderIndex].HasExtraTargets[1]; i++)
-            {
-                int rand = Random.Range(0,extraBodyPartIndexes.Count-1);
-                targetedBodyPartIndexes.Add(extraBodyPartIndexes[rand]);
-                extraBodyPartIndexes.Remove(rand);
-            }
-        }
+        //     for(int i = 0; i < _selectedFightMoves[orderIndex].HasExtraTargets[1]; i++)
+        //     {
+        //         int rand = Random.Range(0,extraBodyPartIndexes.Count-1);
+        //         targetedBodyPartIndexes.Add(extraBodyPartIndexes[rand]);
+        //         extraBodyPartIndexes.Remove(rand);
+        //     }
+        // }
         return targetedBodyPartIndexes;
     }
 
