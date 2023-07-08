@@ -12,6 +12,10 @@ public class ConfirmationButton : MonoBehaviour
     [HideInInspector]
     public delegate void SendBool(bool state);
     public static SendBool AllTargetsSet;
+    public delegate void FightMoveSent(SOFightMoves fightMove);
+    public static FightMoveSent FightMoveConfirmed;
+    public delegate void SendIntArray(int[] data);
+    public static SendIntArray AllTargetsConfirmed;
 
 
 
@@ -43,5 +47,11 @@ public class ConfirmationButton : MonoBehaviour
     void SetTargetedBodyParts(int[] targetedBodyParts)
     {
         TargetedBodyParts = targetedBodyParts;
+    }
+
+    public void OnClick()
+    {
+        AllTargetsConfirmed?.Invoke(TargetedBodyParts);
+        FightMoveConfirmed?.Invoke(SelectedMove);
     }
 }

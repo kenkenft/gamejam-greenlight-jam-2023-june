@@ -6,7 +6,8 @@ public class MatchFlowManager : MonoBehaviour
 {
     public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
     private int _priorityOutcome = 0;
-    private int[] _positiveDirection = {1, -1}; // Player positve direction is right-ward; CPU positve direction is left-ward
+    private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward; CPU positve direction is left-ward
+                    _playerTargetedBodyParts = {0, 0, 0, 0, 0};
 
     public SOFightMoves PlayerMove, CPUMove;
     public SOFightMoves[] CPUMoveList;
@@ -26,14 +27,16 @@ public class MatchFlowManager : MonoBehaviour
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
-        // ActionButton.FightMoveSelected += SetPlayerMove;
+        ConfirmationButton.AllTargetsConfirmed += SetPlayerTargetedParts;
+        ConfirmationButton.FightMoveConfirmed += SetPlayerMove;
         CategoryButton.OnCategorySelected += UpdateButtonUI;
     }
 
     void OnDisable()
     {
         GameManager.RoundHasStarted -= SetUp;
-        // ActionButton.FightMoveSelected -= SetPlayerMove;
+        ConfirmationButton.AllTargetsConfirmed -= SetPlayerTargetedParts;
+        ConfirmationButton.FightMoveConfirmed -= SetPlayerMove;
         CategoryButton.OnCategorySelected -= UpdateButtonUI;
     }
 
@@ -44,11 +47,19 @@ public class MatchFlowManager : MonoBehaviour
         GenerateEnergy();
         StartNextTurn();
     }
+
+    void SetPlayerTargetedParts(int[] targetedParts)
+    {
+        _playerTargetedBodyParts = targetedParts;
+
+        // Debug.Log("SetPlayerTargetedParts called. {" + _playerTargetedBodyParts[0] + ", " + _playerTargetedBodyParts[1] + ", " + _playerTargetedBodyParts[2] + ", " + _playerTargetedBodyParts[3] + ", " + _playerTargetedBodyParts[4] +"}");
+    }
     
     void SetPlayerMove(SOFightMoves playerMove)
     {
         PlayerMove = playerMove;        
         StartMoveResolution();
+        // Debug.Log("SetPlayerMove called. Selected move: " + PlayerMove.name);
     }
 
     void StartMoveResolution()
