@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67bfdd294663f234db0e576aa0994399, type: 3}
+  m_Name: Mech19attack
+  m_EditorClassIdentifier: 
+  ID: Mech19
+  Name: 'Energy Priority: Movement'
+  Description: Enable subsystem overclock. Divert 50% of generated energy to increase
+    damage of all player attacks by 40%
+  Icon: {fileID: 21300000, guid: 91eb25dd0be096e45b15709a57e13686, type: 3}
+  MainTarget: 3
+  Priority: 4
+  Range: 0
+  MainEffectValue: 28000000
+  MoveType: 0
+  ActionType: 3
+  DefaultSubSystemTargets: 0000000000000000000000000000000000000000
+  HasExtraTargets: 0000000000000000
+  Requirements: 000000000100000000000000000000000000000000000000
+  TempEffects: 00000000000000000000000000000000
+  SecondaryEffects: 0100000032000000000000000000000000000000

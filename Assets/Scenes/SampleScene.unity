@@ -3021,17 +3021,26 @@ MonoBehaviour:
   _actionCategories: 0
   ActionListAttack:
   - {fileID: 11400000, guid: 0c9014b0285b2804d8c6ebc2132d891d, type: 2}
+  - {fileID: 11400000, guid: fa88ec5ba18da874bb3441d6b8f27256, type: 2}
+  - {fileID: 11400000, guid: 8a5704a3baf842c4e902e94efb4247da, type: 2}
+  - {fileID: 11400000, guid: 8fd57e2e288f53141af2cf6c3e20940d, type: 2}
+  - {fileID: 11400000, guid: c0cbdbfe6ac46b3439b9eee6057755c5, type: 2}
   - {fileID: 11400000, guid: 3aa2b74a3bffa8748a5f7cd81873d7c8, type: 2}
   - {fileID: 11400000, guid: 941e16d1613185441b0d2b0480b10266, type: 2}
   ActionListDefense:
-  - {fileID: 11400000, guid: 65d5ddf15d4e9a6489ae936c94632e0d, type: 2}
   - {fileID: 11400000, guid: a8c83542569482a4b87e9e4bf2053820, type: 2}
+  - {fileID: 11400000, guid: 823ba176a2a2d4841a31c2f4b431afd9, type: 2}
+  - {fileID: 11400000, guid: 65d5ddf15d4e9a6489ae936c94632e0d, type: 2}
+  - {fileID: 11400000, guid: 7dea1351b1c923244803e20bbb472082, type: 2}
   ActionListMove:
   - {fileID: 11400000, guid: 42e16284c357d424ea8aea810671dc7f, type: 2}
   - {fileID: 11400000, guid: 0e7defec800c30042946dca18767c173, type: 2}
   ActionListSpecial:
   - {fileID: 11400000, guid: 4ad65bf52d245ec41bafde4b9645964d, type: 2}
   - {fileID: 11400000, guid: 5f0cf37676e64454c95616b657887fd0, type: 2}
+  - {fileID: 11400000, guid: 282b719c1ee3d9747843978a5177bc88, type: 2}
+  - {fileID: 11400000, guid: 249247aa0c5b0654a84cc32fb20a7bc3, type: 2}
+  - {fileID: 11400000, guid: 418ee8c239e5d5d4b9465c3585ecb10c, type: 2}
 --- !u!1001 &907254966
 PrefabInstance:
   m_ObjectHideFlags: 0
