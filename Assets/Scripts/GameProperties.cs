@@ -21,4 +21,12 @@ public class GameProperties
                                                                                                 {"Black", new Color((float)16/255, (float)16/255, (float)16/255, 1f)},
                                                                                                 {"Special", new Color((float)49/255, (float)55/255, (float)253/255, 1f)}
                                                                                             };
+
+    public enum ActionCategories{
+                                    Attack, Defend, Move, Special, None 
+                                  };
+
+    public enum ActionType{
+
+                            };
 }

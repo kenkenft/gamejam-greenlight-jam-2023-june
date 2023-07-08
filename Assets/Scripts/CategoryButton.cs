@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class CategoryButton : MonoBehaviour
 {
-    public enum ActionCategories{
-                            Attack, Defend, Move, Special 
-                        };
-    public ActionCategories ActionType;
+    public GameProperties.ActionCategories ActionType;
 
     [HideInInspector] 
     public delegate void SendInt(int data);

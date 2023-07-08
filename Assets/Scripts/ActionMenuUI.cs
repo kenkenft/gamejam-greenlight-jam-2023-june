@@ -8,14 +8,12 @@ public class ActionMenuUI : MonoBehaviour
     public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemTargetTray, DirectionTargetTray;
     public Button[] CategoryButtons;
 
-    public enum ActionCategories{
-                            Attack, Defend, Move, Special, None 
-                        };
-    Dictionary<int, ActionCategories> IntToActionCategory = new Dictionary<int, ActionCategories>(){
-                                                                                                        {0, ActionCategories.Attack},
-                                                                                                        {1, ActionCategories.Defend},
-                                                                                                        {2, ActionCategories.Move},
-                                                                                                        {3, ActionCategories.Special}
+    public GameProperties.ActionCategories _actionCategories;
+    Dictionary<int, GameProperties.ActionCategories> IntToActionCategory = new Dictionary<int, GameProperties.ActionCategories>(){
+                                                                                                        {0, GameProperties.ActionCategories.Attack},
+                                                                                                        {1, GameProperties.ActionCategories.Defend},
+                                                                                                        {2, GameProperties.ActionCategories.Move},
+                                                                                                        {3, GameProperties.ActionCategories.Special}
                                                                                                     };
 
     public List<SOFightMoves> ActionListAttack = new List<SOFightMoves>(), ActionListDefense = new List<SOFightMoves>(), 
@@ -55,9 +53,9 @@ public class ActionMenuUI : MonoBehaviour
         ToggleActionTray(true, IntToActionCategory[actionCategory]);
     }
 
-    void ToggleActionTray(bool targetState, ActionCategories actionType = ActionCategories.None)
+    void ToggleActionTray(bool targetState, GameProperties.ActionCategories actionType = GameProperties.ActionCategories.None)
     {
-        if(targetState && actionType != ActionCategories.None)
+        if(targetState && actionType != GameProperties.ActionCategories.None)
         {
             // Enable ActionTray
             TrayUIs[1].SetActive(true);
@@ -78,28 +76,28 @@ public class ActionMenuUI : MonoBehaviour
         }
     }
 
-    List<SOFightMoves> GetRelevantActions(ActionCategories actionType)
+    List<SOFightMoves> GetRelevantActions(GameProperties.ActionCategories actionType)
     {
         List<SOFightMoves> relevantActions = new List<SOFightMoves>();
         // Get appropriate move List
         switch(actionType)
         {
-            case ActionCategories.Attack:
+            case GameProperties.ActionCategories.Attack:
             {
                 relevantActions = ActionListAttack;
                 break;
             }
-            case ActionCategories.Defend:
+            case GameProperties.ActionCategories.Defend:
             {
                 relevantActions = ActionListDefense;
                 break;
             }
-            case ActionCategories.Move:
+            case GameProperties.ActionCategories.Move:
             {
                 relevantActions = ActionListMove;
                 break;
             }
-            case ActionCategories.Special:
+            case GameProperties.ActionCategories.Special:
             {
                 relevantActions = ActionListSpecial;
                 break;
