@@ -27,6 +27,10 @@ public class GameProperties
                                   };
 
     public enum ActionType{
+                                Attack, Defend, Move, Special, Repair, None
+                            };
 
+    public enum TargetType{
+                                Self, Opponent, Grid, None
                             };
 }

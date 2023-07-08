@@ -16,12 +16,12 @@ MonoBehaviour:
   Name: Regular Movement
   Description: Move forward or backward 1 tile
   Icon: {fileID: 21300000, guid: 91eb25dd0be096e45b15709a57e13686, type: 3}
-  IconImage: {fileID: 0}
-  MainTarget: 0
+  MainTarget: 2
   Priority: 2
   Range: 1
   MainEffectValue: 01000000
   MoveType: 2
+  ActionType: 2
   DefaultSubSystemTargets: 0000000000000000000000000000000000000000
   HasExtraTargets: 0000000000000000
   Requirements: 020000000000000000000000000000000000000001000000

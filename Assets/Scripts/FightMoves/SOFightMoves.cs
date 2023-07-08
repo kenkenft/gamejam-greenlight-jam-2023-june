@@ -8,10 +8,7 @@ public class SOFightMoves : ScriptableObject
     public string ID, Name, Description;
     public Sprite Icon; 
     
-    public enum  PossibleMainTargets{
-                                        self, opponent, tile
-                                    }; // 0 - Self; 1 - opponnent; 2 - tile
-    public PossibleMainTargets MainTarget;
+    public GameProperties.TargetType MainTarget;
 
     [Range(0,5)]
     public int Priority; // 0 - Slowest; - 5 Fastest
@@ -24,6 +21,8 @@ public class SOFightMoves : ScriptableObject
                             buff, defend, movement, modifyHealth 
                         };
     public MoveCategories MoveType;
+
+    public GameProperties.ActionType ActionType;
 
     public int[] DefaultSubSystemTargets = new int[5], // truthy int array {head, chest, lArm, rArm, legs}
                  HasExtraTargets = new int [2], //truthy int array {hasExtraTargets, extraTargetAmount}
