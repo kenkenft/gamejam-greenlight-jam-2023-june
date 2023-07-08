@@ -147,39 +147,14 @@ public class ActionMenuUI : MonoBehaviour
     void CheckTargetTray(SOFightMoves selectedMove)
     {
         Debug.Log("CheckTargetTray called");
-        switch(selectedMove.MainTarget)
-        {
-            case GameProperties.TargetType.Self:
-            {
-                // Debug.Log("Move target: " + selectedMove.MainTarget);
-                EnableTargetTrays(2);
-                SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
-                break;
-            }
-            case GameProperties.TargetType.Opponent:
-            {
-                // Debug.Log("Move target: " + selectedMove.MainTarget);
-                EnableTargetTrays(3);
-                SetUpTargetTrayDefaults(selectedMove);
-                break;
-            }
-            case GameProperties.TargetType.Grid:
-            {
-                // Debug.Log("Move target: " + selectedMove.MainTarget);
-                EnableTargetTrays(4);
-                SetUpTargetTrayDefaults(selectedMove);
-                break;
-            }
-            case GameProperties.TargetType.None:
-            {
-                // Debug.Log("Move target: " + selectedMove.MainTarget);
-                EnableTargetTrays();
-                ToggleButtonsInteractable();
-                break;
-            }
-            default:
-                break;
-        } 
+        
+        int targetTrayIndex = (int)selectedMove.MainTarget + 2; // Targetting trays are indexes 2, 3, and 4
+        EnableTargetTrays(targetTrayIndex);
+        SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
+        
+        // ToDo Select default targets
+        SetDefaultTargets(selectedMove);
+        ToggleButtonsInteractable();
     }
 
     void EnableTargetTrays(int targetTrayIndex = -1)
@@ -209,9 +184,6 @@ public class ActionMenuUI : MonoBehaviour
         SelectableSubSystemsCounter = selectedMove.HasExtraTargets[1];
         SelectableSubSystemsCounterText = FindCounterText(ActiveTargetTray);
         SetCounterText();
-
-        // ToDo Select default targets
-        SetDefaultTargets(selectedMove);
     }
 
     void SetSubSystemTarget(int[] targetData)
@@ -269,9 +241,7 @@ public class ActionMenuUI : MonoBehaviour
                 button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsDefault);
             else
                 button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
-        }
-        ToggleButtonsInteractable();
-        
+        } 
     }
 
 }
