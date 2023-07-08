@@ -1,0 +1,16 @@
+{
+    "name": "AssemblyActionMenu",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6a7e97f262f089047903a81a85e74e4d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
