@@ -27,8 +27,11 @@ public class ActionMenuUI : MonoBehaviour
 
     
     [HideInInspector] 
-     public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
+    public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
     public static SOFightMovesRequired ActionTrayActivated;
+
+    public delegate void SendBool(bool state);
+    public static SendBool AllTargetsSet;
     
     void OnEnable()
     {
@@ -54,6 +57,9 @@ public class ActionMenuUI : MonoBehaviour
         
         // Enable all category buttons.
         ToggleCategoryButtonInteractable(-1);
+
+        // Disable confirmation button.
+        AllTargetsSet?.Invoke(false); 
     }
 
     public void ShowActionTray(int actionCategory)
@@ -168,6 +174,7 @@ public class ActionMenuUI : MonoBehaviour
             {
                 // Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays();
+                ToggleButtonsInteractable();
                 break;
             }
             default:
@@ -223,14 +230,16 @@ public class ActionMenuUI : MonoBehaviour
     void ToggleButtonsInteractable()
     {
         TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
-        bool targetState = SelectableSubSystemsCounter > 0; 
+        bool areTargetsRemaining = SelectableSubSystemsCounter > 0; 
         // For target buttons that are not default targets and are no already selected, sets button.interactable state to true 
         // if there's there's still requried targets to select. Otherwise set to false to prevent additional selections.
-            foreach(TargetButton button in buttons)
-            {
-                if(!button.IsDefaultTarget && !button.IsSelected)
-                    button.TargettingButton.interactable = targetState;
-            }
+        foreach(TargetButton button in buttons)
+        {
+            if(!button.IsDefaultTarget && !button.IsSelected)
+                button.TargettingButton.interactable = areTargetsRemaining;
+        }
+        //Enable confirmation button if no more targets, else disable button until all targets selected.
+        AllTargetsSet?.Invoke(!areTargetsRemaining);
     }
 
     void SetCounterText()
