@@ -37,4 +37,8 @@ public class GameProperties
     public enum SubSystem{
                             Head, Chest, LArm, RArm, Legs, None
                             };
+
+    public enum ColorCombo{
+                        Standard, TargetButtonIsDefault, TargetButtonIsOptional, None
+                        };
 }
