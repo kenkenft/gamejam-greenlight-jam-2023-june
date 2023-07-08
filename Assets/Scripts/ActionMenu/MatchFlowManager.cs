@@ -214,37 +214,41 @@ public class MatchFlowManager : MonoBehaviour
     }
     void ModifyHealth(int orderIndex, int playerID)
     {
-        // CheckTarget()
-        // if((int)_selectedFightMoves[orderIndex].MainTarget == 0)
-        // {
-        //     // Healing move
-        //     Debug.Log("Healing move selected. Player " + playerID);
-        //     int[] healing = {0, 0, 0, 0, 0, 0}; 
-        // }
-        // else
-        // {
-            // Attacking move
-            int[] damage = {0, 0, 0, 0, 0, 0}; 
+            int[] healthChanges = {0, 0, 0, 0, 0, 0}; 
             int fighterIndex = playerID;
-            
             // Check which body parts are default targets and extra targets       
             List<int> targetedBodyPartIndexes = GetTargetedSubSystems(orderIndex);                        
-            damage = CalculateRawDamage(orderIndex, playerID, targetedBodyPartIndexes);
 
             //Only apply defense calculations if attack move
             if(_selectedFightMoves[orderIndex].ActionType == GameProperties.ActionType.Attack)
             {
-                damage = ApplyDefenseReductions(orderIndex, playerID, damage);
-
-                for(int i = 0; i < damage.Length; i++)
-                    damage[i] *= -1;
-
                 fighterIndex = 1 - playerID;
+                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, targetedBodyPartIndexes);
+                healthChanges = ApplyDefenseReductions(orderIndex, playerID, healthChanges);
+
+                //healthChanges' values will subtract from health when calling UpdateCharacterHealth
+                for(int i = 0; i < healthChanges.Length; i++)
+                    healthChanges[i] *= -1;
             }
+            else
+                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, targetedBodyPartIndexes);
             // ToDo ApplySecondary effects
-            fighters[fighterIndex].UpdateCharacterHealth(damage);
+            fighters[fighterIndex].UpdateCharacterHealth(healthChanges);
         // }
     } // End of ModifyHealth
+
+    int[] CalculateRawDamage(int attackPercentage, int fighterIndex, List<int> targetedSubsystems)
+    {
+        int[] rawDamage = {0, 0, 0, 0, 0, 0}; 
+
+        for(int i = 0; i < targetedSubsystems.Count; i++)
+        {    
+            int tempInt = targetedSubsystems[i] + 1;
+            rawDamage[tempInt] =  (attackPercentage * fighters[fighterIndex].HealthSystemData[(tempInt * 2)]) / 100;
+            rawDamage[0] += rawDamage[tempInt];
+        };
+        return rawDamage;
+    }   // End of CalculateRawDamage
 
     int[] ApplyDefenseReductions(int orderIndex, int playerID, int[] potentialDamage)
     {
@@ -275,25 +279,7 @@ public class MatchFlowManager : MonoBehaviour
         return potentialDamage;
     } // End of ApplyDefenseReductions
 
-    int[] CalculateRawDamage(int orderIndex, int playerID, List<int> targetedSubsystems)
-    {
-        SOFightMoves tempSOFM = _selectedFightMoves[orderIndex];
-        int attackPercentage = tempSOFM.MainEffectValue[0], fighterIndex;
-        int[] rawDamage = {0, 0, 0, 0, 0, 0}; 
-
-        if(tempSOFM.ActionType == GameProperties.ActionType.Attack)
-            fighterIndex = 1 - playerID;
-        else
-            fighterIndex = playerID;
-
-        for(int i = 0; i < targetedSubsystems.Count; i++)
-        {    
-            int tempInt = targetedSubsystems[i] + 1;
-            rawDamage[tempInt] =  (attackPercentage * fighters[fighterIndex].HealthSystemData[(tempInt * 2)]) / 100;
-            rawDamage[0] += rawDamage[tempInt];
-        };
-        return rawDamage;
-    }
+    
     List<int> GetTargetedSubSystems(int orderIndex)
     {
         List<int> targetedBodyPartIndexes = new List<int>();
@@ -302,7 +288,7 @@ public class MatchFlowManager : MonoBehaviour
             if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1 || _playerTargetedBodyParts[i] == 1)
                 targetedBodyPartIndexes.Add(i);
         }
-
+        {
         //Randomly chooses extra bodyparts to target. Temporarily here until I implement targetting system 
         // if(_selectedFightMoves[orderIndex].HasExtraTargets[0] == 1)
         // {
@@ -320,6 +306,7 @@ public class MatchFlowManager : MonoBehaviour
         //         extraBodyPartIndexes.Remove(rand);
         //     }
         // }
+        }
         return targetedBodyPartIndexes;
     }
 
