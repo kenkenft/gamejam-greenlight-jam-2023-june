@@ -215,27 +215,35 @@ public class MatchFlowManager : MonoBehaviour
     void ModifyHealth(int orderIndex, int playerID)
     {
         // CheckTarget()
-        if((int)_selectedFightMoves[orderIndex].MainTarget == 0)
-        {
-            // Healing move
-            Debug.Log("Healing move selected. Player " + playerID);
-        }
-        else
-        {
+        // if((int)_selectedFightMoves[orderIndex].MainTarget == 0)
+        // {
+        //     // Healing move
+        //     Debug.Log("Healing move selected. Player " + playerID);
+        //     int[] healing = {0, 0, 0, 0, 0, 0}; 
+        // }
+        // else
+        // {
             // Attacking move
             int[] damage = {0, 0, 0, 0, 0, 0}; 
+            int fighterIndex = playerID;
             
             // Check which body parts are default targets and extra targets       
             List<int> targetedBodyPartIndexes = GetTargetedSubSystems(orderIndex);                        
             damage = CalculateRawDamage(orderIndex, playerID, targetedBodyPartIndexes);
-            damage = ApplyDefenseReductions(orderIndex, playerID, damage);
 
-            for(int i = 0; i < damage.Length; i++)
-                damage[i] *= -1;
+            //Only apply defense calculations if attack move
+            if(_selectedFightMoves[orderIndex].ActionType == GameProperties.ActionType.Attack)
+            {
+                damage = ApplyDefenseReductions(orderIndex, playerID, damage);
 
+                for(int i = 0; i < damage.Length; i++)
+                    damage[i] *= -1;
+
+                fighterIndex = 1 - playerID;
+            }
             // ToDo ApplySecondary effects
-            fighters[1 - playerID].UpdateCharacterHealth(damage);
-        }
+            fighters[fighterIndex].UpdateCharacterHealth(damage);
+        // }
     } // End of ModifyHealth
 
     int[] ApplyDefenseReductions(int orderIndex, int playerID, int[] potentialDamage)
@@ -252,8 +260,6 @@ public class MatchFlowManager : MonoBehaviour
         {
             
             int blockThreshold = (_selectedFightMoves[1 - orderIndex].MainEffectValue[1] * fighters[1 - playerID].HealthSystemData[0]) / 100;
-            // Debug.Log("Opponent is blocking! Threshold: " + blockThreshold);
-
             if(potentialDamage[0] <= blockThreshold)
             {
                 for(int i = 0; i < potentialDamage.Length; i++)
@@ -266,18 +272,24 @@ public class MatchFlowManager : MonoBehaviour
                     potentialDamage[i] += (_selectedFightMoves[1 - orderIndex].SecondaryEffects[2] * potentialDamage[i]) / 100;
             } 
         }
-
         return potentialDamage;
     } // End of ApplyDefenseReductions
 
     int[] CalculateRawDamage(int orderIndex, int playerID, List<int> targetedSubsystems)
     {
-        int attackPercentage = _selectedFightMoves[orderIndex].MainEffectValue[0];
+        SOFightMoves tempSOFM = _selectedFightMoves[orderIndex];
+        int attackPercentage = tempSOFM.MainEffectValue[0], fighterIndex;
         int[] rawDamage = {0, 0, 0, 0, 0, 0}; 
+
+        if(tempSOFM.ActionType == GameProperties.ActionType.Attack)
+            fighterIndex = 1 - playerID;
+        else
+            fighterIndex = playerID;
+
         for(int i = 0; i < targetedSubsystems.Count; i++)
         {    
             int tempInt = targetedSubsystems[i] + 1;
-            rawDamage[tempInt] =  (attackPercentage * fighters[1 - playerID].HealthSystemData[(tempInt * 2)]) / 100;
+            rawDamage[tempInt] =  (attackPercentage * fighters[fighterIndex].HealthSystemData[(tempInt * 2)]) / 100;
             rawDamage[0] += rawDamage[tempInt];
         };
         return rawDamage;
