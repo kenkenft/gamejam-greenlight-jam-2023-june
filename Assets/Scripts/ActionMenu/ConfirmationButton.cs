@@ -7,6 +7,7 @@ public class ConfirmationButton : MonoBehaviour
 {
     public Button confirmationButton;
     public SOFightMoves SelectedMove;
+    public int[] TargetedBodyParts = {0, 0, 0, 0, 0};
 
     [HideInInspector]
     public delegate void SendBool(bool state);
@@ -17,12 +18,15 @@ public class ConfirmationButton : MonoBehaviour
     void OnEnable()
     {
         ActionMenuUI.AllTargetsSet += SetInteractable;
+        ActionMenuUI.AllTargetsConfirmed += SetTargetedBodyParts;
         ActionButton.FightMoveSelected += SetSelectedMove;
+        
     }
 
     void OnDisable()
     {
         ActionMenuUI.AllTargetsSet -= SetInteractable;
+        ActionMenuUI.AllTargetsConfirmed -= SetTargetedBodyParts;
         ActionButton.FightMoveSelected -= SetSelectedMove;
     }
 
@@ -34,5 +38,10 @@ public class ConfirmationButton : MonoBehaviour
     void SetSelectedMove(SOFightMoves selectedMove)
     {
         SelectedMove = selectedMove;
+    }
+
+    void SetTargetedBodyParts(int[] targetedBodyParts)
+    {
+        TargetedBodyParts = targetedBodyParts;
     }
 }

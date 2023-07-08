@@ -32,6 +32,9 @@ public class ActionMenuUI : MonoBehaviour
 
     public delegate void SendBool(bool state);
     public static SendBool AllTargetsSet;
+
+    public delegate void SendIntArray(int[] data);
+    public static SendIntArray AllTargetsConfirmed;
     
     void OnEnable()
     {
@@ -202,7 +205,8 @@ public class ActionMenuUI : MonoBehaviour
         SetCounterText();
         if(SelectableSubSystemsCounter == 0)
         {
-            // Send TargetedBodyParts and selected
+            // Send TargetedBodyParts to ConfirmationButton
+            AllTargetsConfirmed?.Invoke(TargetedBodyParts);
         }
     }
 
