@@ -43,6 +43,7 @@
      <Compile Include="Assets\Scripts\ActionMenu\ActionButton.cs" />
      <Compile Include="Assets\Scripts\ActionMenu\GridManager.cs" />
      <Compile Include="Assets\Scripts\ActionMenu\CategoryButton.cs" />
+     <Compile Include="Assets\Scripts\ActionMenu\TargetButton.cs" />
      <None Include="Assets\Scripts\ActionMenu\AssemblyActionMenu.asmdef" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

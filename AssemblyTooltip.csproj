@@ -696,6 +696,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="AssemblyCore.csproj">
+      <Project>{d1e5c283-facc-0684-b92f-bfcd3eade1c8}</Project>
+      <Name>AssemblyCore</Name>
+    </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{4389e16e-02bd-9e86-7f19-27f7f06aa945}</Project>
       <Name>UnityEditor.UI</Name>

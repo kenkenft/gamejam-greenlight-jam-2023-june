@@ -33,4 +33,8 @@ public class GameProperties
     public enum TargetType{
                                 Self, Opponent, Grid, None
                             };
+
+    public enum SubSystem{
+                            Head, Chest, LArm, RArm, Legs, None
+                            };
 }
