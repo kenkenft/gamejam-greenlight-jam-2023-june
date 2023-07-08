@@ -146,15 +146,18 @@ public class ActionMenuUI : MonoBehaviour
 
     void CheckTargetTray(SOFightMoves selectedMove)
     {
-        Debug.Log("CheckTargetTray called");
-        
-        int targetTrayIndex = (int)selectedMove.MainTarget + 2; // Targetting trays are indexes 2, 3, and 4
+        // Debug.Log("CheckTargetTray called");
+        ResetTargetedBodyParts();   // Reset TargetedBodyParts array on clicking an ActionButton
+        int targetTrayIndex = (int)selectedMove.MainTarget + 2; // Targetting trays are at indexes 2, 3, and 4
         EnableTargetTrays(targetTrayIndex);
         SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
-        
-        // ToDo Select default targets
         SetDefaultTargets(selectedMove);
         ToggleButtonsInteractable();
+    }
+    void ResetTargetedBodyParts()
+    {
+        for(int i = 0; i < TargetedBodyParts.Length; i++)
+            TargetedBodyParts[i] = 0;
     }
 
     void EnableTargetTrays(int targetTrayIndex = -1)
@@ -168,6 +171,13 @@ public class ActionMenuUI : MonoBehaviour
         }
     }
 
+    void SetUpTargetTrayDefaults(SOFightMoves selectedMove)
+    {
+        SelectableSubSystemsCounter = selectedMove.HasExtraTargets[1];
+        SelectableSubSystemsCounterText = FindCounterText(ActiveTargetTray);
+        SetCounterText();
+    }
+
     Text FindCounterText(GameObject tray)
     {
         Text[] texts = tray.gameObject.GetComponentsInChildren<Text>();
@@ -177,13 +187,6 @@ public class ActionMenuUI : MonoBehaviour
                 return text;
         }
         return null;
-    }
-
-    void SetUpTargetTrayDefaults(SOFightMoves selectedMove)
-    {
-        SelectableSubSystemsCounter = selectedMove.HasExtraTargets[1];
-        SelectableSubSystemsCounterText = FindCounterText(ActiveTargetTray);
-        SetCounterText();
     }
 
     void SetSubSystemTarget(int[] targetData)
@@ -197,6 +200,10 @@ public class ActionMenuUI : MonoBehaviour
         // ToDo Method to set button interactable to false when SelectableSubSystemsCounter is false 
         ToggleButtonsInteractable();
         SetCounterText();
+        if(SelectableSubSystemsCounter == 0)
+        {
+            // Send TargetedBodyParts and selected
+        }
     }
 
     void ToggleButtonsInteractable()
