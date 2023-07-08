@@ -7,6 +7,9 @@ public class ActionMenuUI : MonoBehaviour
 {
     public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, DirectionTargetTray;
     public Button[] CategoryButtons;
+    public int SelectableSubSystemsCounter = 0;
+    public int[] TargetedBodyParts = {0, 0, 0, 0, 0};
+    public Text SelectableSubSystemsCounterText;
 
     public GameProperties.ActionCategories _actionCategories;
     Dictionary<int, GameProperties.ActionCategories> IntToActionCategory = new Dictionary<int, GameProperties.ActionCategories>(){
@@ -21,21 +24,23 @@ public class ActionMenuUI : MonoBehaviour
 
     
     [HideInInspector] 
-    public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
-    public static SOFightMovesRequired ActionTrayActived;
+     public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
+    public static SOFightMovesRequired ActionTrayActivated;
     
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
         CategoryButton.OnCategoryButtonPressed += ShowActionTray;
         ActionButton.FightMoveSelected += CheckTargetTray;
+        TargetButton.TargetButtonClicked += SetSubSystemTarget;
     }
 
     void OnDisable()
     {
-        GameManager.RoundHasStarted += SetUp;
+        GameManager.RoundHasStarted -= SetUp;
         CategoryButton.OnCategoryButtonPressed -= ShowActionTray;
         ActionButton.FightMoveSelected -= CheckTargetTray;
+        TargetButton.TargetButtonClicked -= SetSubSystemTarget;
     }
     
 
@@ -63,7 +68,7 @@ public class ActionMenuUI : MonoBehaviour
             TrayUIs[1].SetActive(true);
 
             List<SOFightMoves> relevantActions = GetRelevantActions(actionType);
-            ActionTrayActived?.Invoke(relevantActions);
+            ActionTrayActivated?.Invoke(relevantActions);
 
             // Hide SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
             DisableTraysCascade(2);
@@ -139,18 +144,21 @@ public class ActionMenuUI : MonoBehaviour
             {
                 Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays(2);
+                SetUpTargetTrayDefaults(2, selectedMove);    // Set up default targets, and selectable body parts counter
                 break;
             }
             case GameProperties.TargetType.Opponent:
             {
                 Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays(3);
+                SetUpTargetTrayDefaults(3, selectedMove);
                 break;
             }
             case GameProperties.TargetType.Grid:
             {
                 Debug.Log("Move target: " + selectedMove.MainTarget);
                 EnableTargetTrays(4);
+                SetUpTargetTrayDefaults(4, selectedMove);
                 break;
             }
             case GameProperties.TargetType.None:
@@ -169,7 +177,52 @@ public class ActionMenuUI : MonoBehaviour
         for(int i = 2; i < TrayUIs.Length; i++)
         {
             TrayUIs[i].SetActive(i == targetTrayIndex);
-            Debug.Log( TrayUIs[i].name + ": " + TrayUIs[i].activeSelf);
+            // Debug.Log( TrayUIs[i].name + ": " + TrayUIs[i].activeSelf);
+        }
+    }
+
+    Text FindCounterText(GameObject tray)
+    {
+        Text[] texts = tray.gameObject.GetComponentsInChildren<Text>();
+        foreach(Text text in texts)
+        {
+            if(text.name == "Counter")
+                return text;
+        }
+        return null;
+    }
+
+    void SetUpTargetTrayDefaults(int targetTrayIndex, SOFightMoves selectedMove)
+    {
+        SelectableSubSystemsCounter = selectedMove.HasExtraTargets[1];
+        SelectableSubSystemsCounterText = FindCounterText(TrayUIs[targetTrayIndex]);
+        SetCounterText();
+
+        // ToDo Select default targets
+    }
+
+    void SetSubSystemTarget(int[] targetData)
+    {
+        // Assumes targetData is an array of size 2. Index 0 is the subsystem part; index 1 is a truthy integer
+        TargetedBodyParts[targetData[0]] = targetData[1];
+        if(targetData[1] == 1)
+            SelectableSubSystemsCounter--;
+        else
+            SelectableSubSystemsCounter++;
+        
+        SetCounterText();
+    }
+
+    void SetCounterText()
+    {
+        if(SelectableSubSystemsCounterText != null)
+        {
+            if(SelectableSubSystemsCounter > 1)
+                SelectableSubSystemsCounterText.text = "Select " + SelectableSubSystemsCounter + " more subsystems.";
+            else if(SelectableSubSystemsCounter == 1)
+                SelectableSubSystemsCounterText.text = "Select " + SelectableSubSystemsCounter + " more subsystem.";
+            else
+                SelectableSubSystemsCounterText.text = "Targeting complete. Please confirm selection";
         }
     }
 

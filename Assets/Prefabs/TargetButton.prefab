@@ -162,3 +162,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WhichSubSystem: 0
+  IsDefaultTarget: 0
+  IsSelected: 0
+  TargettingButton: {fileID: 4231104828792318449}

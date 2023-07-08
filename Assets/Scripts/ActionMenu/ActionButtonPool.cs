@@ -9,12 +9,12 @@ public class ActionButtonPool : MonoBehaviour
     
     void OnEnable()
     {
-        ActionMenuUI.ActionTrayActived += SetUpRelevantActionButtons;
+        ActionMenuUI.ActionTrayActivated += SetUpRelevantActionButtons;
     }
 
     void OnDisable()
     {
-        ActionMenuUI.ActionTrayActived -= SetUpRelevantActionButtons;
+        ActionMenuUI.ActionTrayActivated -= SetUpRelevantActionButtons;
     }
 
     void SetUpRelevantActionButtons(List<SOFightMoves> relevantActions)
