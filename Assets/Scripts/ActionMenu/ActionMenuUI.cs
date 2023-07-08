@@ -204,6 +204,7 @@ public class ActionMenuUI : MonoBehaviour
         SetCounterText();
 
         // ToDo Select default targets
+        SetDefaultTargets(selectedMove);
     }
 
     void SetSubSystemTarget(int[] targetData)
@@ -223,12 +224,12 @@ public class ActionMenuUI : MonoBehaviour
     {
         TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
         bool targetState = SelectableSubSystemsCounter > 0; 
-            // For target buttons that are not default targets and are no already selected, sets button.interactable state to true 
-            // if there's there's still requried targets to select. Otherwise set to false to prevent additional selections.
+        // For target buttons that are not default targets and are no already selected, sets button.interactable state to true 
+        // if there's there's still requried targets to select. Otherwise set to false to prevent additional selections.
             foreach(TargetButton button in buttons)
             {
                 if(!button.IsDefaultTarget && !button.IsSelected)
-                    button.gameObject.GetComponent<Button>().interactable = targetState;
+                    button.TargettingButton.interactable = targetState;
             }
     }
 
@@ -242,6 +243,21 @@ public class ActionMenuUI : MonoBehaviour
                 SelectableSubSystemsCounterText.text = "Select " + SelectableSubSystemsCounter + " more subsystem.";
             else
                 SelectableSubSystemsCounterText.text = "Targeting complete. Please confirm selection";
+        }
+    }
+
+    void SetDefaultTargets(SOFightMoves selectedMove)
+    {
+        TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
+        bool isDefaultTarget = false;
+        foreach(TargetButton button in buttons)
+        {
+            isDefaultTarget = selectedMove.DefaultSubSystemTargets[(int)button.WhichSubSystem] == 1;
+            button.IsDefaultTarget = isDefaultTarget;
+            button.IsSelected = isDefaultTarget;
+            button.TargettingButton.interactable = !isDefaultTarget;
+            //if(isDefaultTarget) 
+            // ToDo Set ColorTintButtonSetUp to special colour sets 
         }
     }
 
