@@ -12,7 +12,6 @@ public class ActionButton : MonoBehaviour
     [HideInInspector] 
     public delegate void FightMoveSent(SOFightMoves fightMove);
     public static FightMoveSent FightMoveSelected;
-
     public delegate void OnSomeEvent();
     public static OnSomeEvent MoveSelected;
     
@@ -33,8 +32,8 @@ public class ActionButton : MonoBehaviour
     public void SendSelectedMove()
     {
         // SFXRequested?.Invoke("Click");
-        MoveSelected?.Invoke(); // Should invoke UIManager.DisableAllMoveButtons()
-        FightMoveSelected?.Invoke(FightMove); // Should invoke MatchFlowManager.SetPlayerMove()
+        // MoveSelected?.Invoke(); // Should invoke UIManager.DisableAllMoveButtons()
+        FightMoveSelected?.Invoke(FightMove); // Should invoke MatchFlowManager.SetPlayerMove() // SetPlayerMove() will be invoked elswhere
     }
 
     void AbleToDoMove(int[] playerEnergyAndSubSystemsData)

@@ -10,21 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67bfdd294663f234db0e576aa0994399, type: 3}
-  m_Name: EPRepairs
+  m_Name: Mech03FocusedRepairs
   m_EditorClassIdentifier: 
-  ID: Mech16
-  Name: 'Energy Priority: Repairs'
-  Description: Enable passive repair system. Divert 20% of generated energy to repair
-    10% of all active subsystems each turn that this is active.
-  Icon: {fileID: 21300000, guid: 91eb25dd0be096e45b15709a57e13686, type: 3}
-  MainTarget: 3
+  ID: Mech03
+  Name: Focused Repairs
+  Description: Repair 50% on one target subsystem
+  Icon: {fileID: 21300000, guid: 540c33d00097fbe469aa4f30ca9b65f9, type: 3}
+  MainTarget: 0
   Priority: 4
   Range: 0
-  MainEffectValue: 01000000
-  MoveType: 0
-  ActionType: 3
+  MainEffectValue: 3200000000000000000000000000000000000000
+  MoveType: 3
+  ActionType: 4
   DefaultSubSystemTargets: 0000000000000000000000000000000000000000
-  HasExtraTargets: 0000000000000000
-  Requirements: 000000000100000000000000000000000000000000000000
+  HasExtraTargets: 0100000001000000
+  Requirements: 0f0000000000000000000000000000000000000000000000
   TempEffects: 00000000000000000000000000000000
-  SecondaryEffects: 0100000014000000
+  SecondaryEffects: 0000000000000000000000000000000000000000

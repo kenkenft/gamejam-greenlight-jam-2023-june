@@ -26,14 +26,14 @@ public class MatchFlowManager : MonoBehaviour
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
-        ActionButton.FightMoveSelected += SetPlayerMove;
+        // ActionButton.FightMoveSelected += SetPlayerMove;
         CategoryButton.OnCategorySelected += UpdateButtonUI;
     }
 
     void OnDisable()
     {
         GameManager.RoundHasStarted -= SetUp;
-        ActionButton.FightMoveSelected -= SetPlayerMove;
+        // ActionButton.FightMoveSelected -= SetPlayerMove;
         CategoryButton.OnCategorySelected -= UpdateButtonUI;
     }
 

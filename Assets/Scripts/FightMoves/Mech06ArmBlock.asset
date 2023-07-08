@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 67bfdd294663f234db0e576aa0994399, type: 3}
-  m_Name: ArmBlock
+  m_Name: Mech06ArmBlock
   m_EditorClassIdentifier: 
   ID: Mech06
   Name: Arm Block
@@ -24,9 +24,8 @@ MonoBehaviour:
   MainEffectValue: 320000000a000000
   MoveType: 1
   ActionType: 1
-  TargetType: 2
   DefaultSubSystemTargets: 0100000001000000010000000100000000000000
   HasExtraTargets: 0000000000000000
   Requirements: 040000000000000000000000020000000200000000000000
-  TempEffects: 01000000010000000000000000000000
+  TempEffects: 00000000010000000000000000000000
   SecondaryEffects: 010000000100000000000000

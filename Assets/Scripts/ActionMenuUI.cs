@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ActionMenuUI : MonoBehaviour
 {
-    public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemTargetTray, DirectionTargetTray;
+    public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, DirectionTargetTray;
     public Button[] CategoryButtons;
 
     public GameProperties.ActionCategories _actionCategories;
@@ -28,12 +28,14 @@ public class ActionMenuUI : MonoBehaviour
     {
         GameManager.RoundHasStarted += SetUp;
         CategoryButton.OnCategoryButtonPressed += ShowActionTray;
+        ActionButton.FightMoveSelected += CheckTargetTray;
     }
 
     void OnDisable()
     {
         GameManager.RoundHasStarted += SetUp;
         CategoryButton.OnCategoryButtonPressed -= ShowActionTray;
+        ActionButton.FightMoveSelected -= CheckTargetTray;
     }
     
 
@@ -59,19 +61,16 @@ public class ActionMenuUI : MonoBehaviour
         {
             // Enable ActionTray
             TrayUIs[1].SetActive(true);
-            // ToDo - Load relevant attack moves and buttons based on ActionType
+
             List<SOFightMoves> relevantActions = GetRelevantActions(actionType);
-
             ActionTrayActived?.Invoke(relevantActions);
-                //ToDo - Set Buttons to show the list of relevant actions
-                // Hide leftover action buttons
 
-            // Hide SubSystemTargetTray and DirectionTargetTray
+            // Hide SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
             DisableTraysCascade(2);
         }
         else
         {
-            // Hide ActionTray, SubSystemTargetTray and DirectionTargetTray
+            // Hide ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
             DisableTraysCascade(1);
         }
     }
@@ -130,4 +129,48 @@ public class ActionMenuUI : MonoBehaviour
                 CategoryButtons[i].interactable = false;
         }
     }
+
+    void CheckTargetTray(SOFightMoves selectedMove)
+    {
+        Debug.Log("CheckTargetTray called");
+        switch(selectedMove.MainTarget)
+        {
+            case GameProperties.TargetType.Self:
+            {
+                Debug.Log("Move target: " + selectedMove.MainTarget);
+                EnableTargetTrays(2);
+                break;
+            }
+            case GameProperties.TargetType.Opponent:
+            {
+                Debug.Log("Move target: " + selectedMove.MainTarget);
+                EnableTargetTrays(3);
+                break;
+            }
+            case GameProperties.TargetType.Grid:
+            {
+                Debug.Log("Move target: " + selectedMove.MainTarget);
+                EnableTargetTrays(4);
+                break;
+            }
+            case GameProperties.TargetType.None:
+            {
+                Debug.Log("Move target: " + selectedMove.MainTarget);
+                EnableTargetTrays();
+                break;
+            }
+            default:
+                break;
+        } 
+    }
+
+    void EnableTargetTrays(int targetTrayIndex = -1)
+    {
+        for(int i = 2; i < TrayUIs.Length; i++)
+        {
+            TrayUIs[i].SetActive(i == targetTrayIndex);
+            Debug.Log( TrayUIs[i].name + ": " + TrayUIs[i].activeSelf);
+        }
+    }
+
 }

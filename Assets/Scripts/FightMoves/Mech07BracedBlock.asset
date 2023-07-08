@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67bfdd294663f234db0e576aa0994399, type: 3}
+  m_Name: Mech07BracedBlock
+  m_EditorClassIdentifier: 
+  ID: Mech07
+  Name: Braced Block
+  Description: Raising guard and bracing yourself to greatly reduce incoming damage
+    and increase break threshold. If threshold exceeded, damage is increased by 50%.
+    Grants hyperarmour.
+  Icon: {fileID: 21300000, guid: 540c33d00097fbe469aa4f30ca9b65f9, type: 3}
+  MainTarget: 0
+  Priority: 4
+  Range: 0
+  MainEffectValue: 5a0000001e000000
+  MoveType: 1
+  ActionType: 1
+  DefaultSubSystemTargets: 0100000001000000010000000100000000000000
+  HasExtraTargets: 0000000000000000
+  Requirements: 000000000000000000000000000000000000000000000000
+  TempEffects: 00000000000000000000000000000000
+  SecondaryEffects: 010000000100000032000000
