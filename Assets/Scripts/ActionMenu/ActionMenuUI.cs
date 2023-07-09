@@ -55,14 +55,9 @@ public class ActionMenuUI : MonoBehaviour
 
     void SetUp()
     {
-        // Hide ActionTray, SubsystemTargetTray, DirectionTargetTray.
-        ToggleActionTray(false);
-        
-        // Enable all category buttons.
-        ToggleCategoryButtonInteractable(-1);
-
-        // Disable confirmation button.
-        AllTargetsSet?.Invoke(false); 
+        ToggleActionTray(false);    // Hide ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
+        ToggleCategoryButtonInteractable(-1);   // Enable all category buttons.
+        AllTargetsSet?.Invoke(false);   // Disable confirmation button.
     }
 
     public void ShowActionTray(int actionCategory)
@@ -76,14 +71,14 @@ public class ActionMenuUI : MonoBehaviour
     {
         if(targetState && actionType != GameProperties.ActionCategories.None)
         {
-            // Enable ActionTray
-            TrayUIs[1].SetActive(true);
+            TrayUIs[1].SetActive(true);   // Enable ActionTray
+
 
             List<SOFightMoves> relevantActions = GetRelevantActions(actionType);
             ActionTrayActivated?.Invoke(relevantActions);
 
-            // Hide SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
-            DisableTraysCascade(2);
+            
+            DisableTraysCascade(2); // Hide SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
         }
         else
         {
@@ -126,7 +121,6 @@ public class ActionMenuUI : MonoBehaviour
 
     void DisableTraysCascade(int layerStart)
     {
-        // Debug.Log("Disabling from tray: " + TrayUIs[layerStart].name);
         for(int i = layerStart; i < TrayUIs.Length; i++)
             {
                 if(TrayUIs[i].activeSelf)
@@ -149,7 +143,6 @@ public class ActionMenuUI : MonoBehaviour
 
     void CheckTargetTray(SOFightMoves selectedMove)
     {
-        // Debug.Log("CheckTargetTray called");
         ResetTargetedBodyParts();   // Reset TargetedBodyParts array on clicking an ActionButton
         int targetTrayIndex = (int)selectedMove.MainTarget + 2; // Targetting trays are at indexes 2, 3, and 4
         EnableTargetTrays(targetTrayIndex);
@@ -194,20 +187,16 @@ public class ActionMenuUI : MonoBehaviour
 
     void SetSubSystemTarget(int[] targetData)
     {
-        // Assumes targetData is an array of size 2. Index 0 is the subsystem part; index 1 is a truthy integer
-        TargetedBodyParts[targetData[0]] = targetData[1];
+        TargetedBodyParts[targetData[0]] = targetData[1];  // Assumes targetData is an array of size 2. Index 0 is the subsystem part; index 1 is a truthy integer
         if(targetData[1] == 1)
             SelectableSubSystemsCounter--;
         else
             SelectableSubSystemsCounter++;
-        // ToDo Method to set button interactable to false when SelectableSubSystemsCounter is false 
         ToggleButtonsInteractable();
         SetCounterText();
         if(SelectableSubSystemsCounter == 0)
-        {
-            // Send TargetedBodyParts to ConfirmationButton
-            AllTargetsConfirmed?.Invoke(TargetedBodyParts);
-        }
+            AllTargetsConfirmed?.Invoke(TargetedBodyParts);    // Send TargetedBodyParts to ConfirmationButton
+
     }
 
     void ToggleButtonsInteractable()

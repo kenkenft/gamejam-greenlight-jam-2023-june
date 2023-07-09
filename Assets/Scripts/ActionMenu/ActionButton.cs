@@ -41,25 +41,13 @@ public class ActionButton : MonoBehaviour
         // playerEnergyAndSubSystemsData // index 0 is the amount of energy available; indexes 1 through 5 are truthy values (0 is broken; 1 is not broken)
         bool isRequirementMet = true;
         // Check if enough energy is available
-        if(playerEnergyAndSubSystemsData[0] < FightMove.Requirements[0])
-        {    
-            // Debug.Log("storedEnergy " + playerEnergyAndSubSystemsData[0] + " < required energy" + FightMove.Requirements[0] + ".Not enough energy for fightMove: " + FightMove.Name);
+        if(playerEnergyAndSubSystemsData[0] < FightMove.Requirements[0])   
             isRequirementMet = false;
-        }
 
         //Check if required subsystems are still active
         isRequirementMet = CheckSubSystems(playerEnergyAndSubSystemsData,  isRequirementMet);
 
-        if(isRequirementMet)
-        {    
-            // Debug.Log("Requirement MET for fightmove: " + FightMove.Name);
-            FightMoveButton.interactable = true;
-        }
-        else
-        {
-            // Debug.Log("Requirement NOT MET for fightmove: " + FightMove.Name);
-            FightMoveButton.interactable = false;
-        }
+        FightMoveButton.interactable = isRequirementMet;
     }
 
     bool CheckSubSystems(int[] playerEnergyAndSubSystemsData, bool isRequirementMet)
@@ -135,9 +123,6 @@ public class ActionButton : MonoBehaviour
     public void SetUpActionButton()
     {
         FightMoveImage.sprite = FightMove.Icon;
-        //Check for energy requirements
-        // int[] playerEnergyData = DelegateGetsCharacterDisplayEnergyDataFromMatchFlowManager.invoke()
-        // AbleToDoMove(playerEnergyData);
         FightMoveButton.interactable = true;
     }
 

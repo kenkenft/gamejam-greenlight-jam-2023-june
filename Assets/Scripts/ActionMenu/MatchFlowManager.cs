@@ -5,8 +5,10 @@ using UnityEngine;
 public class MatchFlowManager : MonoBehaviour
 {
     public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
-    private int _priorityOutcome = 0;
+    private int _priorityOutcome = 0;    // Set to 1 for relative forward direction, -1 for relative backwards
     private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward; CPU positve direction is left-ward
+                    _relativeDirection = {1, -1}, // 1 for relative forward direction, -1 for relative backwards
+                    _forwardsOrBackwards = {0, 0}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU 
                     _playerTargetedBodyParts = {0, 0, 0, 0, 0};
 
     public SOFightMoves PlayerMove, CPUMove;
@@ -161,7 +163,7 @@ public class MatchFlowManager : MonoBehaviour
             case 2: // Movement
             {
                 // Debug.Log("Player " + playerID + " move type: MOVEMENT");
-                // MoveCharacter(,playerID, orderIndex);
+                // MoveCharacter(playerID, orderIndex);
                 break;
             }
             case 3: // Modify Health
