@@ -38,6 +38,10 @@ public class GameProperties
                             Head, Chest, LArm, RArm, Legs, None
                             };
 
+    public enum TargetDirection{
+                                Forward = 1, Backwards = -1, None = 0
+                            };
+
     public enum ColorCombo{
                         Standard, TargetButtonIsDefault, TargetButtonIsOptional, None
                         };

@@ -172,15 +172,19 @@ public class ActionMenuUI : MonoBehaviour
         SelectableSubSystemsCounter = selectedMove.HasExtraTargets[1];
         SelectableSubSystemsCounterText = FindCounterText(ActiveTargetTray);
         SetCounterText();
+        
     }
 
     Text FindCounterText(GameObject tray)
     {
-        Text[] texts = tray.gameObject.GetComponentsInChildren<Text>();
-        foreach(Text text in texts)
+        if(tray != null)
         {
-            if(text.name == "Counter")
-                return text;
+            Text[] texts = tray.gameObject.GetComponentsInChildren<Text>();
+            foreach(Text text in texts)
+            {
+                if(text.name == "Counter")
+                    return text;
+            }
         }
         return null;
     }
@@ -201,16 +205,19 @@ public class ActionMenuUI : MonoBehaviour
 
     void ToggleButtonsInteractable()
     {
-        TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
         bool areTargetsRemaining = SelectableSubSystemsCounter > 0; 
-        // For target buttons that are not default targets and are no already selected, sets button.interactable state to true 
-        // if there's there's still requried targets to select. Otherwise set to false to prevent additional selections.
-        foreach(TargetButton button in buttons)
+        if(ActiveTargetTray != null)
         {
-            if(!button.IsDefaultTarget && !button.IsSelected)
-                button.TargettingButton.interactable = areTargetsRemaining;
+            TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();   
+            // For target buttons that are not default targets and are no already selected, sets button.interactable state to true 
+            // if there's there's still requried targets to select. Otherwise set to false to prevent additional selections.
+            foreach(TargetButton button in buttons)
+            {
+                if(!button.IsDefaultTarget && !button.IsSelected)
+                    button.TargettingButton.interactable = areTargetsRemaining;
+            }
+            //Enable confirmation button if no more targets, else disable button until all targets selected.
         }
-        //Enable confirmation button if no more targets, else disable button until all targets selected.
         AllTargetsSet?.Invoke(!areTargetsRemaining);
     }
 
@@ -229,19 +236,22 @@ public class ActionMenuUI : MonoBehaviour
 
     void SetDefaultTargets(SOFightMoves selectedMove)
     {
-        TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
-        bool isDefaultTarget = false;
-        foreach(TargetButton button in buttons)
+        if(ActiveTargetTray != null)
         {
-            isDefaultTarget = selectedMove.DefaultSubSystemTargets[(int)button.WhichSubSystem] == 1;
-            button.IsDefaultTarget = isDefaultTarget;
-            button.IsSelected = isDefaultTarget;
-            button.TargettingButton.interactable = !isDefaultTarget;
-            if(isDefaultTarget)
-                button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsDefault);
-            else
-                button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
-        } 
+            TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
+            bool isDefaultTarget = false;
+            foreach(TargetButton button in buttons)
+            {
+                isDefaultTarget = selectedMove.DefaultSubSystemTargets[(int)button.WhichSubSystem] == 1;
+                button.IsDefaultTarget = isDefaultTarget;
+                button.IsSelected = isDefaultTarget;
+                button.TargettingButton.interactable = !isDefaultTarget;
+                if(isDefaultTarget)
+                    button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsDefault);
+                else
+                    button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
+            } 
+        }
     }
 
 }
