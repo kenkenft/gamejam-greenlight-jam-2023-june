@@ -145,7 +145,7 @@ public class ActionMenuUI : MonoBehaviour
     {
         ResetTargetedBodyParts();   // Reset TargetedBodyParts array on clicking an ActionButton
         int targetTrayIndex = (int)selectedMove.MainTarget + 2; // Targetting trays are at indexes 2, 3, and 4
-        EnableTargetTrays(targetTrayIndex);
+        ToggleTargetTrays(targetTrayIndex);
         SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
         SetDefaultTargets(selectedMove);
         ToggleButtonsInteractable();
@@ -156,15 +156,22 @@ public class ActionMenuUI : MonoBehaviour
             TargetedBodyParts[i] = 0;
     }
 
-    void EnableTargetTrays(int targetTrayIndex = -1)
+    void ToggleTargetTrays(int targetTrayIndex = -1)
     {
+        bool isFound = false;
         for(int i = 2; i < TrayUIs.Length; i++)
         {
             TrayUIs[i].SetActive(i == targetTrayIndex);
             // Debug.Log( TrayUIs[i].name + ": " + TrayUIs[i].activeSelf);
             if(i == targetTrayIndex)
+            {
                 ActiveTargetTray = TrayUIs[i];
+                isFound = true;
+            }
         }
+
+        if(!isFound)
+            ActiveTargetTray = null;
     }
 
     void SetUpTargetTrayDefaults(SOFightMoves selectedMove)
