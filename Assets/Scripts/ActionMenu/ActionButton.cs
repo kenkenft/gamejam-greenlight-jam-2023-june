@@ -9,14 +9,19 @@ public class ActionButton : MonoBehaviour
     public Image FightMoveImage;
     public Button FightMoveButton;
 
+    public bool IsSelected = false, PreventSelfDisable = false, AreRequirementsMet = false;
+
     [HideInInspector] 
     public delegate void FightMoveSent(SOFightMoves fightMove);
     public static FightMoveSent FightMoveSelected;
     public delegate void OnSomeEvent();
     public static OnSomeEvent MoveSelected;
+    public delegate void SendBool(bool state);
+    public static SendBool CheckIsSelectedRequested;
     
     void OnEnable()
     {
+        ActionButton.CheckIsSelectedRequested += ToggleSelectedState;
         MatchFlowManager.ButtonStatusUpdated += AbleToDoMove;
         UIManager.DisableButtonsRequested += DisableButton;
 
@@ -24,6 +29,7 @@ public class ActionButton : MonoBehaviour
 
     void OnDisable()
     {
+        ActionButton.CheckIsSelectedRequested -= ToggleSelectedState;
         MatchFlowManager.ButtonStatusUpdated -= AbleToDoMove;
         UIManager.DisableButtonsRequested -= DisableButton;
     }
@@ -33,21 +39,23 @@ public class ActionButton : MonoBehaviour
     {
         // SFXRequested?.Invoke("Click");
         // MoveSelected?.Invoke(); // Should invoke UIManager.DisableAllMoveButtons()
+        IsSelected = !IsSelected;
+        PreventSelfDisable = true;
+        CheckIsSelectedRequested?.Invoke(IsSelected);
         FightMoveSelected?.Invoke(FightMove); // Should invoke MatchFlowManager.SetPlayerMove() // SetPlayerMove() will be invoked elswhere
     }
 
     void AbleToDoMove(int[] playerEnergyAndSubSystemsData)
     {
         // playerEnergyAndSubSystemsData // index 0 is the amount of energy available; indexes 1 through 5 are truthy values (0 is broken; 1 is not broken)
-        bool isRequirementMet = true;
+        bool hasEnoughEnergy = true;
         // Check if enough energy is available
         if(playerEnergyAndSubSystemsData[0] < FightMove.Requirements[0])   
-            isRequirementMet = false;
+            hasEnoughEnergy = false;
 
         //Check if required subsystems are still active
-        isRequirementMet = CheckSubSystems(playerEnergyAndSubSystemsData,  isRequirementMet);
-
-        FightMoveButton.interactable = isRequirementMet;
+        AreRequirementsMet = CheckSubSystems(playerEnergyAndSubSystemsData, hasEnoughEnergy);
+        FightMoveButton.interactable = AreRequirementsMet;
     }
 
     bool CheckSubSystems(int[] playerEnergyAndSubSystemsData, bool isRequirementMet)
@@ -124,6 +132,25 @@ public class ActionButton : MonoBehaviour
     {
         FightMoveImage.sprite = FightMove.Icon;
         FightMoveButton.interactable = true;
+    }
+
+    void ToggleSelectedState(bool otherButtonIsSelected)
+    {
+        if(otherButtonIsSelected && !PreventSelfDisable)
+            IsSelected = false;
+
+        if(IsSelected)
+        {
+            gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetSelected);
+            FightMoveButton.interactable = false;
+        }
+        else
+        {
+            gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
+            FightMoveButton.interactable = AreRequirementsMet;
+        }
+
+        PreventSelfDisable = false;
     }
 
 }
