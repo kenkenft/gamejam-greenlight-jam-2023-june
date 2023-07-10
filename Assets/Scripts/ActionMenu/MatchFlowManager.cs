@@ -29,6 +29,8 @@ public class MatchFlowManager : MonoBehaviour
     public delegate bool IntForBool(int data);
     public static IntForBool TileOccupationRequested; 
     public static IntForBool CheckTileWithinRangeRequested;
+    public delegate bool BoolRequested();
+    public static BoolRequested TurnHasEnded;
     
     void OnEnable()
     {
@@ -85,8 +87,9 @@ public class MatchFlowManager : MonoBehaviour
         _priorityOutcome = ResolvePriority();
         CheckHyperArmourCapabilities();
         ResolveMoves();
-        // DecrementTimer(); //ToDo
-        // CheckTimeExpire(); // ToDO
+
+        _hasTimerExpired = TurnHasEnded.Invoke();
+
         if(!_isSomeoneDead && !_hasTimerExpired)
         {
             // ApplySecondaryEffects(); // ToDo
@@ -100,7 +103,10 @@ public class MatchFlowManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Game Over. Player has died");
+            if(_hasTimerExpired)
+                Debug.Log("Game Over. Time has expired");
+            if(_isSomeoneDead)
+                Debug.Log("Game Over. Player has died");
             // ToDo determine detailed cause of death i.e. All subsystems destroyed and/or main health is zero
         }
     }
