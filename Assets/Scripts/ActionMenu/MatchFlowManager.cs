@@ -103,6 +103,7 @@ public class MatchFlowManager : MonoBehaviour
         }
         else
         {
+            // CheckEndConditions();
             if(_hasTimerExpired)
                 Debug.Log("Game Over. Time has expired");
             if(_isSomeoneDead)
@@ -483,6 +484,22 @@ public class MatchFlowManager : MonoBehaviour
     {
         bool isBuffActive = fighters[0].GetActiveHeadBuff() == targetBuff;
         return isBuffActive;
+    }
+
+    void CheckEndConditions()
+    {
+        if(_areAllSusbSytemsDestroyed[0] || _isMainHealthZero[0])
+        {
+            // Player has died. You lose
+        }
+        else if(_areAllSusbSytemsDestroyed[1] || _isMainHealthZero[1])
+        {
+            // Kaiju is dead. You win
+        }
+        else if( _hasTimerExpired & _areAllSusbSytemsDestroyed[1] && _isMainHealthZero[1])
+        {
+            // Timer expired, but kaiju has retreated. You win
+        }
     }
 
 }
