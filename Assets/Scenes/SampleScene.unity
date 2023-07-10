@@ -310,9 +310,9 @@ RectTransform:
   m_Father: {fileID: 948838986}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -207.00055, y: -180.79}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -239, y: 414}
   m_SizeDelta: {x: 1, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &21393368
@@ -484,6 +484,10 @@ PrefabInstance:
     - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
       propertyPath: m_Name
       value: ArenaTile05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
@@ -2482,6 +2486,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArenaTile04
       objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
 --- !u!224 &723619694 stripped
@@ -2846,6 +2854,10 @@ PrefabInstance:
     - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
       propertyPath: m_Name
       value: ArenaTile00
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8209980094596001492, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
       propertyPath: m_CullTransparentMesh
@@ -3807,6 +3819,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArenaTile03
       objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
 --- !u!224 &1132622893 stripped
@@ -4025,6 +4041,10 @@ PrefabInstance:
     - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
       propertyPath: m_Name
       value: ArenaTile01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
@@ -5523,6 +5543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArenaTile02
       objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
 --- !u!224 &1597256906 stripped
@@ -5927,6 +5951,7 @@ MonoBehaviour:
   confirmationButton: {fileID: 1722081187}
   SelectedMove: {fileID: 0}
   TargetedBodyParts: 0000000000000000000000000000000000000000
+  RelativeDirectionData: 0000000001000000
 --- !u!1001 &1740266209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6486,6 +6511,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArenaTile07
       objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
 --- !u!224 &1910711553 stripped
@@ -6690,6 +6719,10 @@ PrefabInstance:
     - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
       propertyPath: m_Name
       value: ArenaTile06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6718245327973893860, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f40aca7e245b7f143ba7aee4afe1cfcc, type: 3}

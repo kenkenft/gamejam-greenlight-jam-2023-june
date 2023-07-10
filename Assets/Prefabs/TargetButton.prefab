@@ -149,7 +149,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 4231104828792318414}
   UIButton: {fileID: 4231104828792318449}
-  TargetPalleteCombo: 2
+  TargetPalleteCombo: 4
 --- !u!114 &3335087426509981903
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,18 +17,19 @@ public class TargetButton : MonoBehaviour
         if(!IsDefaultTarget)
         {
             // Debug.Log("Button clicked: " + WhichSubSystem);
+            int[] targetData = new int[2];
             if(!IsSelected)
             {
-                IsSelected = true;
-                int[] targetData = {(int)WhichSubSystem, 1};
-                TargetButtonClicked?.Invoke(targetData);
+                targetData = new int[] {(int)WhichSubSystem, 1};
+                gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetSelected);
             }
             else
             {
-                IsSelected = false;
-                int[] targetData = {(int)WhichSubSystem, 0};
-                TargetButtonClicked?.Invoke(targetData);
+                targetData = new int[] {(int)WhichSubSystem, 0};
+                gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);                
             }
+            IsSelected = !IsSelected;
+            TargetButtonClicked?.Invoke(targetData);
         }
     }
 }
