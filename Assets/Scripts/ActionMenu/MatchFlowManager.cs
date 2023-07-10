@@ -7,7 +7,6 @@ public class MatchFlowManager : MonoBehaviour
     public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
     private int _priorityOutcome = 0;    // Set to 1 for relative forward direction, -1 for relative backwards
     private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward; CPU positve direction is left-ward
-                    _relativeDirection = {1, -1}, // 1 for relative forward direction, -1 for relative backwards
                     _forwardsOrBackwards = {0, 0}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU 
                     _playerTargetedBodyParts = {0, 0, 0, 0, 0};
 
@@ -30,6 +29,7 @@ public class MatchFlowManager : MonoBehaviour
     {
         GameManager.RoundHasStarted += SetUp;
         ConfirmationButton.AllTargetsConfirmed += SetPlayerTargetedParts;
+        ConfirmationButton.RelativeDirectionConfirmed += SetRelativeDirection;
         ConfirmationButton.FightMoveConfirmed += SetPlayerMove;
         CategoryButton.OnCategorySelected += UpdateButtonUI;
     }
@@ -38,6 +38,7 @@ public class MatchFlowManager : MonoBehaviour
     {
         GameManager.RoundHasStarted -= SetUp;
         ConfirmationButton.AllTargetsConfirmed -= SetPlayerTargetedParts;
+        ConfirmationButton.RelativeDirectionConfirmed -= SetRelativeDirection;
         ConfirmationButton.FightMoveConfirmed -= SetPlayerMove;
         CategoryButton.OnCategorySelected -= UpdateButtonUI;
     }
@@ -53,8 +54,12 @@ public class MatchFlowManager : MonoBehaviour
     void SetPlayerTargetedParts(int[] targetedParts)
     {
         _playerTargetedBodyParts = targetedParts;
-
         // Debug.Log("SetPlayerTargetedParts called. {" + _playerTargetedBodyParts[0] + ", " + _playerTargetedBodyParts[1] + ", " + _playerTargetedBodyParts[2] + ", " + _playerTargetedBodyParts[3] + ", " + _playerTargetedBodyParts[4] +"}");
+    }
+
+    void SetRelativeDirection(int[] relativeDirectionData)
+    {
+        _forwardsOrBackwards[relativeDirectionData[0]] = relativeDirectionData[1]; 
     }
     
     void SetPlayerMove(SOFightMoves playerMove)
@@ -62,6 +67,7 @@ public class MatchFlowManager : MonoBehaviour
         PlayerMove = playerMove;        
         StartMoveResolution();
         // Debug.Log("SetPlayerMove called. Selected move: " + PlayerMove.name);
+        // Debug.Log("_forwardsOrBackwards[0]: " + _forwardsOrBackwards[0]);
     }
 
     void StartMoveResolution()
