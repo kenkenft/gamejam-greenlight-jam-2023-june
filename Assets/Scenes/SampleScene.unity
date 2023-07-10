@@ -288,12 +288,13 @@ MonoBehaviour:
   SubSystemAmount: 0
   StartEnergy: 0
   BuffEnergyCost: 0
-  EnergyPerTurn: 25
+  EnergyPerTurn: 50
   CurrentTileID: 0
   HealthSystemData: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   HealthBarData: 000000000000000000000000
   EnergyData: 000000000000000000000000
   EnergyBarData: 000000000000000000000000
+  ActiveBuff: 0
   SOCS: {fileID: 11400000, guid: c6199eaa6efb9c14ba5864b1b205b75f, type: 2}
 --- !u!224 &21393367
 RectTransform:
@@ -518,6 +519,7 @@ GameObject:
   - component: {fileID: 113078625}
   - component: {fileID: 113078627}
   - component: {fileID: 113078626}
+  - component: {fileID: 113078628}
   m_Layer: 0
   m_Name: Timer
   m_TagString: Untagged
@@ -589,6 +591,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113078624}
   m_CullTransparentMesh: 1
+--- !u!114 &113078628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113078624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab47ff44b45d2da4bac56530e2900f9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TimeLeft: 10
+  TimerText: {fileID: 113078626}
 --- !u!1 &114841878
 GameObject:
   m_ObjectHideFlags: 0
@@ -1855,6 +1871,7 @@ MonoBehaviour:
   HealthBarData: 000000000000000000000000
   EnergyData: 000000000000000000000000
   EnergyBarData: 000000000000000000000000
+  ActiveBuff: 0
   SOCS: {fileID: 11400000, guid: d8d5061d80d67b84a9aad66cf1cb3156, type: 2}
 --- !u!222 &518438077
 CanvasRenderer:
