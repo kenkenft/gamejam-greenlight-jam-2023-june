@@ -18,6 +18,8 @@ public class ActionButton : MonoBehaviour
     public static OnSomeEvent MoveSelected;
     public delegate void SendBool(bool state);
     public static SendBool CheckIsSelectedRequested;
+    public delegate bool IntForBool(int data);
+    public static IntForBool CurrentBuffRequested; 
     
     void OnEnable()
     {
@@ -55,7 +57,12 @@ public class ActionButton : MonoBehaviour
 
         //Check if required subsystems are still active
         AreRequirementsMet = CheckSubSystems(playerEnergyAndSubSystemsData, hasEnoughEnergy);
-        FightMoveButton.interactable = AreRequirementsMet;
+        
+        //For Buff/Special moves, check whether corresponding buff is already active before enabling button interactable to true 
+        if(FightMove.ActionType == GameProperties.ActionType.Special)
+            FightMoveButton.interactable = !CurrentBuffRequested.Invoke(FightMove.MainEffectValue[0]);
+        else    
+            FightMoveButton.interactable = AreRequirementsMet;
     }
 
     bool CheckSubSystems(int[] playerEnergyAndSubSystemsData, bool isRequirementMet)
@@ -133,9 +140,6 @@ public class ActionButton : MonoBehaviour
         FightMoveImage.sprite = FightMove.Icon;
         gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
         IsSelected = false;
-        //For Buff moves, check whether corresponding buff is already active before enabling button interactable to true 
-        // if(FightMove.ActionType == GameProperties.ActionType.Special)
-        // FightMoveButton.interactable = CurrentBuffRequested.Invoke(FightMove.MainEffectValue[0]);
         FightMoveButton.interactable = true;
     }
 

@@ -29,6 +29,7 @@ public class MatchFlowManager : MonoBehaviour
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
+        ActionButton.CurrentBuffRequested += CheckActivePlayerBuff;
         ConfirmationButton.AllTargetsConfirmed += SetPlayerTargetedParts;
         ConfirmationButton.RelativeDirectionConfirmed += SetRelativeDirection;
         ConfirmationButton.FightMoveConfirmed += SetPlayerMove;
@@ -38,6 +39,7 @@ public class MatchFlowManager : MonoBehaviour
     void OnDisable()
     {
         GameManager.RoundHasStarted -= SetUp;
+        ActionButton.CurrentBuffRequested -= CheckActivePlayerBuff;
         ConfirmationButton.AllTargetsConfirmed -= SetPlayerTargetedParts;
         ConfirmationButton.RelativeDirectionConfirmed -= SetRelativeDirection;
         ConfirmationButton.FightMoveConfirmed -= SetPlayerMove;
@@ -430,9 +432,10 @@ public class MatchFlowManager : MonoBehaviour
         fighters[1].GenerateEnergy();
     }
 
-    // bool CheckBuffActiveBuff(int targetBuff)
-    // {
-    //     // fighters[0].GetActiveHeadBuff()
-    // }
+    bool CheckActivePlayerBuff(int targetBuff)
+    {
+        bool isBuffActive = fighters[0].GetActiveHeadBuff() == targetBuff;
+        return isBuffActive;
+    }
 
 }
