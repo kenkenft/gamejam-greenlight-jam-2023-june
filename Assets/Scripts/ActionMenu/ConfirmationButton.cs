@@ -7,6 +7,7 @@ public class ConfirmationButton : MonoBehaviour
 {
     public Button confirmationButton;
     public SOFightMoves SelectedMove;
+    public int RelativeDirection = 1;
     public int[] TargetedBodyParts = {0, 0, 0, 0, 0};
 
     [HideInInspector]
@@ -14,6 +15,8 @@ public class ConfirmationButton : MonoBehaviour
     public static SendBool AllTargetsSet;
     public delegate void FightMoveSent(SOFightMoves fightMove);
     public static FightMoveSent FightMoveConfirmed;
+    public delegate void SendInt(int data);
+    public static SendInt RelativeDirectionConfirmed;
     public delegate void SendIntArray(int[] data);
     public static SendIntArray AllTargetsConfirmed;
 
@@ -23,6 +26,7 @@ public class ConfirmationButton : MonoBehaviour
     {
         ActionMenuUI.AllTargetsSet += SetInteractable;
         ActionMenuUI.AllTargetsConfirmed += SetTargetedBodyParts;
+        ActionMenuUI.RelativeDirectionConfirmed += SetRelativeDirection;
         ActionButton.FightMoveSelected += SetSelectedMove;
         
     }
@@ -31,6 +35,7 @@ public class ConfirmationButton : MonoBehaviour
     {
         ActionMenuUI.AllTargetsSet -= SetInteractable;
         ActionMenuUI.AllTargetsConfirmed -= SetTargetedBodyParts;
+        ActionMenuUI.RelativeDirectionConfirmed -= SetRelativeDirection;
         ActionButton.FightMoveSelected -= SetSelectedMove;
     }
 
@@ -49,9 +54,15 @@ public class ConfirmationButton : MonoBehaviour
         TargetedBodyParts = targetedBodyParts;
     }
 
+    void SetRelativeDirection(int relativeDirection)
+    {
+        RelativeDirection = relativeDirection;
+    }
+
     public void OnClick()
     {
         AllTargetsConfirmed?.Invoke(TargetedBodyParts);
+        RelativeDirectionConfirmed?.Invoke(RelativeDirection);
         FightMoveConfirmed?.Invoke(SelectedMove);
     }
 }

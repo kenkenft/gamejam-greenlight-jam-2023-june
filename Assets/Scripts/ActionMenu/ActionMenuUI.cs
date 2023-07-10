@@ -33,6 +33,9 @@ public class ActionMenuUI : MonoBehaviour
     public delegate void SendBool(bool state);
     public static SendBool AllTargetsSet;
 
+    public delegate void SendInt(int data);
+    public static SendInt RelativeDirectionConfirmed;
+
     public delegate void SendIntArray(int[] data);
     public static SendIntArray AllTargetsConfirmed;
     
@@ -266,11 +269,10 @@ public class ActionMenuUI : MonoBehaviour
     void SetMoveDirection(int relativeDirection)
     {
         Debug.Log("TargetDirection clicked: " + relativeDirection);
-        if(relativeDirection !=0)
-            Debug.Log("Direction button selected: " + relativeDirection + ". Enable Confirmation button and send data");
-        else
-            Debug.Log("Direction button unclicked! Disable Confirmation button");
-        // Disable other button? Disable clicked button?
-        // Invoke method that sends data to ConfirmationButton
+        bool isDirectionSet = relativeDirection != 0;
+        AllTargetsSet?.Invoke(isDirectionSet);
+
+        if(isDirectionSet)
+            RelativeDirectionConfirmed?.Invoke(relativeDirection);
     }
 }
