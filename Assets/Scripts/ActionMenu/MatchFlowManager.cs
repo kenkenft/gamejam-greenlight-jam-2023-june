@@ -7,7 +7,7 @@ public class MatchFlowManager : MonoBehaviour
     public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
     private int _priorityOutcome = 0;    // Set to 1 for relative forward direction, -1 for relative backwards
     private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward; CPU positve direction is left-ward
-                    _forwardsOrBackwards = {0, 0}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU 
+                    _forwardsOrBackwards = {1, 1}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU 
                     _playerTargetedBodyParts = {0, 0, 0, 0, 0};
 
     public SOFightMoves PlayerMove, CPUMove;
@@ -24,6 +24,7 @@ public class MatchFlowManager : MonoBehaviour
     public static SendIntArray MovementCommited;
     public delegate bool IntForBool(int data);
     public static IntForBool TileOccupationRequested; 
+    public static IntForBool CheckTileWithinRangeRequested;
     
     void OnEnable()
     {
@@ -169,7 +170,7 @@ public class MatchFlowManager : MonoBehaviour
             case 2: // Movement
             {
                 // Debug.Log("Player " + playerID + " move type: MOVEMENT");
-                // MoveCharacter(playerID, orderIndex);
+                MoveCharacter(playerID, orderIndex);
                 break;
             }
             case 3: // Modify Health
@@ -202,23 +203,42 @@ public class MatchFlowManager : MonoBehaviour
         bool canMoveUnimpeded = true;
         // Retrieve character current tile
         int currentTileID = fighters[playerID].CurrentTileID, 
-            movementRange = _selectedFightMoves[orderIndex].MainEffectValue[0];
-        // Check if target tile or tiles on the way to target tile is either occupied or out of indexed tile range // 
-        for(int i = 0; i < movementRange; i++)
-        {
-            if(TileOccupationRequested.Invoke(currentTileID + (i * _positiveDirection[playerID])))
-            {
-                canMoveUnimpeded = false;
-                break;
-            }
-        }
-            // If occupied or target tile is out of range, then cancel movement.
-            // Otherwise, call MovementCommited?.Invoke()
+            movementRange = _selectedFightMoves[orderIndex].MainEffectValue[0],
+            overallDirection = _forwardsOrBackwards[playerID] * _positiveDirection[playerID];   // 1 when going rightwards, -1 when going leftwards
+
+        // Check if target tile or tiles on the way to target tile is either occupied or out of indexed tile range
+        canMoveUnimpeded = CheckValidTargetTile(currentTileID, movementRange, overallDirection);
+
+        // If occupied or target tile is out of range, then cancel movement. Otherwise, call MovementCommited?.Invoke()
         if(canMoveUnimpeded)
         {
-            int[] targetData = {playerID, (currentTileID + (movementRange * _positiveDirection[playerID]))};
-            MovementCommited?.Invoke(targetData);
+            int[] targetData = {playerID, (currentTileID + (movementRange * overallDirection))};
+            Debug.Log("Player " + targetData[0] + " moving to Tile " + targetData[1]);
+            // MovementCommited?.Invoke(targetData);
         }
+    }
+
+    bool CheckValidTargetTile(int currentTileID, int movementRange, int overallDirection)
+    {
+        int targetTile = 0;
+        for(int i = 1; i <= movementRange; i++)
+        {
+            targetTile = currentTileID + (i * overallDirection);
+            if(CheckTileWithinRangeRequested.Invoke(targetTile))
+            {
+                if(TileOccupationRequested.Invoke(targetTile))
+                {
+                    // Debug.Log("Player cannot move. Tile" + targetTile + ": \nIsOccupied: " + TileOccupationRequested.Invoke(targetTile));
+                    return false;
+                }
+            }
+            else
+            {    
+                // Debug.Log("Player cannot move. Tile" + targetTile + " IsOutOfrange: " + CheckTileWithinRangeRequested?.Invoke(targetTile));
+                return false;
+            }
+        }
+        return true;
     }
     void ModifyHealth(int orderIndex, int playerID)
     {
