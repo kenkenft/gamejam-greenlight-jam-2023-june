@@ -69,17 +69,10 @@ public class GridManager : MonoBehaviour
             middleTiles[1] = (int)Mathf.Ceil((tileAmount / 2)) + 1;
             middleTiles[0] = (int)Mathf.Floor((tileAmount / 2) - 1);
         }
-        Debug.Log("Player one will be on tile: " + middleTiles[0] + ". Player two will be on tile: " + middleTiles[1]);
+        // Debug.Log("Player one will be on tile: " + middleTiles[0] + ". Player two will be on tile: " + middleTiles[1]);
         return middleTiles;
     }
 
-    // public void MoveCharacterHere(int fighterID, int targetTile)
-    // {
-    //     CharacterDisplay fighter = Fighters[fighterID];
-    //     Tiles[fighter.CurrentTileID].SetOccupant(false);
-    //     Tiles[targetTile].SetOccupant(true, fighter);
-    //     fighter.CurrentTileID = targetTile;
-    // }
     public void MoveCharacterHere(int[] targetData)
     {
         CharacterDisplay fighter = Fighters[targetData[0]];
@@ -95,7 +88,7 @@ public class GridManager : MonoBehaviour
 
     bool IsValidTileID(int targetTile)
     {
-        bool isValidTile = (targetTile > 0 & targetTile < Tiles.Length);
+        bool isValidTile = (targetTile >= 0 & targetTile < Tiles.Length);
         // Debug.Log("targetTile " + targetTile + " is a valid tile: " + isValidTile);
         return isValidTile;
     }

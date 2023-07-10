@@ -5,9 +5,9 @@ using UnityEngine;
 public class MatchFlowManager : MonoBehaviour
 {
     public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
-    private int _priorityOutcome = 0;    // Set to 1 for relative forward direction, -1 for relative backwards
-    private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward; CPU positve direction is left-ward
-                    _forwardsOrBackwards = {1, 1}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU 
+    private int _priorityOutcome = 0;    
+    private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward and index 0; CPU positve direction is left-ward and index 1
+                    _forwardsOrBackwards = {1, 1}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU. Set to 1 for relative forward direction, -1 for relative backwards
                     _playerTargetedBodyParts = {0, 0, 0, 0, 0};
 
     public SOFightMoves PlayerMove, CPUMove;
@@ -68,7 +68,7 @@ public class MatchFlowManager : MonoBehaviour
         PlayerMove = playerMove;        
         StartMoveResolution();
         // Debug.Log("SetPlayerMove called. Selected move: " + PlayerMove.name);
-        // Debug.Log("_forwardsOrBackwards[0]: " + _forwardsOrBackwards[0]);
+        Debug.Log("_forwardsOrBackwards[0]: " + _forwardsOrBackwards[0]);
     }
 
     void StartMoveResolution()
@@ -176,7 +176,7 @@ public class MatchFlowManager : MonoBehaviour
             case 3: // Modify Health
             {
                 // Debug.Log("Player " + playerID + " move type: MODIFY HEALTH");
-                ModifyHealth(orderIndex, playerID);
+                ModifyHealth(playerID, orderIndex);
                 break;
             }
             default:
@@ -213,8 +213,8 @@ public class MatchFlowManager : MonoBehaviour
         if(canMoveUnimpeded)
         {
             int[] targetData = {playerID, (currentTileID + (movementRange * overallDirection))};
-            Debug.Log("Player " + targetData[0] + " moving to Tile " + targetData[1]);
-            // MovementCommited?.Invoke(targetData);
+            // Debug.Log("Player " + targetData[0] + " moving to Tile " + targetData[1]);
+            MovementCommited?.Invoke(targetData);
         }
     }
 
@@ -238,9 +238,10 @@ public class MatchFlowManager : MonoBehaviour
                 return false;
             }
         }
+        // Debug.Log("Player can move");
         return true;
     }
-    void ModifyHealth(int orderIndex, int playerID)
+    void ModifyHealth(int playerID, int orderIndex)
     {
             int[] healthChanges = {0, 0, 0, 0, 0, 0}; 
             int fighterIndex = playerID;
