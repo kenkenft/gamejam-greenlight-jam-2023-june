@@ -24,7 +24,10 @@ public class ColorTintButtonSetUp : MonoBehaviour
                                                                     GameProperties.ColourPalleteRGBA["Black"] }},
         {GameProperties.ColorCombo.TargetSelected, new [] {GameProperties.ColourPalleteRGBA["Special"], GameProperties.ColourPalleteRGBA["LightGrey"], 
                                                             GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["Special"], 
-                                                            GameProperties.ColourPalleteRGBA["Black"] }}
+                                                            GameProperties.ColourPalleteRGBA["Black"] }},
+        {GameProperties.ColorCombo.TargetIsNotSelected, new [] {GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["LightGrey"], 
+                                                                GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["MediumGrey"], 
+                                                                GameProperties.ColourPalleteRGBA["Black"] }}
     };
 
     void OnEnable()

@@ -36,16 +36,14 @@ public class TargetDirectionButton : MonoBehaviour
 
     void ToggleSelectedState(bool otherButtonIsSelected)
     {
-        ColorTintButtonSetUp buttonPallete = gameObject.GetComponent<ColorTintButtonSetUp>();
         if(otherButtonIsSelected && !PreventSelfDisable)
-        {    
             IsSelected = false;
-            buttonPallete.SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
-        }
-        else
-        {
-            buttonPallete.SetUpButtonColours(GameProperties.ColorCombo.TargetSelected);
-        }
+
+        if(IsSelected)
+                gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetSelected);
+            else
+                gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
+
         PreventSelfDisable = false;
     }
 
