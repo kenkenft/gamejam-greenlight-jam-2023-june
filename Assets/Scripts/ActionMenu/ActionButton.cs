@@ -156,7 +156,10 @@ public class ActionButton : MonoBehaviour
         else
         {
             gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
-            FightMoveButton.interactable = AreRequirementsMet;
+            if(FightMove.ActionType == GameProperties.ActionType.Special)
+                FightMoveButton.interactable = !CurrentBuffRequested.Invoke(FightMove.MainEffectValue[0]);
+            else
+                FightMoveButton.interactable = AreRequirementsMet;
         }
 
         PreventSelfDisable = false;
