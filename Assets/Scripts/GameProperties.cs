@@ -45,4 +45,8 @@ public class GameProperties
     public enum ColorCombo{
                         Standard, TargetButtonIsDefault, TargetButtonIsOptional, TargetSelected, TargetIsNotSelected, None
                         };
+
+    public enum BuffTypes{
+                        None, Repair, Defense, Move, Attack
+                        };
 }

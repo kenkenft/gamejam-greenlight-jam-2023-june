@@ -32,13 +32,7 @@ public class CharacterDisplay : MonoBehaviour
                                                         {"AttackFail", 0}
                                                         };
 
-    public Dictionary<string, int> HeadBuffs = new Dictionary<string, int>(){
-                                                        {"None", 1},
-                                                        {"Repair", 0},
-                                                        {"Defense", 0},
-                                                        {"Move", 0},
-                                                        {"Attack", 0}
-                                                        }; 
+    [SerializeField] public GameProperties.BuffTypes ActiveBuff;
 
     public SOCharacterStats SOCS;
 
@@ -72,7 +66,7 @@ public class CharacterDisplay : MonoBehaviour
         EnergyBarData[0] = HealthBarNum;
         EnergyBarData[1] = 100; 
 
-        SetActiveHeadBuff(0);
+        SetActiveHeadBuff((int)GameProperties.BuffTypes.None);
     }
 
     void SetUpSystemHealth()
@@ -123,37 +117,17 @@ public class CharacterDisplay : MonoBehaviour
 
     public void SetActiveHeadBuff(int targetBuffID)
     {
-        string targetBuff = buffTypes[targetBuffID];
-
-        List<string> keyList = new List<string>(HeadBuffs.Keys);
-        //Enables target buff, and disables all others.
-        //  foreach(string buffKey in HeadBuffs.Keys)
-        foreach(string buffKey in keyList)
-         {
-            if(buffKey == targetBuff)
-                HeadBuffs[buffKey] = 1;
-            else
-                HeadBuffs[buffKey] = 0;
-         }
-
+        ActiveBuff = (GameProperties.BuffTypes)targetBuffID;
     }
 
-    public string GetActiveHeadBuff()
+    public int GetActiveHeadBuff()
     {
-        foreach(var buff in HeadBuffs)
-         {
-            if(buff.Value == 1)
-                return buff.Key;
-         }
-         return "None"; // In the event an improper string is given, just send back "None"
+        return (int)ActiveBuff;
     }
 
-    public int CheckWhichHeadBuff(string targetBuff)
+    public int CheckWhichHeadBuff(int targetBuff)
     {
-        if(GetActiveHeadBuff() == targetBuff)
-            return 1;   // Enquired buff is active
-        else
-            return 0;   // Enquired buff is not active
+        return (int)ActiveBuff;
     }
 
     public void SetTempEffectActive(int targetEffect, int state)
@@ -193,31 +167,4 @@ public class CharacterDisplay : MonoBehaviour
         // Debug.Log(gameObject.name + " Energy generated: " + EnergyGenerated + ". Total energy: " + EnergyData[0] + "%"); 
     }
 
-    // public int GetCharacterData(string targetCharacterProperty, string DictKey = "Default")
-    // {
-    //     int result = 0;
-
-    //     switch(targetCharacterProperty)
-    //     {
-    //         case "HeadBuffs":
-    //         {
-    //             result = CheckWhichHeadBuff(DictKey);
-    //             break;
-    //         }
-    //         case "TempEffects":
-    //         {
-    //             result = GetTempEffectActive(DictKey);
-    //             break;
-    //         }
-    //         case "HealthBarNum":
-    //         {
-    //             result = HealthBarNum;
-    //             break;
-    //         }
-    //         default:
-    //             break;
-    //     }
-
-    //     return result;
-    // }
 }

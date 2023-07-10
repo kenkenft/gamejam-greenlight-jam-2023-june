@@ -95,8 +95,11 @@ public class MatchFlowManager : MonoBehaviour
 
     int ResolvePriority()
     {
-        int priorityPlayer = PlayerMove.Priority + fighters[0].CheckWhichHeadBuff("Move"), 
-            priorityCPU = CPUMove.Priority + fighters[1].CheckWhichHeadBuff("Move");
+        // int priorityPlayer = PlayerMove.Priority + fighters[0].CheckWhichHeadBuff((int)GameProperties.BuffTypes.Move), 
+        //     priorityCPU = CPUMove.Priority + fighters[1].CheckWhichHeadBuff((int)GameProperties.BuffTypes.Move);
+        
+        int priorityPlayer = ApplyPriorityBonus(PlayerMove.Priority, 0), 
+            priorityCPU = ApplyPriorityBonus(CPUMove.Priority, 1);
 
         if( priorityPlayer > priorityCPU)
             return 0;   // Player moves first
@@ -105,6 +108,14 @@ public class MatchFlowManager : MonoBehaviour
         else
             return 2;   // Draw
     } 
+
+    int ApplyPriorityBonus(int movePriority, int playerID)
+    {
+        if(fighters[playerID].CheckWhichHeadBuff((int)GameProperties.BuffTypes.Move) == (int)GameProperties.BuffTypes.Move)
+            return movePriority + 1;
+        else
+            return movePriority;
+    }
 
     void CheckHyperArmourCapabilities()
     {
@@ -158,7 +169,7 @@ public class MatchFlowManager : MonoBehaviour
             case 0: // Buff
             {
                 // Debug.Log("Player " + playerID + " move type: BUFF");
-                ApplyBuff(playerID, orderIndex, _selectedFightMoves[orderIndex].MainEffectValue[0]);    // Assumes MainEffectValue[0] is the buffType id
+                ApplyBuff(playerID, orderIndex);    // Assumes MainEffectValue[0] is the buffType id
                 break;
             }
             case 1: // Defensive move
@@ -187,10 +198,11 @@ public class MatchFlowManager : MonoBehaviour
         }
     } // End of ApplyMove()
 
-    void ApplyBuff(int playerID, int orderIndex, int buffTypeID)
+    void ApplyBuff(int playerID, int orderIndex)
     {
-        fighters[playerID].SetActiveHeadBuff(buffTypeID);   // Assumes MainEffectValue is the buffType id
+        fighters[playerID].SetActiveHeadBuff(_selectedFightMoves[orderIndex].MainEffectValue[0]);   // Assumes MainEffectValue is the buffType id
         fighters[playerID].EnergyData[1] = _selectedFightMoves[orderIndex].SecondaryEffects[1]; // Update buff's energy cost
+        Debug.Log("Player " + playerID + " active buff: " + (GameProperties.BuffTypes)fighters[playerID].GetActiveHeadBuff() + ". Energy cost: " +fighters[playerID].EnergyData[1]);
     }
 
     void ApplyDefense(int playerID)
@@ -282,7 +294,7 @@ public class MatchFlowManager : MonoBehaviour
     int[] ApplyDefenseReductions(int orderIndex, int playerID, int[] potentialDamage)
     {
         // Apply bonus defense reduction from HeadBufff: Defense 
-        if(fighters[1 - playerID].GetActiveHeadBuff() == "Defense")
+        if(fighters[1 - playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Defense)
         {
             for(int i = 0; i < potentialDamage.Length; i++)
                 potentialDamage[i] -= ((60 * potentialDamage[i]) / 100);
@@ -417,5 +429,10 @@ public class MatchFlowManager : MonoBehaviour
         fighters[0].GenerateEnergy();
         fighters[1].GenerateEnergy();
     }
+
+    // bool CheckBuffActiveBuff(int targetBuff)
+    // {
+    //     // fighters[0].GetActiveHeadBuff()
+    // }
 
 }

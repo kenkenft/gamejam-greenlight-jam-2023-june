@@ -133,6 +133,9 @@ public class ActionButton : MonoBehaviour
         FightMoveImage.sprite = FightMove.Icon;
         gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
         IsSelected = false;
+        //For Buff moves, check whether corresponding buff is already active before enabling button interactable to true 
+        // if(FightMove.ActionType == GameProperties.ActionType.Special)
+        // FightMoveButton.interactable = CurrentBuffRequested.Invoke(FightMove.MainEffectValue[0]);
         FightMoveButton.interactable = true;
     }
 
