@@ -131,6 +131,8 @@ public class ActionButton : MonoBehaviour
     public void SetUpActionButton()
     {
         FightMoveImage.sprite = FightMove.Icon;
+        gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
+        IsSelected = false;
         FightMoveButton.interactable = true;
     }
 
