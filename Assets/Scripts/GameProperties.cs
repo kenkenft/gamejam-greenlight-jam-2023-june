@@ -43,6 +43,6 @@ public class GameProperties
                             };
 
     public enum ColorCombo{
-                        Standard, TargetButtonIsDefault, TargetButtonIsOptional, None
+                        Standard, TargetButtonIsDefault, TargetButtonIsOptional, TargetSelected, None
                         };
 }

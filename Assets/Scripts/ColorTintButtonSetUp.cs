@@ -13,9 +13,18 @@ public class ColorTintButtonSetUp : MonoBehaviour
 
     private Dictionary<GameProperties.ColorCombo, Color[]> PalleteCombo = new Dictionary<GameProperties.ColorCombo, Color[]>()
     {
-        {GameProperties.ColorCombo.Standard, new [] {GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["Special"], GameProperties.ColourPalleteRGBA["DarkGrey"],GameProperties.ColourPalleteRGBA["LightGrey"], GameProperties.ColourPalleteRGBA["Black"] }},
-        {GameProperties.ColorCombo.TargetButtonIsDefault, new [] {GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["Special"], GameProperties.ColourPalleteRGBA["DarkGrey"],GameProperties.ColourPalleteRGBA["LightGrey"], GameProperties.ColourPalleteRGBA["Special"] }},
-        {GameProperties.ColorCombo.TargetButtonIsOptional, new [] {GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["LightGrey"], GameProperties.ColourPalleteRGBA["DarkGrey"],GameProperties.ColourPalleteRGBA["Special"], GameProperties.ColourPalleteRGBA["Black"] }}
+        {GameProperties.ColorCombo.Standard, new [] {GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["Special"], 
+                                                    GameProperties.ColourPalleteRGBA["DarkGrey"],GameProperties.ColourPalleteRGBA["LightGrey"], 
+                                                    GameProperties.ColourPalleteRGBA["Black"] }},
+        {GameProperties.ColorCombo.TargetButtonIsDefault, new [] {GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["Special"], 
+                                                                GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["LightGrey"], 
+                                                                GameProperties.ColourPalleteRGBA["Special"] }},
+        {GameProperties.ColorCombo.TargetButtonIsOptional, new [] {GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["LightGrey"], 
+                                                                    GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["Special"], 
+                                                                    GameProperties.ColourPalleteRGBA["Black"] }},
+        {GameProperties.ColorCombo.TargetSelected, new [] {GameProperties.ColourPalleteRGBA["Special"], GameProperties.ColourPalleteRGBA["LightGrey"], 
+                                                            GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["Special"], 
+                                                            GameProperties.ColourPalleteRGBA["Black"] }}
     };
 
     void OnEnable()

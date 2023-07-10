@@ -42,6 +42,7 @@ public class ActionMenuUI : MonoBehaviour
         CategoryButton.OnCategoryButtonPressed += ShowActionTray;
         ActionButton.FightMoveSelected += CheckTargetTray;
         TargetButton.TargetButtonClicked += SetSubSystemTarget;
+        TargetDirectionButton.DirectionButtonClicked += SetMoveDirection;
     }
 
     void OnDisable()
@@ -50,6 +51,7 @@ public class ActionMenuUI : MonoBehaviour
         CategoryButton.OnCategoryButtonPressed -= ShowActionTray;
         ActionButton.FightMoveSelected -= CheckTargetTray;
         TargetButton.TargetButtonClicked -= SetSubSystemTarget;
+        TargetDirectionButton.DirectionButtonClicked -= SetMoveDirection;
     }
     
 
@@ -223,9 +225,9 @@ public class ActionMenuUI : MonoBehaviour
                 if(!button.IsDefaultTarget && !button.IsSelected)
                     button.TargettingButton.interactable = areTargetsRemaining;
             }
-            //Enable confirmation button if no more targets, else disable button until all targets selected.
         }
-        AllTargetsSet?.Invoke(!areTargetsRemaining);
+        AllTargetsSet?.Invoke(!areTargetsRemaining);  //Enable confirmation button if no more targets, else disable button until all targets selected.
+
     }
 
     void SetCounterText()
@@ -261,4 +263,14 @@ public class ActionMenuUI : MonoBehaviour
         }
     }
 
+    void SetMoveDirection(int relativeDirection)
+    {
+        Debug.Log("TargetDirection clicked: " + relativeDirection);
+        if(relativeDirection !=0)
+            Debug.Log("Direction button selected: " + relativeDirection + ". Enable Confirmation button and send data");
+        else
+            Debug.Log("Direction button unclicked! Disable Confirmation button");
+        // Disable other button? Disable clicked button?
+        // Invoke method that sends data to ConfirmationButton
+    }
 }
