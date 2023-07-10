@@ -22,6 +22,16 @@ public class GameProperties
                                                                                                 {"Special", new Color((float)49/255, (float)55/255, (float)253/255, 1f)}
                                                                                             };
 
+    public static Dictionary<ActionType, int> ActionTypePriority = new Dictionary<ActionType, int>()
+                                                                                            {
+                                                                                                {ActionType.Attack,0},
+                                                                                                {ActionType.Defend,2},
+                                                                                                {ActionType.Move,1},
+                                                                                                {ActionType.Special,4},
+                                                                                                {ActionType.Repair,3},
+                                                                                                {ActionType.None, 5}
+                                                                                            };
+    
     public enum ActionCategories{
                                     Attack, Defend, Move, Special, None 
                                   };

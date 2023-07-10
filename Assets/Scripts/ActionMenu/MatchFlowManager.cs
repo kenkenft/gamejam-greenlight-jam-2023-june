@@ -70,7 +70,7 @@ public class MatchFlowManager : MonoBehaviour
         PlayerMove = playerMove;        
         StartMoveResolution();
         // Debug.Log("SetPlayerMove called. Selected move: " + PlayerMove.name);
-        Debug.Log("_forwardsOrBackwards[0]: " + _forwardsOrBackwards[0]);
+        // Debug.Log("_forwardsOrBackwards[0]: " + _forwardsOrBackwards[0]);
     }
 
     void StartMoveResolution()
@@ -101,15 +101,41 @@ public class MatchFlowManager : MonoBehaviour
         //     priorityCPU = CPUMove.Priority + fighters[1].CheckWhichHeadBuff((int)GameProperties.BuffTypes.Move);
         
         int priorityPlayer = ApplyPriorityBonus(PlayerMove.Priority, 0), 
-            priorityCPU = ApplyPriorityBonus(CPUMove.Priority, 1);
+            priorityCPU = ApplyPriorityBonus(CPUMove.Priority, 1),
+            outcomeCheck = 0;
+        
+        // Debug.Log("Move Priority checked first");
+        outcomeCheck = CheckPriority(priorityPlayer, priorityCPU);
+        if(outcomeCheck != 2)
+        {
+            return outcomeCheck;
+        }
+        else
+        {
+            // Debug.Log("Move Priorities were equal. Checking ActionType rankings");
+            priorityPlayer = GameProperties.ActionTypePriority[PlayerMove.ActionType];
+            priorityCPU = GameProperties.ActionTypePriority[CPUMove.ActionType];
+            outcomeCheck = CheckPriority(priorityPlayer, priorityCPU);
 
+            if(outcomeCheck != 2)
+                return outcomeCheck;
+            else
+            {
+                // Debug.Log("Move priority and action type are the same. Defaulted to giving player priority");
+                return 0;   // In the event that move priority and action type are the same, player always gets priority.
+            }
+        }
+    } 
+
+    int CheckPriority(int priorityPlayer, int priorityCPU)
+    {
         if( priorityPlayer > priorityCPU)
             return 0;   // Player moves first
         else if(priorityPlayer < priorityCPU)
             return 1;   // Opponent moves first
         else
-            return 2;   // Draw
-    } 
+            return 2;   // Both priorities are equal
+    }
 
     int ApplyPriorityBonus(int movePriority, int playerID)
     {
@@ -150,11 +176,6 @@ public class MatchFlowManager : MonoBehaviour
                 _selectedFightMoves[1] = PlayerMove;
                 ApplyMove(0, fighters[1].HealthBarNum);
                 ApplyMove(1, fighters[0].HealthBarNum);
-                break; 
-            }
-            case 2:
-            {
-                Debug.Log("Both moves equal priority. Analysing further");
                 break; 
             }
             default:
