@@ -14,6 +14,7 @@ public class ConfirmationButton : MonoBehaviour
     [HideInInspector]
     public delegate void SendBool(bool state);
     public static SendBool AllTargetsSet;
+    public static SendBool ButtonPressed;
     public delegate void FightMoveSent(SOFightMoves fightMove);
     public static FightMoveSent FightMoveConfirmed;
     // public delegate void SendInt(int data);
@@ -30,7 +31,6 @@ public class ConfirmationButton : MonoBehaviour
         ActionMenuUI.AllTargetsConfirmed += SetTargetedBodyParts;
         ActionMenuUI.RelativeDirectionConfirmed += SetRelativeDirection;
         ActionButton.FightMoveSelected += SetSelectedMove;
-        
     }
 
     void OnDisable()
@@ -65,6 +65,7 @@ public class ConfirmationButton : MonoBehaviour
 
     public void OnClick()
     {
+        ButtonPressed?.Invoke(false);
         AllTargetsConfirmed?.Invoke(TargetedBodyParts);
         RelativeDirectionConfirmed?.Invoke(RelativeDirectionData);
         FightMoveConfirmed?.Invoke(SelectedMove);

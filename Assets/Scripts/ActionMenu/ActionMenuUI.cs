@@ -46,6 +46,7 @@ public class ActionMenuUI : MonoBehaviour
         ActionButton.FightMoveSelected += CheckTargetTray;
         TargetButton.TargetButtonClicked += SetSubSystemTarget;
         TargetDirectionButton.DirectionButtonClicked += SetMoveDirection;
+        ConfirmationButton.ButtonPressed += CloseOtherTrays;
     }
 
     void OnDisable()
@@ -55,6 +56,7 @@ public class ActionMenuUI : MonoBehaviour
         ActionButton.FightMoveSelected -= CheckTargetTray;
         TargetButton.TargetButtonClicked -= SetSubSystemTarget;
         TargetDirectionButton.DirectionButtonClicked -= SetMoveDirection;
+        ConfirmationButton.ButtonPressed -= CloseOtherTrays;
     }
     
 
@@ -67,9 +69,14 @@ public class ActionMenuUI : MonoBehaviour
 
     public void ShowActionTray(int actionCategory)
     {
-        Debug.Log("Category button pressed: " + IntToActionCategory[actionCategory]);
+        // Debug.Log("Category button pressed: " + IntToActionCategory[actionCategory]);
         ToggleCategoryButtonInteractable(actionCategory);
         ToggleActionTray(true, IntToActionCategory[actionCategory]);
+    }
+
+    void CloseOtherTrays(bool state)
+    {
+        ToggleActionTray(state);
     }
 
     void ToggleActionTray(bool targetState, GameProperties.ActionCategories actionType = GameProperties.ActionCategories.None)
@@ -77,18 +84,17 @@ public class ActionMenuUI : MonoBehaviour
         if(targetState && actionType != GameProperties.ActionCategories.None)
         {
             TrayUIs[1].SetActive(true);   // Enable ActionTray
-
-
             List<SOFightMoves> relevantActions = GetRelevantActions(actionType);
             ActionTrayActivated?.Invoke(relevantActions);
 
-            
             DisableTraysCascade(2); // Hide SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
         }
         else
         {
             // Hide ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, and DirectionTargetTray
             DisableTraysCascade(1);
+            ToggleCategoryButtonInteractable(-1);
+            AllTargetsSet.Invoke(false);
         }
     }
 
@@ -268,7 +274,7 @@ public class ActionMenuUI : MonoBehaviour
 
     void SetMoveDirection(int relativeDirection)
     {
-        Debug.Log("TargetDirection clicked: " + relativeDirection);
+        // Debug.Log("TargetDirection clicked: " + relativeDirection);
         bool isDirectionSet = relativeDirection != 0;
         AllTargetsSet?.Invoke(isDirectionSet);
 
