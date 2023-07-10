@@ -10,6 +10,10 @@ public class MatchFlowManager : MonoBehaviour
                     _forwardsOrBackwards = {1, 1}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU. Set to 1 for relative forward direction, -1 for relative backwards
                     _playerTargetedBodyParts = {0, 0, 0, 0, 0};
 
+    private bool _isSomeoneDead = false, _hasTimerExpired = false;
+    private bool[] _areAllSusbSytemsDestroyed = {false, false},
+                    _isMainHealthZero = {false, false};
+
     public SOFightMoves PlayerMove, CPUMove;
     public SOFightMoves[] CPUMoveList;
     private SOFightMoves[] _selectedFightMoves = new SOFightMoves[2];
@@ -49,6 +53,8 @@ public class MatchFlowManager : MonoBehaviour
     void SetUp()
     {
         // Debug.Log("MatchFlowManager.SetUp called");
+        _areAllSusbSytemsDestroyed = new bool[] {false, false};
+        _isMainHealthZero = new bool[] {false, false};
         RemoveTempEffects();
         GenerateEnergy();
         StartNextTurn();
@@ -79,15 +85,24 @@ public class MatchFlowManager : MonoBehaviour
         _priorityOutcome = ResolvePriority();
         CheckHyperArmourCapabilities();
         ResolveMoves();
-        // ApplySecondaryEffects(); // ToDo
-        RemoveTempEffects();
-        CheckCharacterDead();
+        // DecrementTimer(); //ToDo
         // CheckTimeExpire(); // ToDO
-        
-        GenerateEnergy();
-        // PassiveHealing(); // ToDo
-        StartNextTurn(); // ToDo
-        // UpdateButtonUI();
+        if(!_isSomeoneDead && !_hasTimerExpired)
+        {
+            // ApplySecondaryEffects(); // ToDo
+            RemoveTempEffects();
+            // CheckCharacterDead();
+            
+            
+            GenerateEnergy();
+            // PassiveHealing(); // ToDo
+            StartNextTurn(); // ToDo
+        }
+        else
+        {
+            Debug.Log("Game Over. Player has died");
+            // ToDo determine detailed cause of death i.e. All subsystems destroyed and/or main health is zero
+        }
     }
 
     SOFightMoves ComputerMove()
@@ -153,6 +168,7 @@ public class MatchFlowManager : MonoBehaviour
 
     void ResolveMoves()
     {
+        // bool isSomeoneDead = false;
         // Remove move's energy cost from character's energy pool regardless of outcome
         fighters[0].ConsumeEnergy(PlayerMove.Requirements[0]);
         // fighters[0].EnergyData[0] -= PlayerMove.Requirements[0]; 
@@ -166,7 +182,12 @@ public class MatchFlowManager : MonoBehaviour
                 _selectedFightMoves[0] = PlayerMove;
                 _selectedFightMoves[1] = CPUMove;
                 ApplyMove(0, fighters[0].HealthBarNum);
-                ApplyMove(1, fighters[1].HealthBarNum);
+                _isSomeoneDead = CheckCharacterDead(1);
+                if(!_isSomeoneDead)
+                {    
+                    ApplyMove(1, fighters[1].HealthBarNum);
+                    _isSomeoneDead = CheckCharacterDead(0);
+                }
                 break;
             }
             case 1:
@@ -175,7 +196,12 @@ public class MatchFlowManager : MonoBehaviour
                 _selectedFightMoves[0] = CPUMove;
                 _selectedFightMoves[1] = PlayerMove;
                 ApplyMove(0, fighters[1].HealthBarNum);
-                ApplyMove(1, fighters[0].HealthBarNum);
+                _isSomeoneDead = CheckCharacterDead(0);
+                if(!_isSomeoneDead)
+                {    
+                    ApplyMove(1, fighters[0].HealthBarNum);
+                    _isSomeoneDead = CheckCharacterDead(1);
+                }
                 break; 
             }
             default:
@@ -384,39 +410,34 @@ public class MatchFlowManager : MonoBehaviour
         }
     } // End of RemoveTempEffects
 
-    void CheckCharacterDead()
+    bool CheckCharacterDead(int playerID)
     {
-        bool[] isFighterDead = {false, false};
         // Check for character deaths in order to trigger endgame
         // If player dies, it is a loss; if only the kaiju dies, then the player wins.
-        for(int i = 0; i < fighters.Length; i++)
-        {
-            int[] systemHealthData = fighters[i].HealthSystemData;
-            
-            // Check whether all subsystems are at zero health
-            for(int j = systemHealthData.Length - 1; j > 1; j -= 2)
-            {
-                if(systemHealthData[j] != 0)
-                    break;
-                else if(j == 3 && systemHealthData[j] == 0)
-                    isFighterDead[i] = true;
-            }
 
-            //Check whether overall hp has dropped to 0
-            if(isFighterDead[i] || fighters[i].HealthSystemData[1] == 0)
-            {    
-                isFighterDead[i] = true;  
-                break;  // Exit int i = 0 loop
-            } 
+        int[] systemHealthData = fighters[playerID].HealthSystemData;
+        
+        // Check whether all subsystems are at zero health
+        for(int j = 3; j < systemHealthData.Length; j += 2)
+        {
+            if(systemHealthData[j] != 0)
+                break;
+            else if(j == systemHealthData.Length - 1 && systemHealthData[j] == 0) //All subsystems destroyed i.e. character is unable to fight
+                _areAllSusbSytemsDestroyed[playerID] = true;
         }
 
-        if(!isFighterDead[0] && !isFighterDead [1])
-        {
-            Debug.Log("Both characters are still alive. Continue match");
-        }
+        _isMainHealthZero[playerID] = fighters[playerID].HealthSystemData[1] == 0;
+
+        //Check whether overall hp has dropped to 0
+        if(_areAllSusbSytemsDestroyed[playerID] || _isMainHealthZero[playerID])
+        {    
+            Debug.Log("Player " + playerID + " has died.");
+            return true;  
+        } 
         else
         {
-            Debug.Log("Someone died. Triggering Endgame");
+            Debug.Log("Player " + playerID + " is still alive.");
+            return false;  
         }
 
     }
@@ -427,7 +448,6 @@ public class MatchFlowManager : MonoBehaviour
         // e.g. CutSceneTriggered?.Invoke();
 
         
-        // UpdateButtonUI();
     }
     void UpdateButtonUI()
     {
