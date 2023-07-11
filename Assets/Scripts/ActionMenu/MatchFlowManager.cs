@@ -18,10 +18,6 @@ public class MatchFlowManager : MonoBehaviour
     public SOFightMoves[] CPUMoveList;
     private SOFightMoves[] _selectedFightMoves = new SOFightMoves[2];
 
-    // [HideInInspector] public delegate int StringForInt(string targetCharacterProperty, string dictKey = "None");
-    // [HideInInspector] public static StringForInt PlayerStatusRequested; 
-    // [HideInInspector] public static StringForInt CPUStatusRequested; 
-
     [HideInInspector] 
     public delegate void SendIntArray(int[] data);
     public static SendIntArray ButtonStatusUpdated;  
@@ -31,6 +27,8 @@ public class MatchFlowManager : MonoBehaviour
     public static IntForBool CheckTileWithinRangeRequested;
     public delegate bool BoolRequested();
     public static BoolRequested TurnHasEnded;
+    public delegate void SendInt(int data);
+    public static SendInt EndConditionsMet;
     
     void OnEnable()
     {
@@ -94,16 +92,14 @@ public class MatchFlowManager : MonoBehaviour
         {
             // ApplySecondaryEffects(); // ToDo
             RemoveTempEffects();
-            // CheckCharacterDead();
-            
-            
             GenerateEnergy();
             // PassiveHealing(); // ToDo
             StartNextTurn(); // ToDo
         }
         else
         {
-            // CheckEndConditions();
+            EndConditionsMet?.Invoke(-2);   // Disable Category buttons
+            // SetUpEndScreen();
             if(_hasTimerExpired)
                 Debug.Log("Game Over. Time has expired");
             if(_isSomeoneDead)
@@ -486,11 +482,14 @@ public class MatchFlowManager : MonoBehaviour
         return isBuffActive;
     }
 
-    void CheckEndConditions()
+    // void CheckEndConditions()
+    void SetUpEndScreen()
     {
         if(_areAllSusbSytemsDestroyed[0] || _isMainHealthZero[0])
         {
             // Player has died. You lose
+            // ToDo create Endgame Canvas.
+            // Set endgame canvas based on loss/win conditions
         }
         else if(_areAllSusbSytemsDestroyed[1] || _isMainHealthZero[1])
         {

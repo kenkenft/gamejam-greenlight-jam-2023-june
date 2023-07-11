@@ -47,6 +47,7 @@ public class ActionMenuUI : MonoBehaviour
         TargetButton.TargetButtonClicked += SetSubSystemTarget;
         TargetDirectionButton.DirectionButtonClicked += SetMoveDirection;
         ConfirmationButton.ButtonPressed += CloseOtherTrays;
+        MatchFlowManager.EndConditionsMet += ToggleCategoryButtonInteractable;
     }
 
     void OnDisable()
@@ -57,6 +58,7 @@ public class ActionMenuUI : MonoBehaviour
         TargetButton.TargetButtonClicked -= SetSubSystemTarget;
         TargetDirectionButton.DirectionButtonClicked -= SetMoveDirection;
         ConfirmationButton.ButtonPressed -= CloseOtherTrays;
+        MatchFlowManager.EndConditionsMet -= ToggleCategoryButtonInteractable;
     }
     
 
@@ -142,13 +144,17 @@ public class ActionMenuUI : MonoBehaviour
     void ToggleCategoryButtonInteractable(int buttonType)
     {
         // Will iterate through category button's enum variable ActionType. If the button does not match, then re-enable. 
-        // Otherwise, disable the button. Therefore, to enable ALL buttons, send -1.
+        // Otherwise, disable the button. Therefore, to enable ALL buttons, send -1. To disable all buttons, send -2.
+        bool areAllButtonsToBeDisabled = buttonType == -2;
+
         for(int i = 0; i < CategoryButtons.Length; i++)
         {
-            if((int)CategoryButtons[i].gameObject.GetComponent<CategoryButton>().ActionType != buttonType)
-                CategoryButtons[i].interactable = true;
-            else
+            if((int)CategoryButtons[i].gameObject.GetComponent<CategoryButton>().ActionType != buttonType && !areAllButtonsToBeDisabled) // Category button not selected but is still interactable
+                CategoryButtons[i].interactable = true; 
+            else if (areAllButtonsToBeDisabled) //All category buttons are to be disabled
                 CategoryButtons[i].interactable = false;
+            else // This category button has been clicked, therefore disable interactable
+                CategoryButtons[i].interactable = false; 
         }
     }
 
