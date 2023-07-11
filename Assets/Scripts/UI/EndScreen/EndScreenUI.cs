@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndScreenUI : MonoBehaviour
 {
     public Canvas EndScreen; 
+    public Image[] EndRoundImages, CutsceneBackgrounds;
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
