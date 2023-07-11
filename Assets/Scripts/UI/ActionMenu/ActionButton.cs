@@ -12,11 +12,9 @@ public class ActionButton : MonoBehaviour
     public bool IsSelected = false, PreventSelfDisable = false, AreRequirementsMet = false;
 
     [HideInInspector] 
-    public delegate void FightMoveSent(SOFightMoves fightMove);
+    
     public static FightMoveSent FightMoveSelected;
-    public delegate void SendBool(bool state);
     public static SendBool CheckIsSelectedRequested;
-    public delegate bool IntForBool(int data);
     public static IntForBool CurrentBuffRequested; 
     
     void OnEnable()

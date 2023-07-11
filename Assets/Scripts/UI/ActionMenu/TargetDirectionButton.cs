@@ -8,9 +8,7 @@ public class TargetDirectionButton : MonoBehaviour
     public bool IsSelected = false, PreventSelfDisable = false;
 
     [HideInInspector]
-    public delegate void SendInt(int data);
     public static SendInt DirectionButtonClicked; 
-    public delegate void SendBool(bool state);
     public static SendBool CheckIsSelectedRequested;
 
     void OnEnable()

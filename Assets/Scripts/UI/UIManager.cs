@@ -9,10 +9,8 @@ public class UIManager : MonoBehaviour
     // public GameObject EndScreen;
 
     [HideInInspector] 
-    public delegate void OnSomeEvent();
     public static OnSomeEvent DisableButtonsRequested;
     public static SendInt EndConditionsMet;
-    public delegate void SendInt(int data);
     public static SendInt EndingNumberPassed;
 
 

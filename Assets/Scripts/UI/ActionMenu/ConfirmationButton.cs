@@ -12,16 +12,9 @@ public class ConfirmationButton : MonoBehaviour
                 RelativeDirectionData = {0, 1};
 
     [HideInInspector]
-    public delegate void SendBool(bool state);
-    public static SendBool AllTargetsSet;
-    public static SendBool ButtonPressed;
-    public delegate void FightMoveSent(SOFightMoves fightMove);
+    public static SendBool AllTargetsSet, ButtonPressed;
     public static FightMoveSent FightMoveConfirmed;
-    // public delegate void SendInt(int data);
-    // public static SendInt RelativeDirectionConfirmed;
-    public delegate void SendIntArray(int[] data);
-    public static SendIntArray AllTargetsConfirmed;
-    public static SendIntArray RelativeDirectionConfirmed;
+    public static SendIntArray AllTargetsConfirmed, RelativeDirectionConfirmed;
 
 
 

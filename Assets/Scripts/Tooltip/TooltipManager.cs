@@ -6,8 +6,7 @@ using UnityEngine.UI;
 [ExecuteInEditMode()]
 public class TooltipManager : MonoBehaviour
 {
-    public Text HeaderField;
-    public Text ContentField;
+    public Text HeaderField, ContentField;
     public LayoutElement VertLayout;
     public int CharacterWrapLimit;
 

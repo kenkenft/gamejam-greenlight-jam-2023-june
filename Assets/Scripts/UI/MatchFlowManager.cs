@@ -19,17 +19,10 @@ public class MatchFlowManager : MonoBehaviour
     private SOFightMoves[] _selectedFightMoves = new SOFightMoves[2];
 
     [HideInInspector] 
-    public delegate void SendIntArray(int[] data);
-    public static SendIntArray ButtonStatusUpdated;  
-    public static SendIntArray MovementCommited;
-    public delegate bool IntForBool(int data);
-    public static IntForBool TileOccupationRequested; 
-    public static IntForBool CheckTileWithinRangeRequested;
-    public delegate bool BoolRequested();
+    public static SendIntArray ButtonStatusUpdated, MovementCommited;
+    public static IntForBool TileOccupationRequested, CheckTileWithinRangeRequested;
     public static BoolRequested TurnHasEnded;
-    public delegate void SendInt(int data);
-    public static SendInt EndConditionsMet;
-    public static SendInt WhichEndingDetermined;
+    public static SendInt EndConditionsMet, WhichEndingDetermined;
     
     void OnEnable()
     {

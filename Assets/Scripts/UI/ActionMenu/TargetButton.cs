@@ -10,7 +10,6 @@ public class TargetButton : MonoBehaviour
     public Button TargettingButton;
 
     [HideInInspector]
-    public delegate void SendIntArray(int[] data);
     public static SendIntArray TargetButtonClicked; 
     public void OnClick()
     {

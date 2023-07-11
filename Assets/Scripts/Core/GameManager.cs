@@ -6,12 +6,8 @@ public class GameManager : MonoBehaviour
 {
     
     [HideInInspector]
-    public delegate void OnSomeEvent();
-    public static OnSomeEvent RoundHasStarted;
-    public static OnSomeEvent CharacterSetUpRequested;
+    public static OnSomeEvent RoundHasStarted, CharacterSetUpRequested;
 
-
-    
     // Start is called before the first frame update
     void Start()
     {

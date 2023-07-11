@@ -7,9 +7,7 @@ public class CategoryButton : MonoBehaviour
     public GameProperties.ActionCategories ActionType;
 
     [HideInInspector] 
-    public delegate void SendInt(int data);
     public static SendInt OnCategoryButtonPressed;
-    public delegate void OnSomeEvent();
     public static OnSomeEvent OnCategorySelected;
 
     public void OnClick()

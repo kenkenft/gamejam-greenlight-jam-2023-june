@@ -27,16 +27,9 @@ public class ActionMenuUI : MonoBehaviour
 
     
     [HideInInspector] 
-    public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
     public static SOFightMovesRequired ActionTrayActivated;
-
-    public delegate void SendBool(bool state);
     public static SendBool AllTargetsSet;
-
-    public delegate void SendInt(int data);
     public static SendInt RelativeDirectionConfirmed;
-
-    public delegate void SendIntArray(int[] data);
     public static SendIntArray AllTargetsConfirmed;
     
     void OnEnable()

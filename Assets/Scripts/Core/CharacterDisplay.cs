@@ -37,9 +37,7 @@ public class CharacterDisplay : MonoBehaviour
     public SOCharacterStats SOCS;
 
     [HideInInspector]
-    public delegate void OnIntArrayRequested(int[] intArray);
-    public static OnIntArrayRequested HealthAffected;
-    public static OnIntArrayRequested EnergyAffected;
+    public static SendIntArray HealthAffected, EnergyAffected;
 
     void OnEnable()
     {

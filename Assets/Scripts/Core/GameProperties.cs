@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void OnSomeEvent();
+public delegate void SendInt(int data);
+public delegate void SendIntArray(int[] data);
+public delegate bool IntForBool(int data);
+public delegate bool BoolRequested();
+public delegate void SendBool(bool state);
+
+public delegate void FightMoveSent(SOFightMoves fightMove);
+public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
+
 public class GameProperties
 {
     public static Dictionary<string, string> ColourPalleteHex = new Dictionary<string, string>()
