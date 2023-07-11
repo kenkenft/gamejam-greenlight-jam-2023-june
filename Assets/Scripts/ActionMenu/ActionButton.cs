@@ -14,8 +14,6 @@ public class ActionButton : MonoBehaviour
     [HideInInspector] 
     public delegate void FightMoveSent(SOFightMoves fightMove);
     public static FightMoveSent FightMoveSelected;
-    public delegate void OnSomeEvent();
-    public static OnSomeEvent MoveSelected;
     public delegate void SendBool(bool state);
     public static SendBool CheckIsSelectedRequested;
     public delegate bool IntForBool(int data);
@@ -25,22 +23,18 @@ public class ActionButton : MonoBehaviour
     {
         ActionButton.CheckIsSelectedRequested += ToggleSelectedState;
         MatchFlowManager.ButtonStatusUpdated += AbleToDoMove;
-        UIManager.DisableButtonsRequested += DisableButton;
-
     }
 
     void OnDisable()
     {
         ActionButton.CheckIsSelectedRequested -= ToggleSelectedState;
         MatchFlowManager.ButtonStatusUpdated -= AbleToDoMove;
-        UIManager.DisableButtonsRequested -= DisableButton;
     }
 
 
     public void SendSelectedMove()
     {
         // SFXRequested?.Invoke("Click");
-        // MoveSelected?.Invoke(); // Should invoke UIManager.DisableAllMoveButtons()
         IsSelected = !IsSelected;
         PreventSelfDisable = true;
         CheckIsSelectedRequested?.Invoke(IsSelected);

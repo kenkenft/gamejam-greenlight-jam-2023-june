@@ -9,10 +9,10 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{d1e5c283-facc-0684-b92f-bfcd3eade1c8}</ProjectGuid>
+    <ProjectGuid>{ca7f938a-ede1-b9c4-c287-bef12c18ca6d}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <AssemblyName>AssemblyCore</AssemblyName>
+    <AssemblyName>AssemblyEndScreen</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>.</BaseDirectory>
@@ -36,19 +36,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\HealthBar.cs" />
-     <Compile Include="Assets\Scripts\ICommonDelegates.cs" />
-     <Compile Include="Assets\Scripts\ColorTintButtonSetUp.cs" />
-     <Compile Include="Assets\Scripts\FightMoves\SOFightMoves.cs" />
-     <Compile Include="Assets\Scripts\UIManager.cs" />
-     <Compile Include="Assets\Scripts\SOCharacterStats.cs" />
-     <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\GameProperties.cs" />
-     <Compile Include="Assets\Scripts\CharacterDisplay.cs" />
-     <Compile Include="Assets\Scripts\GridTile.cs" />
      <Compile Include="Assets\Scripts\EndScreen\EndScreenUI.cs" />
      <Compile Include="Assets\Scripts\EndScreen\EndScreenButton.cs" />
-     <None Include="Assets\Scripts\AssemblyCore.asmdef" />
+     <None Include="Assets\Scripts\EndScreen\AssemblyEndScreen.asmdef" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -705,6 +695,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="AssemblyCore.csproj">
+      <Project>{d1e5c283-facc-0684-b92f-bfcd3eade1c8}</Project>
+      <Name>AssemblyCore</Name>
+    </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{4389e16e-02bd-9e86-7f19-27f7f06aa945}</Project>
       <Name>UnityEditor.UI</Name>
