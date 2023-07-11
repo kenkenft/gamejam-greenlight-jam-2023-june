@@ -36,19 +36,12 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\HealthBar.cs" />
-     <Compile Include="Assets\Scripts\ICommonDelegates.cs" />
-     <Compile Include="Assets\Scripts\ColorTintButtonSetUp.cs" />
-     <Compile Include="Assets\Scripts\FightMoves\SOFightMoves.cs" />
-     <Compile Include="Assets\Scripts\UIManager.cs" />
-     <Compile Include="Assets\Scripts\SOCharacterStats.cs" />
-     <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\GameProperties.cs" />
-     <Compile Include="Assets\Scripts\CharacterDisplay.cs" />
-     <Compile Include="Assets\Scripts\GridTile.cs" />
-     <Compile Include="Assets\Scripts\EndScreen\EndScreenUI.cs" />
-     <Compile Include="Assets\Scripts\EndScreen\EndScreenButton.cs" />
-     <None Include="Assets\Scripts\AssemblyCore.asmdef" />
+     <Compile Include="Assets\Scripts\Core\ColorTintButtonSetUp.cs" />
+     <Compile Include="Assets\Scripts\Core\SOCharacterStats.cs" />
+     <Compile Include="Assets\Scripts\Core\GameManager.cs" />
+     <Compile Include="Assets\Scripts\Core\GameProperties.cs" />
+     <Compile Include="Assets\Scripts\Core\CharacterDisplay.cs" />
+     <None Include="Assets\Scripts\Core\AssemblyCore.asmdef" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

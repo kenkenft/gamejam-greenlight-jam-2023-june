@@ -36,9 +36,9 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\EndScreen\EndScreenUI.cs" />
-     <Compile Include="Assets\Scripts\EndScreen\EndScreenButton.cs" />
-     <None Include="Assets\Scripts\EndScreen\AssemblyEndScreen.asmdef" />
+     <Compile Include="Assets\Scripts\UI\EndScreen\EndScreenUI.cs" />
+     <Compile Include="Assets\Scripts\UI\EndScreen\EndScreenButton.cs" />
+     <None Include="Assets\Scripts\UI\EndScreen\AssemblyEndScreen.asmdef" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -695,9 +695,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="AssemblyCore.csproj">
-      <Project>{d1e5c283-facc-0684-b92f-bfcd3eade1c8}</Project>
-      <Name>AssemblyCore</Name>
+    <ProjectReference Include="AssemblyUI.csproj">
+      <Project>{bf55b0ad-fc35-a1fd-bfad-122ca6e0d170}</Project>
+      <Name>AssemblyUI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{4389e16e-02bd-9e86-7f19-27f7f06aa945}</Project>

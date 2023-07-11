@@ -1,5 +1,5 @@
 {
-    "name": "AssemblyActionMenu",
+    "name": "Tooltip",
     "rootNamespace": "",
     "references": [
         "GUID:6a7e97f262f089047903a81a85e74e4d"

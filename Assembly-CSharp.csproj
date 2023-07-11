@@ -8,7 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>RootNamespace</RootNamespace>
     <ProjectGuid>{f53d3a8d-cf37-8f1c-4ce4-1e712bd1abd8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -36,25 +36,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\MatchFlowManager.cs" />
-     <Compile Include="Assets\Scripts\HealthBar.cs" />
      <Compile Include="Assets\Scripts\ICommonDelegates.cs" />
-     <Compile Include="Assets\Scripts\ColorTintButtonSetUp.cs" />
-     <Compile Include="Assets\Scripts\ActionMenuUI.cs" />
-     <Compile Include="Assets\Scripts\FightMoves\SOFightMoves.cs" />
-     <Compile Include="Assets\Scripts\ActionButtonPool.cs" />
-     <Compile Include="Assets\Scripts\TooltipManager.cs" />
-     <Compile Include="Assets\Scripts\UIManager.cs" />
-     <Compile Include="Assets\Scripts\SOCharacterStats.cs" />
-     <Compile Include="Assets\Scripts\ToolipHover.cs" />
-     <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\ActionButton.cs" />
-     <Compile Include="Assets\Scripts\TooltipSystem.cs" />
-     <Compile Include="Assets\Scripts\GameProperties.cs" />
-     <Compile Include="Assets\Scripts\GridManager.cs" />
-     <Compile Include="Assets\Scripts\CharacterDisplay.cs" />
-     <Compile Include="Assets\Scripts\GridTile.cs" />
-     <Compile Include="Assets\Scripts\CategoryButton.cs" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -757,9 +739,9 @@
       <Project>{f58ad09f-4164-0c59-5921-3ebf09bced9f}</Project>
       <Name>Unity.2D.Path.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.2D.Psdimporter.Editor.csproj">
-      <Project>{e9008e0a-78a2-9b1e-616d-22f779264ce9}</Project>
-      <Name>Unity.2D.Psdimporter.Editor</Name>
+    <ProjectReference Include="Core.csproj">
+      <Project>{c668f457-a731-808d-84b8-9a08e10ab989}</Project>
+      <Name>Core</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.VisualScripting.Flow.csproj">
       <Project>{910153c1-f94e-797b-c23c-e0ef1120c938}</Project>
@@ -777,9 +759,9 @@
       <Project>{97b1d608-4da4-4bd4-38ef-7ad7064c3b4a}</Project>
       <Name>Unity.Rider.Editor</Name>
     </ProjectReference>
-    <ProjectReference Include="Unity.InternalAPIEditorBridge.001.csproj">
-      <Project>{8a5d918e-ad5e-a366-ca87-680410b51d9b}</Project>
-      <Name>Unity.InternalAPIEditorBridge.001</Name>
+    <ProjectReference Include="Unity.2D.Psdimporter.Editor.csproj">
+      <Project>{e9008e0a-78a2-9b1e-616d-22f779264ce9}</Project>
+      <Name>Unity.2D.Psdimporter.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEngine.UI.csproj">
       <Project>{482c2493-23d1-7f29-e71c-fa507f22a3b1}</Project>
@@ -788,6 +770,14 @@
     <ProjectReference Include="Unity.2D.Tilemap.Extras.Editor.csproj">
       <Project>{fc8d6a25-bb4a-509a-9232-fd127aba5430}</Project>
       <Name>Unity.2D.Tilemap.Extras.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="Unity.InternalAPIEditorBridge.001.csproj">
+      <Project>{8a5d918e-ad5e-a366-ca87-680410b51d9b}</Project>
+      <Name>Unity.InternalAPIEditorBridge.001</Name>
+    </ProjectReference>
+    <ProjectReference Include="UI.csproj">
+      <Project>{fb92cdf7-add9-5604-e14d-567317935124}</Project>
+      <Name>UI</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Services.Core.csproj">
       <Project>{102b3ec1-ecdc-cdad-9925-0eacd0dd4fdb}</Project>
@@ -804,6 +794,10 @@
     <ProjectReference Include="Unity.2D.IK.Runtime.csproj">
       <Project>{d394013a-6d14-38bc-790f-db498777e437}</Project>
       <Name>Unity.2D.IK.Runtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="Tooltip.csproj">
+      <Project>{9d36a8d7-d205-0b49-ca55-6ca2bf4c0678}</Project>
+      <Name>Tooltip</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.Services.Core.Analytics.csproj">
       <Project>{b8e8e2d6-0529-9be8-f8b3-69a062233763}</Project>

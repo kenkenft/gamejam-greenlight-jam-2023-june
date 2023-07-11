@@ -1,9 +1,7 @@
 {
-    "name": "AssemblyTooltip",
+    "name": "Core",
     "rootNamespace": "",
-    "references": [
-        "GUID:6a7e97f262f089047903a81a85e74e4d"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

@@ -36,17 +36,18 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\ActionMenu\MatchFlowManager.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\ActionMenuUI.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\ActionButtonPool.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\ActionButton.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\GridManager.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\CategoryButton.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\TargetButton.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\ConfirmationButton.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\TargetDirectionButton.cs" />
-     <Compile Include="Assets\Scripts\ActionMenu\Timer.cs" />
-     <None Include="Assets\Scripts\ActionMenu\AssemblyActionMenu.asmdef" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\MatchFlowManager.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\ActionMenuUI.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\ActionButtonPool.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\ActionButton.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\GridManager.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\GridTile.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\CategoryButton.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\TargetButton.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\ConfirmationButton.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\TargetDirectionButton.cs" />
+     <Compile Include="Assets\Scripts\UI\ActionMenu\Timer.cs" />
+     <None Include="Assets\Scripts\UI\ActionMenu\AssemblyActionMenu.asmdef" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -706,6 +707,10 @@
     <ProjectReference Include="AssemblyCore.csproj">
       <Project>{d1e5c283-facc-0684-b92f-bfcd3eade1c8}</Project>
       <Name>AssemblyCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="AssemblyUI.csproj">
+      <Project>{bf55b0ad-fc35-a1fd-bfad-122ca6e0d170}</Project>
+      <Name>AssemblyUI</Name>
     </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{4389e16e-02bd-9e86-7f19-27f7f06aa945}</Project>

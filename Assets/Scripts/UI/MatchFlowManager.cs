@@ -29,6 +29,7 @@ public class MatchFlowManager : MonoBehaviour
     public static BoolRequested TurnHasEnded;
     public delegate void SendInt(int data);
     public static SendInt EndConditionsMet;
+    public static SendInt WhichEndingDetermined;
     
     void OnEnable()
     {
@@ -104,6 +105,7 @@ public class MatchFlowManager : MonoBehaviour
                 Debug.Log("Game Over. Time has expired");
             if(_isSomeoneDead)
                 Debug.Log("Game Over. Player has died");
+            SetUpEndScreen();
             // ToDo determine detailed cause of death i.e. All subsystems destroyed and/or main health is zero
         }
     }
@@ -485,19 +487,21 @@ public class MatchFlowManager : MonoBehaviour
     // void CheckEndConditions()
     void SetUpEndScreen()
     {
+        Debug.Log("SetUpEndScreen called");
         if(_areAllSusbSytemsDestroyed[0] || _isMainHealthZero[0])
         {
             // Player has died. You lose
-            // ToDo create Endgame Canvas.
-            // Set endgame canvas based on loss/win conditions
+            WhichEndingDetermined?.Invoke(0);
         }
         else if(_areAllSusbSytemsDestroyed[1] || _isMainHealthZero[1])
         {
             // Kaiju is dead. You win
+            WhichEndingDetermined?.Invoke(1);
         }
-        else if( _hasTimerExpired & _areAllSusbSytemsDestroyed[1] && _isMainHealthZero[1])
+        else
         {
             // Timer expired, but kaiju has retreated. You win
+            WhichEndingDetermined?.Invoke(2);
         }
     }
 
