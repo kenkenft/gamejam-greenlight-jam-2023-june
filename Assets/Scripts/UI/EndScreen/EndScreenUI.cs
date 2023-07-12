@@ -7,6 +7,9 @@ public class EndScreenUI : MonoBehaviour
 {
     public Canvas EndScreen; 
     public Image[] EndRoundImages, CutsceneBackgrounds;
+
+    [HideInInspector]
+    public static SendBool ButtonMethodDetermined;
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
@@ -29,6 +32,15 @@ public class EndScreenUI : MonoBehaviour
         // Set endgame canvas based on loss/win conditions
         EndScreen.enabled = true;
         Debug.Log($"SetEndScreen called. Ending no. {endingNumber}");
+        
+        if(endingNumber != 0)
+        {
+            ButtonMethodDetermined?.Invoke(true);
+        }
+        else
+        {
+            ButtonMethodDetermined?.Invoke(false);
+        }
     }
 
 
