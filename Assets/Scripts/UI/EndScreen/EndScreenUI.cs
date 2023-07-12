@@ -7,9 +7,10 @@ public class EndScreenUI : MonoBehaviour
 {
     public Canvas EndScreen; 
     public Image[] EndRoundImages, CutsceneBackgrounds;
+    public Text EndScreenText;
 
     [HideInInspector]
-    public static SendBool ButtonMethodDetermined;
+    public static SendBool DidPlayerWin;
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
@@ -35,11 +36,13 @@ public class EndScreenUI : MonoBehaviour
         
         if(endingNumber != 0)
         {
-            ButtonMethodDetermined?.Invoke(true);
+            DidPlayerWin?.Invoke(true);
+            EndScreenText.text = $"Humanity\nDefended";
         }
         else
         {
-            ButtonMethodDetermined?.Invoke(false);
+            DidPlayerWin?.Invoke(false);
+            EndScreenText.text = $"Humanity\nAnnihilated";
         }
     }
 

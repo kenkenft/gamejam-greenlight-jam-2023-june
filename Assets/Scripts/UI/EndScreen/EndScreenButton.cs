@@ -14,12 +14,12 @@ public class EndScreenButton : MonoBehaviour
 
     void OnEnable()
     {
-        EndScreenUI.ButtonMethodDetermined += SubscribeRetryOrContinue;
+        EndScreenUI.DidPlayerWin += SubscribeRetryOrContinue;
     }
 
     void OnDisable()
     {
-        EndScreenUI.ButtonMethodDetermined -= SubscribeRetryOrContinue;
+        EndScreenUI.DidPlayerWin -= SubscribeRetryOrContinue;
     }
     
     public void OnClickRetryOrContinue()
