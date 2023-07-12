@@ -265,7 +265,7 @@ public class MatchFlowManager : MonoBehaviour
         fighters[playerID].BuffPrimaryEffect = _selectedFightMoves[orderIndex].MainEffectValue[1];  // Update buff's primary effect value
         fighters[playerID].EnergyData[1] = _selectedFightMoves[orderIndex].MainEffectValue[2]; // Update buff's energy cost
         
-        Debug.Log("Player " + playerID + " active buff: " + (GameProperties.BuffTypes)fighters[playerID].GetActiveHeadBuff() + ". Energy cost: " +fighters[playerID].EnergyData[1]);
+        // Debug.Log("Player " + playerID + " active buff: " + (GameProperties.BuffTypes)fighters[playerID].GetActiveHeadBuff() + ". Energy cost: " +fighters[playerID].EnergyData[1]);
     }
 
     void ApplyDefense(int playerID)
@@ -359,7 +359,6 @@ public class MatchFlowManager : MonoBehaviour
             rawDamage[tempInt] =  (attackPercentage * fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
             if(hasAttackBuffActive)
                 rawDamage[tempInt] += (AttackBuffModifier * fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
-            Debug.Log("HealthChangeValue: " + rawDamage[tempInt]);
             rawDamage[0] += rawDamage[tempInt];
         };
         return rawDamage;
@@ -430,7 +429,6 @@ public class MatchFlowManager : MonoBehaviour
     {        
         List<int> temptList = filteredParts;
         int HealthSystemDataIndex = 0;
-        int[] manuallyTargetedParts = GetTargetedParts(playerID);
         bool isDestroyed = false;
 
         for(int i = 0; i < temptList.Count; i++)
@@ -472,16 +470,10 @@ public class MatchFlowManager : MonoBehaviour
         _isMainHealthZero[playerID] = fighters[playerID].HealthSystemData[1] == 0;
 
         //Check whether overall hp has dropped to 0
-        if(_areAllSusbSytemsDestroyed[playerID] || _isMainHealthZero[playerID])
-        {    
-            Debug.Log("Player " + playerID + " has died.");
+        if(_areAllSusbSytemsDestroyed[playerID] || _isMainHealthZero[playerID])   
             return true;  
-        } 
         else
-        {
-            Debug.Log("Player " + playerID + " is still alive.");
             return false;  
-        }
 
     }
 
@@ -545,14 +537,11 @@ public class MatchFlowManager : MonoBehaviour
 
     void PassiveHealing()
     {
-        int[] targetAll = {1, 1, 1, 1, 1};
         List<int> allSubsystems = new List<int>{0, 1, 2, 3, 4};
         for(int i = 0; i < fighters.Length; i++)
         {
             if(fighters[i].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Repair)
             {
-                SetTargetedParts(i, targetAll);
-                int[] targetedParts = GetTargetedParts(i);
                 List<int> filteredTargetedIndexes = RemoveCriticallyDamagedTargets(i, allSubsystems);
                 int[] healthChanges = CalculateRawDamage(fighters[i].BuffPrimaryEffect, i, filteredTargetedIndexes);
                 fighters[i].UpdateCharacterHealth(healthChanges);
