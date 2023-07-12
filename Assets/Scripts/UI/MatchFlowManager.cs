@@ -9,6 +9,10 @@ public class MatchFlowManager : MonoBehaviour
     private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward and index 0; CPU positve direction is left-ward and index 1
                     _forwardsOrBackwards = {1, 1}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU. Set to 1 for relative forward direction, -1 for relative backwards
                     _playerTargetedBodyParts = {0, 0, 0, 0, 0};
+    private int[,] _targetedBodyParts = new int[,] {
+                                                        {0, 0, 0, 0, 0},    // Targeted by the player
+                                                        {0, 0, 0, 0, 0}     // Targeted by opponent
+                                                    };
 
     private bool _isSomeoneDead = false, _hasTimerExpired = false;
     private bool[] _areAllSusbSytemsDestroyed = {false, false},
@@ -46,7 +50,6 @@ public class MatchFlowManager : MonoBehaviour
 
     void SetUp()
     {
-        // Debug.Log("MatchFlowManager.SetUp called");
         _areAllSusbSytemsDestroyed = new bool[] {false, false};
         _isMainHealthZero = new bool[] {false, false};
         RemoveTempEffects();
@@ -56,8 +59,23 @@ public class MatchFlowManager : MonoBehaviour
 
     void SetPlayerTargetedParts(int[] targetedParts)
     {
-        _playerTargetedBodyParts = targetedParts;
-        // Debug.Log("SetPlayerTargetedParts called. {" + _playerTargetedBodyParts[0] + ", " + _playerTargetedBodyParts[1] + ", " + _playerTargetedBodyParts[2] + ", " + _playerTargetedBodyParts[3] + ", " + _playerTargetedBodyParts[4] +"}");
+        // _playerTargetedBodyParts = targetedParts;
+        SetTargetedParts(0, targetedParts);
+    }
+
+    void SetTargetedParts(int playerID, int[] targetedParts)
+    {
+        for(int i = 0; i < targetedParts.Length; i++)
+            _targetedBodyParts[playerID, i] = targetedParts[i];
+    }
+
+    int[] GetTargetedParts(int playerID)
+    {
+        int[] targetedParts = {0, 0, 0, 0, 0};
+        for(int i = 0; i < _playerTargetedBodyParts.GetLength(playerID); i++)
+            targetedParts[i] = _targetedBodyParts[playerID, i];
+        
+        return targetedParts;
     }
 
     void SetRelativeDirection(int[] relativeDirectionData)
@@ -87,7 +105,7 @@ public class MatchFlowManager : MonoBehaviour
             // ApplySecondaryEffects(); // ToDo
             RemoveTempEffects();
             GenerateEnergy();
-            // PassiveHealing(); // ToDo
+            PassiveHealing(); // ToDo
             StartNextTurn(); // ToDo
         }
         else
@@ -215,25 +233,21 @@ public class MatchFlowManager : MonoBehaviour
         {
             case 0: // Buff
             {
-                // Debug.Log("Player " + playerID + " move type: BUFF");
                 ApplyBuff(playerID, orderIndex);    // Assumes MainEffectValue[0] is the buffType id
                 break;
             }
             case 1: // Defensive move
             {
-                // Debug.Log("Player " + playerID + " move type: DEFENSIVE");
                 ApplyDefense(playerID);
                 break;
             }
             case 2: // Movement
             {
-                // Debug.Log("Player " + playerID + " move type: MOVEMENT");
                 MoveCharacter(playerID, orderIndex);
                 break;
             }
             case 3: // Modify Health
             {
-                // Debug.Log("Player " + playerID + " move type: MODIFY HEALTH");
                 ModifyHealth(playerID, orderIndex);
                 break;
             }
@@ -248,7 +262,9 @@ public class MatchFlowManager : MonoBehaviour
     void ApplyBuff(int playerID, int orderIndex)
     {
         fighters[playerID].SetActiveHeadBuff(_selectedFightMoves[orderIndex].MainEffectValue[0]);   // Assumes MainEffectValue is the buffType id
-        fighters[playerID].EnergyData[1] = _selectedFightMoves[orderIndex].SecondaryEffects[1]; // Update buff's energy cost
+        fighters[playerID].BuffPrimaryEffect = _selectedFightMoves[orderIndex].MainEffectValue[1];  // Update buff's primary effect value
+        fighters[playerID].EnergyData[1] = _selectedFightMoves[orderIndex].MainEffectValue[2]; // Update buff's energy cost
+        
         Debug.Log("Player " + playerID + " active buff: " + (GameProperties.BuffTypes)fighters[playerID].GetActiveHeadBuff() + ". Energy cost: " +fighters[playerID].EnergyData[1]);
     }
 
@@ -305,13 +321,13 @@ public class MatchFlowManager : MonoBehaviour
             int[] healthChanges = {0, 0, 0, 0, 0, 0}; 
             int fighterIndex = playerID;
             // Check which body parts are default targets and extra targets       
-            List<int> targetedBodyPartIndexes = GetTargetedSubSystems(orderIndex);                        
+            List<int> filteredTargetedIndexes = GetTargetedSubSystems(playerID, orderIndex);                      
 
             //Only apply defense calculations if attack move
             if(_selectedFightMoves[orderIndex].ActionType == GameProperties.ActionType.Attack)
             {
                 fighterIndex = 1 - playerID;
-                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, targetedBodyPartIndexes);
+                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, filteredTargetedIndexes);
                 healthChanges = ApplyDefenseReductions(orderIndex, playerID, healthChanges);
 
                 //healthChanges' values will subtract from health when calling UpdateCharacterHealth
@@ -319,20 +335,31 @@ public class MatchFlowManager : MonoBehaviour
                     healthChanges[i] *= -1;
             }
             else
-                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, targetedBodyPartIndexes);
+            {    
+                List<int> activeTargetedPartsIndexes = RemoveCriticallyDamagedTargets(playerID, filteredTargetedIndexes);
+                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, activeTargetedPartsIndexes);
+            }
             // ToDo ApplySecondary effects
             fighters[fighterIndex].UpdateCharacterHealth(healthChanges);
         // }
     } // End of ModifyHealth
 
-    int[] CalculateRawDamage(int attackPercentage, int fighterIndex, List<int> targetedSubsystems)
+    int[] CalculateRawDamage(int attackPercentage, int playerID, List<int> targetedSubsystems)
     {
         int[] rawDamage = {0, 0, 0, 0, 0, 0}; 
+        int AttackBuffModifier = 0;
+        bool hasAttackBuffActive = fighters[playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Attack;
+
+        if(hasAttackBuffActive)
+            AttackBuffModifier = fighters[playerID].BuffPrimaryEffect;
 
         for(int i = 0; i < targetedSubsystems.Count; i++)
         {    
             int tempInt = targetedSubsystems[i] + 1;
-            rawDamage[tempInt] =  (attackPercentage * fighters[fighterIndex].HealthSystemData[(tempInt * 2)]) / 100;
+            rawDamage[tempInt] =  (attackPercentage * fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
+            if(hasAttackBuffActive)
+                rawDamage[tempInt] += (AttackBuffModifier * fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
+            Debug.Log("HealthChangeValue: " + rawDamage[tempInt]);
             rawDamage[0] += rawDamage[tempInt];
         };
         return rawDamage;
@@ -344,7 +371,7 @@ public class MatchFlowManager : MonoBehaviour
         if(fighters[1 - playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Defense)
         {
             for(int i = 0; i < potentialDamage.Length; i++)
-                potentialDamage[i] -= ((60 * potentialDamage[i]) / 100);
+                potentialDamage[i] -= ((fighters[playerID].BuffPrimaryEffect * potentialDamage[i]) / 100);
         }
             
         // Check if opponent is blocking
@@ -368,13 +395,14 @@ public class MatchFlowManager : MonoBehaviour
     } // End of ApplyDefenseReductions
 
     
-    List<int> GetTargetedSubSystems(int orderIndex)
+    List<int> GetTargetedSubSystems(int playerID, int orderIndex)
     {
-        List<int> targetedBodyPartIndexes = new List<int>();
+        List<int> filteredTargetedBodyParts = new List<int>();
+        int[] manuallyTargetedParts = GetTargetedParts(playerID);
         for(int i = 0; i < _selectedFightMoves[orderIndex].DefaultSubSystemTargets.Length; i++)
         {
-            if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1 || _playerTargetedBodyParts[i] == 1)
-                targetedBodyPartIndexes.Add(i);
+            if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1 || manuallyTargetedParts[i] == 1)  
+                filteredTargetedBodyParts.Add(i);
         }
         {
         //Randomly chooses extra bodyparts to target. Temporarily here until I implement targetting system 
@@ -395,9 +423,26 @@ public class MatchFlowManager : MonoBehaviour
         //     }
         // }
         }
-        return targetedBodyPartIndexes;
+        return filteredTargetedBodyParts;
     }
 
+    List<int> RemoveCriticallyDamagedTargets(int playerID, List<int> filteredParts)
+    {        
+        List<int> temptList = filteredParts;
+        int HealthSystemDataIndex = 0;
+        int[] manuallyTargetedParts = GetTargetedParts(playerID);
+        bool isDestroyed = false;
+
+        for(int i = 0; i < temptList.Count; i++)
+        {
+            HealthSystemDataIndex = (temptList[i] * 2) + 3;
+            isDestroyed = fighters[playerID].HealthSystemData[HealthSystemDataIndex] <= 0;
+            
+            if(isDestroyed)
+                filteredParts.Remove(temptList[i]);
+        }
+        return filteredParts;
+    }
     void RemoveTempEffects()
     {
         foreach(CharacterDisplay fighter in fighters)
@@ -498,4 +543,21 @@ public class MatchFlowManager : MonoBehaviour
         }
     }
 
+    void PassiveHealing()
+    {
+        int[] targetAll = {1, 1, 1, 1, 1};
+        List<int> allSubsystems = new List<int>{0, 1, 2, 3, 4};
+        for(int i = 0; i < fighters.Length; i++)
+        {
+            if(fighters[i].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Repair)
+            {
+                SetTargetedParts(i, targetAll);
+                int[] targetedParts = GetTargetedParts(i);
+                List<int> filteredTargetedIndexes = RemoveCriticallyDamagedTargets(i, allSubsystems);
+                int[] healthChanges = CalculateRawDamage(fighters[i].BuffPrimaryEffect, i, filteredTargetedIndexes);
+                fighters[i].UpdateCharacterHealth(healthChanges);
+            }
+        }
+        
+    }
 }
