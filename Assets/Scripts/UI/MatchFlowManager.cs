@@ -319,15 +319,16 @@ public class MatchFlowManager : MonoBehaviour
     void ModifyHealth(int playerID, int orderIndex)
     {
             int[] healthChanges = {0, 0, 0, 0, 0, 0}; 
-            int fighterIndex = playerID;
+            int targetID;
             // Check which body parts are default targets and extra targets       
             List<int> filteredTargetedIndexes = GetTargetedSubSystems(playerID, orderIndex);                      
 
             //Only apply defense calculations if attack move
             if(_selectedFightMoves[orderIndex].ActionType == GameProperties.ActionType.Attack)
             {
-                fighterIndex = 1 - playerID;
-                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, filteredTargetedIndexes);
+                targetID = 1 - playerID;    // Sets ID of opponent as the target 
+                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], targetID, filteredTargetedIndexes);
+                healthChanges = ApplyAttackModifications(orderIndex, playerID, healthChanges);
                 healthChanges = ApplyDefenseReductions(orderIndex, playerID, healthChanges);
 
                 //healthChanges' values will subtract from health when calling UpdateCharacterHealth
@@ -336,34 +337,43 @@ public class MatchFlowManager : MonoBehaviour
             }
             else
             {    
+                targetID = playerID;
                 List<int> activeTargetedPartsIndexes = RemoveCriticallyDamagedTargets(playerID, filteredTargetedIndexes);
-                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], fighterIndex, activeTargetedPartsIndexes);
+                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], targetID, activeTargetedPartsIndexes);
             }
             // ToDo ApplySecondary effects
-            fighters[fighterIndex].UpdateCharacterHealth(healthChanges);
+            fighters[targetID].UpdateCharacterHealth(healthChanges);
         // }
     } // End of ModifyHealth
 
     int[] CalculateRawDamage(int attackPercentage, int playerID, List<int> targetedSubsystems)
     {
         int[] rawDamage = {0, 0, 0, 0, 0, 0}; 
-        int AttackBuffModifier = 0;
-        bool hasAttackBuffActive = fighters[playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Attack;
-
-        if(hasAttackBuffActive)
-            AttackBuffModifier = fighters[playerID].BuffPrimaryEffect;
 
         for(int i = 0; i < targetedSubsystems.Count; i++)
         {    
             int tempInt = targetedSubsystems[i] + 1;
             rawDamage[tempInt] =  (attackPercentage * fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
-            if(hasAttackBuffActive)
-                rawDamage[tempInt] += (AttackBuffModifier * fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
             rawDamage[0] += rawDamage[tempInt];
         };
         return rawDamage;
     }   // End of CalculateRawDamage
 
+    int[] ApplyAttackModifications(int orderIndex, int playerID, int[] potentialDamage)
+    {
+        int AttackBuffModifier = 0;
+        bool hasAttackBuffActive = fighters[playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Attack;
+        
+        if(hasAttackBuffActive)
+            AttackBuffModifier = fighters[playerID].BuffPrimaryEffect;
+
+        if(hasAttackBuffActive)
+        {    
+            for(int i = 0; i < potentialDamage.Length; i++) 
+                potentialDamage[i] += (potentialDamage[i] * AttackBuffModifier) / 100;
+        }
+        return potentialDamage;
+    }
     int[] ApplyDefenseReductions(int orderIndex, int playerID, int[] potentialDamage)
     {
         // Apply bonus defense reduction from HeadBufff: Defense 
