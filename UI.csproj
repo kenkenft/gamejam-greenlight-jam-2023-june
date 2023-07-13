@@ -40,6 +40,7 @@
      <Compile Include="Assets\Scripts\UI\HealthBar.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\ActionMenuUI.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\ActionButtonPool.cs" />
+     <Compile Include="Assets\Scripts\UI\CPUMoveSelect.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\TargetButton.cs" />
      <Compile Include="Assets\Scripts\UI\UIManager.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\ActionButton.cs" />

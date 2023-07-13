@@ -290,6 +290,7 @@ MonoBehaviour:
   BuffEnergyCost: 0
   EnergyPerTurn: 50
   CurrentTileID: 0
+  BuffPrimaryEffect: 0
   HealthSystemData: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   HealthBarData: 000000000000000000000000
   EnergyData: 000000000000000000000000
@@ -2031,6 +2032,7 @@ MonoBehaviour:
   BuffEnergyCost: 0
   EnergyPerTurn: 25
   CurrentTileID: 0
+  BuffPrimaryEffect: 0
   HealthSystemData: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   HealthBarData: 000000000000000000000000
   EnergyData: 000000000000000000000000
@@ -6118,6 +6120,7 @@ GameObject:
   - component: {fileID: 1674461456}
   - component: {fileID: 1674461455}
   - component: {fileID: 1674461457}
+  - component: {fileID: 1674461458}
   m_Layer: 0
   m_Name: ManagerScriptsObject
   m_TagString: Untagged
@@ -6171,6 +6174,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f5c3223952942f45adcafafe53538e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1674461458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1674461454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb464432310591d4ab03ab6a13eb5da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AllMoves: []
+  AllFightMoves: []
 --- !u!1 &1706609384
 GameObject:
   m_ObjectHideFlags: 0
