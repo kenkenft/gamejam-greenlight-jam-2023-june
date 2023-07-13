@@ -303,17 +303,17 @@ public class MatchFlowManager : MonoBehaviour
             {
                 if(TileOccupationRequested.Invoke(targetTile))
                 {
-                    // Debug.Log("Player cannot move. Tile" + targetTile + ": \nIsOccupied: " + TileOccupationRequested.Invoke(targetTile));
+                    // Debug.Log("Tile" + targetTile + ": \nIsOccupied: " + TileOccupationRequested.Invoke(targetTile));
                     return false;
                 }
             }
             else
             {    
-                // Debug.Log("Player cannot move. Tile" + targetTile + " IsOutOfrange: " + CheckTileWithinRangeRequested?.Invoke(targetTile));
+                // Debug.Log("Tile" + targetTile + " IsOutOfrange: " + CheckTileWithinRangeRequested?.Invoke(targetTile));
                 return false;
             }
         }
-        // Debug.Log("Player can move");
+        // Debug.Log("No obstacles detected");
         return true;
     }
     void ModifyHealth(int playerID, int orderIndex)
@@ -327,13 +327,17 @@ public class MatchFlowManager : MonoBehaviour
             if(_selectedFightMoves[orderIndex].ActionType == GameProperties.ActionType.Attack)
             {
                 targetID = 1 - playerID;    // Sets ID of opponent as the target 
-                healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], targetID, filteredTargetedIndexes);
-                healthChanges = ApplyAttackModifications(orderIndex, playerID, healthChanges);
-                healthChanges = ApplyDefenseReductions(orderIndex, playerID, healthChanges);
+                if(HitDetection(playerID, orderIndex))
+                {
+                    
+                    healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], targetID, filteredTargetedIndexes);
+                    healthChanges = ApplyAttackModifications(orderIndex, playerID, healthChanges);
+                    healthChanges = ApplyDefenseReductions(orderIndex, playerID, healthChanges);
 
-                //healthChanges' values will subtract from health when calling UpdateCharacterHealth
-                for(int i = 0; i < healthChanges.Length; i++)
-                    healthChanges[i] *= -1;
+                    //healthChanges' values will subtract from health when calling UpdateCharacterHealth
+                    for(int i = 0; i < healthChanges.Length; i++)
+                        healthChanges[i] *= -1;
+                }
             }
             else
             {    
@@ -345,6 +349,20 @@ public class MatchFlowManager : MonoBehaviour
             fighters[targetID].UpdateCharacterHealth(healthChanges);
         // }
     } // End of ModifyHealth
+
+    bool HitDetection(int playerID, int orderIndex)
+    {
+        // Retrieve character current tile
+        int currentTileID = fighters[playerID].CurrentTileID, 
+            attackRange = _selectedFightMoves[orderIndex].Range;
+            // overallDirection = _positiveDirection[playerID];   // 1 when going rightwards, -1 when going leftwards
+
+        // Check if target tile or tiles on the way to target tile is either occupied or out of indexed tile range
+        bool isTargetInRange = !(CheckValidTargetTile(currentTileID, attackRange, _positiveDirection[playerID]));   //Inverted output as it returns true when no obstacles present
+
+        Debug.Log($"targetHit: {isTargetInRange}");
+        return isTargetInRange;
+    }
 
     int[] CalculateRawDamage(int attackPercentage, int playerID, List<int> targetedSubsystems)
     {
