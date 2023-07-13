@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5469da8ae6d3e194c8cbf01fb53db2ce, type: 3}
+  m_Name: Tutorial
+  m_EditorClassIdentifier: 
+  HPSubSystems: e8030000e8030000e8030000e8030000e8030000
+  BaseEnergyGeneration: 10
+  CharacterType: 2
+  MovePool:
+  - {fileID: 11400000, guid: 42e16284c357d424ea8aea810671dc7f, type: 2}
+  - {fileID: 11400000, guid: 0e7defec800c30042946dca18767c173, type: 2}
+  - {fileID: 11400000, guid: a8c83542569482a4b87e9e4bf2053820, type: 2}
+  - {fileID: 11400000, guid: 65d5ddf15d4e9a6489ae936c94632e0d, type: 2}

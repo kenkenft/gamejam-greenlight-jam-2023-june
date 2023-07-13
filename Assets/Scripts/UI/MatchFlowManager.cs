@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MatchFlowManager : MonoBehaviour
 {
-    public CharacterDisplay[] fighters; // Assumes index 0 is player; index 1 is opponent
+    public CharacterDisplay[] Fighters; // Assumes index 0 is player; index 1 is opponent
+    public CPUMoveSelect CPUMoveSelector;
     private int _priorityOutcome = 0;    
     private int[] _positiveDirection = {1, -1},  // Player positve direction is right-ward and index 0; CPU positve direction is left-ward and index 1
                     _forwardsOrBackwards = {1, 1}, // Store relative direction for player and CPU. Index 0 is player; index 1 is CPU. Set to 1 for relative forward direction, -1 for relative backwards
@@ -52,6 +53,8 @@ public class MatchFlowManager : MonoBehaviour
     {
         _areAllSusbSytemsDestroyed = new bool[] {false, false};
         _isMainHealthZero = new bool[] {false, false};
+        Fighters[0].SetUp();
+        CPUMoveSelector.SetUp();
         RemoveTempEffects();
         GenerateEnergy();
         StartNextTurn();
@@ -170,7 +173,7 @@ public class MatchFlowManager : MonoBehaviour
 
     int ApplyPriorityBonus(int movePriority, int playerID)
     {
-        if(fighters[playerID].CheckWhichHeadBuff((int)GameProperties.BuffTypes.Move) == (int)GameProperties.BuffTypes.Move)
+        if(Fighters[playerID].CheckWhichHeadBuff((int)GameProperties.BuffTypes.Move) == (int)GameProperties.BuffTypes.Move)
             return movePriority + 1;
         else
             return movePriority;
@@ -178,17 +181,17 @@ public class MatchFlowManager : MonoBehaviour
 
     void CheckHyperArmourCapabilities()
     {
-        fighters[0].SetTempEffectActive(0, PlayerMove.TempEffects[0]);
-        fighters[1].SetTempEffectActive(0, CPUMove.TempEffects[0]);
+        Fighters[0].SetTempEffectActive(0, PlayerMove.TempEffects[0]);
+        Fighters[1].SetTempEffectActive(0, CPUMove.TempEffects[0]);
     }
 
     void ResolveMoves()
     {
         // bool isSomeoneDead = false;
         // Remove move's energy cost from character's energy pool regardless of outcome
-        fighters[0].ConsumeEnergy(PlayerMove.Requirements[0]);
+        Fighters[0].ConsumeEnergy(PlayerMove.Requirements[0]);
         // fighters[0].EnergyData[0] -= PlayerMove.Requirements[0]; 
-        fighters[1].ConsumeEnergy(CPUMove.Requirements[0]);
+        Fighters[1].ConsumeEnergy(CPUMove.Requirements[0]);
 
         switch(_priorityOutcome)
         {
@@ -197,11 +200,11 @@ public class MatchFlowManager : MonoBehaviour
                 // Debug.Log("Player moves first");
                 _selectedFightMoves[0] = PlayerMove;
                 _selectedFightMoves[1] = CPUMove;
-                ApplyMove(0, fighters[0].HealthBarNum);
+                ApplyMove(0, Fighters[0].HealthBarNum);
                 _isSomeoneDead = CheckCharacterDead(1);
                 if(!_isSomeoneDead)
                 {    
-                    ApplyMove(1, fighters[1].HealthBarNum);
+                    ApplyMove(1, Fighters[1].HealthBarNum);
                     _isSomeoneDead = CheckCharacterDead(0);
                 }
                 break;
@@ -211,11 +214,11 @@ public class MatchFlowManager : MonoBehaviour
                 // Debug.Log("Opponent moves first");
                 _selectedFightMoves[0] = CPUMove;
                 _selectedFightMoves[1] = PlayerMove;
-                ApplyMove(0, fighters[1].HealthBarNum);
+                ApplyMove(0, Fighters[1].HealthBarNum);
                 _isSomeoneDead = CheckCharacterDead(0);
                 if(!_isSomeoneDead)
                 {    
-                    ApplyMove(1, fighters[0].HealthBarNum);
+                    ApplyMove(1, Fighters[0].HealthBarNum);
                     _isSomeoneDead = CheckCharacterDead(1);
                 }
                 break; 
@@ -261,23 +264,23 @@ public class MatchFlowManager : MonoBehaviour
 
     void ApplyBuff(int playerID, int orderIndex)
     {
-        fighters[playerID].SetActiveHeadBuff(_selectedFightMoves[orderIndex].MainEffectValue[0]);   // Assumes MainEffectValue is the buffType id
-        fighters[playerID].BuffPrimaryEffect = _selectedFightMoves[orderIndex].MainEffectValue[1];  // Update buff's primary effect value
-        fighters[playerID].EnergyData[1] = _selectedFightMoves[orderIndex].MainEffectValue[2]; // Update buff's energy cost
+        Fighters[playerID].SetActiveHeadBuff(_selectedFightMoves[orderIndex].MainEffectValue[0]);   // Assumes MainEffectValue is the buffType id
+        Fighters[playerID].BuffPrimaryEffect = _selectedFightMoves[orderIndex].MainEffectValue[1];  // Update buff's primary effect value
+        Fighters[playerID].EnergyData[1] = _selectedFightMoves[orderIndex].MainEffectValue[2]; // Update buff's energy cost
         
         // Debug.Log("Player " + playerID + " active buff: " + (GameProperties.BuffTypes)fighters[playerID].GetActiveHeadBuff() + ". Energy cost: " +fighters[playerID].EnergyData[1]);
     }
 
     void ApplyDefense(int playerID)
     {
-        fighters[playerID].SetTempEffectActive(1, 1);
+        Fighters[playerID].SetTempEffectActive(1, 1);
     }
 
     void MoveCharacter(int playerID, int orderIndex)
     {
         bool canMoveUnimpeded = true;
         // Retrieve character current tile
-        int currentTileID = fighters[playerID].CurrentTileID, 
+        int currentTileID = Fighters[playerID].CurrentTileID, 
             movementRange = _selectedFightMoves[orderIndex].MainEffectValue[0],
             overallDirection = _forwardsOrBackwards[playerID] * _positiveDirection[playerID];   // 1 when going rightwards, -1 when going leftwards
 
@@ -346,14 +349,14 @@ public class MatchFlowManager : MonoBehaviour
                 healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], targetID, activeTargetedPartsIndexes);
             }
             // ToDo ApplySecondary effects
-            fighters[targetID].UpdateCharacterHealth(healthChanges);
+            Fighters[targetID].UpdateCharacterHealth(healthChanges);
         // }
     } // End of ModifyHealth
 
     bool HitDetection(int playerID, int orderIndex)
     {
         // Retrieve character current tile
-        int currentTileID = fighters[playerID].CurrentTileID, 
+        int currentTileID = Fighters[playerID].CurrentTileID, 
             attackRange = _selectedFightMoves[orderIndex].Range;
             // overallDirection = _positiveDirection[playerID];   // 1 when going rightwards, -1 when going leftwards
 
@@ -371,7 +374,7 @@ public class MatchFlowManager : MonoBehaviour
         for(int i = 0; i < targetedSubsystems.Count; i++)
         {    
             int tempInt = targetedSubsystems[i] + 1;
-            rawDamage[tempInt] =  (attackPercentage * fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
+            rawDamage[tempInt] =  (attackPercentage * Fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
             rawDamage[0] += rawDamage[tempInt];
         };
         return rawDamage;
@@ -380,10 +383,10 @@ public class MatchFlowManager : MonoBehaviour
     int[] ApplyAttackModifications(int orderIndex, int playerID, int[] potentialDamage)
     {
         int AttackBuffModifier = 0;
-        bool hasAttackBuffActive = fighters[playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Attack;
+        bool hasAttackBuffActive = Fighters[playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Attack;
         
         if(hasAttackBuffActive)
-            AttackBuffModifier = fighters[playerID].BuffPrimaryEffect;
+            AttackBuffModifier = Fighters[playerID].BuffPrimaryEffect;
 
         if(hasAttackBuffActive)
         {    
@@ -395,17 +398,17 @@ public class MatchFlowManager : MonoBehaviour
     int[] ApplyDefenseReductions(int orderIndex, int playerID, int[] potentialDamage)
     {
         // Apply bonus defense reduction from HeadBufff: Defense 
-        if(fighters[1 - playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Defense)
+        if(Fighters[1 - playerID].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Defense)
         {
             for(int i = 0; i < potentialDamage.Length; i++)
-                potentialDamage[i] -= ((fighters[playerID].BuffPrimaryEffect * potentialDamage[i]) / 100);
+                potentialDamage[i] -= ((Fighters[playerID].BuffPrimaryEffect * potentialDamage[i]) / 100);
         }
             
         // Check if opponent is blocking
-        if(fighters[1-playerID].GetTempEffectActive(1) == 1)
+        if(Fighters[1-playerID].GetTempEffectActive(1) == 1)
         {
             
-            int blockThreshold = (_selectedFightMoves[1 - orderIndex].MainEffectValue[1] * fighters[1 - playerID].HealthSystemData[0]) / 100;
+            int blockThreshold = (_selectedFightMoves[1 - orderIndex].MainEffectValue[1] * Fighters[1 - playerID].HealthSystemData[0]) / 100;
             if(potentialDamage[0] <= blockThreshold)
             {
                 for(int i = 0; i < potentialDamage.Length; i++)
@@ -413,7 +416,7 @@ public class MatchFlowManager : MonoBehaviour
             }
             else
             {
-                fighters[1 - playerID].SetTempEffectActive(3, 1);
+                Fighters[1 - playerID].SetTempEffectActive(3, 1);
                 for(int i = 0; i < potentialDamage.Length; i++)
                     potentialDamage[i] += (_selectedFightMoves[1 - orderIndex].SecondaryEffects[2] * potentialDamage[i]) / 100;
             } 
@@ -462,7 +465,7 @@ public class MatchFlowManager : MonoBehaviour
         for(int i = 0; i < temptList.Count; i++)
         {
             HealthSystemDataIndex = (temptList[i] * 2) + 3;
-            isDestroyed = fighters[playerID].HealthSystemData[HealthSystemDataIndex] <= 0;
+            isDestroyed = Fighters[playerID].HealthSystemData[HealthSystemDataIndex] <= 0;
             
             if(isDestroyed)
                 filteredParts.Remove(temptList[i]);
@@ -471,7 +474,7 @@ public class MatchFlowManager : MonoBehaviour
     }
     void RemoveTempEffects()
     {
-        foreach(CharacterDisplay fighter in fighters)
+        foreach(CharacterDisplay fighter in Fighters)
         {
             List<string> keyList = new List<string>(fighter.TempEffects.Keys);
             foreach(string key in keyList)
@@ -484,7 +487,7 @@ public class MatchFlowManager : MonoBehaviour
         // Check for character deaths in order to trigger endgame
         // If player dies, it is a loss; if only the kaiju dies, then the player wins.
 
-        int[] systemHealthData = fighters[playerID].HealthSystemData;
+        int[] systemHealthData = Fighters[playerID].HealthSystemData;
         
         // Check whether all subsystems are at zero health
         for(int j = 3; j < systemHealthData.Length; j += 2)
@@ -495,7 +498,7 @@ public class MatchFlowManager : MonoBehaviour
                 _areAllSusbSytemsDestroyed[playerID] = true;
         }
 
-        _isMainHealthZero[playerID] = fighters[playerID].HealthSystemData[1] == 0;
+        _isMainHealthZero[playerID] = Fighters[playerID].HealthSystemData[1] == 0;
 
         //Check whether overall hp has dropped to 0
         if(_areAllSusbSytemsDestroyed[playerID] || _isMainHealthZero[playerID])   
@@ -515,13 +518,13 @@ public class MatchFlowManager : MonoBehaviour
     void UpdateButtonUI()
     {
         int[] playerEnergyAndSubSystemsData = {0, 0, 0, 0, 0, 0};
-        playerEnergyAndSubSystemsData[0] = fighters[0].EnergyData[0];
+        playerEnergyAndSubSystemsData[0] = Fighters[0].EnergyData[0];
         // Debug.Log("EnergyStored: "+ playerEnergyAndSubSystemsData[0]);
 
         for(int i = 1; i < playerEnergyAndSubSystemsData.Length ; i++)
         {
             int index = (i * 2) + 1 ;
-            if(fighters[0].HealthSystemData[index] > 0)
+            if(Fighters[0].HealthSystemData[index] > 0)
                 playerEnergyAndSubSystemsData[i] = 1;
 
             // Debug.Log("playerEnergyAndSubSystemsData[" + i +"]: "+ playerEnergyAndSubSystemsData[i]);
@@ -532,13 +535,13 @@ public class MatchFlowManager : MonoBehaviour
 
     void GenerateEnergy()
     {
-        fighters[0].GenerateEnergy();
-        fighters[1].GenerateEnergy();
+        Fighters[0].GenerateEnergy();
+        Fighters[1].GenerateEnergy();
     }
 
     bool CheckActivePlayerBuff(int targetBuff)
     {
-        bool isBuffActive = fighters[0].GetActiveHeadBuff() == targetBuff;
+        bool isBuffActive = Fighters[0].GetActiveHeadBuff() == targetBuff;
         return isBuffActive;
     }
 
@@ -566,13 +569,13 @@ public class MatchFlowManager : MonoBehaviour
     void PassiveHealing()
     {
         List<int> allSubsystems = new List<int>{0, 1, 2, 3, 4};
-        for(int i = 0; i < fighters.Length; i++)
+        for(int i = 0; i < Fighters.Length; i++)
         {
-            if(fighters[i].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Repair)
+            if(Fighters[i].GetActiveHeadBuff() == (int)GameProperties.BuffTypes.Repair)
             {
                 List<int> filteredTargetedIndexes = RemoveCriticallyDamagedTargets(i, allSubsystems);
-                int[] healthChanges = CalculateRawDamage(fighters[i].BuffPrimaryEffect, i, filteredTargetedIndexes);
-                fighters[i].UpdateCharacterHealth(healthChanges);
+                int[] healthChanges = CalculateRawDamage(Fighters[i].BuffPrimaryEffect, i, filteredTargetedIndexes);
+                Fighters[i].UpdateCharacterHealth(healthChanges);
             }
         }
         

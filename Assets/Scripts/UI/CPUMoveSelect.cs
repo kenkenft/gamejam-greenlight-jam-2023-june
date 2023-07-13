@@ -6,16 +6,27 @@ public class CPUMoveSelect : MonoBehaviour
 {
     [SerializeField] List<SOFightMoves> AllMoves;
     SOFightMoves[] AllFightPossibleMoves;
+    public MatchFlowManager MFM;
+    public SOCharacterStats[] Opponents;
 
-    void Start()
+    // void Start()
+    // {
+    //     SetUp();
+    // }
+    public void SetUp()
     {
-        SetUp();
+        MFM.Fighters[1].SOCS = Opponents[GameProperties.BattleIndex];
+        MFM.Fighters[1].SetUp();
+        SetUpMovePool();
     }
-    void SetUp()
+
+    void SetUpMovePool()
     {
         AllMoves.Clear();
-        AllFightPossibleMoves = Resources.LoadAll<SOFightMoves>("FightMoves");
-        GetMoveSet(GameProperties.BattleIndex);
+        foreach(SOFightMoves move in MFM.Fighters[1].SOCS.MovePool)
+        {
+            AllMoves.Add(move);
+        }
     }
 
     void GetMoveSet(int battleIndex)
@@ -36,7 +47,7 @@ public class CPUMoveSelect : MonoBehaviour
 
     SOFightMoves MoveIndexToSOFM(int moveIndex)
     {
-        string moveID = GameProperties.IDNumToActionName[moveIndex];
+        string moveID = GameProperties.IDNumToActionID[moveIndex];
 
         for(int i = 0; i < AllFightPossibleMoves.Length; i++)
         {

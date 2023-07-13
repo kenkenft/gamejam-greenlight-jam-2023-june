@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterDisplay : MonoBehaviour
 {
-    public int HealthBarNum, SubSystemAmount, StartEnergy, BuffEnergyCost = 0, EnergyPerTurn = 20, CurrentTileID = 0, BuffPrimaryEffect = 0;
+    public int HealthBarNum, SubSystemAmount, StartEnergy, BuffEnergyCost = 0, CurrentTileID = 0, BuffPrimaryEffect = 0;
     public int[] HealthSystemData = new int[12], 
     // Assumes HealthSystemData is as follows: 
     // [HPMax, HPCurr, HPHeadMax, HPHeadCurr, 
@@ -39,28 +39,17 @@ public class CharacterDisplay : MonoBehaviour
     [HideInInspector]
     public static SendIntArray HealthAffected, EnergyAffected;
 
-    void OnEnable()
-    {
-        // GameManager.CharacterSetUpRequested += SetUp;
-        GameManager.RoundHasStarted += SetUp;
-    }
-    void OnDisable()
-    {
-        // GameManager.CharacterSetUpRequested -= SetUp;
-        GameManager.RoundHasStarted -= SetUp;
 
-    }
 
-    void SetUp()
+    public void SetUp()
     {
-        // Debug.Log("CharacterDisplay.SetUp called");
         SubSystemAmount = SOCS.HPSubSystems.Length;
         SetUpSystemHealth();
         HealthBarData[0] = HealthBarNum;
         UpdateHealthBar();
         EnergyData[0] = StartEnergy;
         EnergyData[1] = BuffEnergyCost;
-        EnergyData[2] = EnergyPerTurn;
+        EnergyData[2] = SOCS.BaseEnergyGeneration;
         EnergyBarData[0] = HealthBarNum;
         EnergyBarData[1] = 100; 
 
@@ -135,14 +124,11 @@ public class CharacterDisplay : MonoBehaviour
 
     public int GetTempEffectActive(int targetEffect)
     {
-        // Debug.Log("targetEffect: " + effectTypes[targetEffect]);
         foreach(var tempEffect in TempEffects)
         {
             if(tempEffect.Key == effectTypes[targetEffect])
                 return tempEffect.Value;
         }
-        // Debug.Log("Nothing found return 0");
-
         return 0;   // In the event an improper string is given, just send back 0
     }
 
@@ -161,8 +147,6 @@ public class CharacterDisplay : MonoBehaviour
         
         EnergyBarData[2] = EnergyData[0];
         EnergyAffected?.Invoke(EnergyBarData);
-
-        // Debug.Log(gameObject.name + " Energy generated: " + EnergyGenerated + ". Total energy: " + EnergyData[0] + "%"); 
     }
 
 }

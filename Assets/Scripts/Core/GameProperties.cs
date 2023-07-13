@@ -77,19 +77,29 @@ public class GameProperties
         None, Repair, Defense, Move, Attack
     };
 
+    public enum CharacterType
+    {
+        None, Mech, Kaiju
+    }
+
     public static int BattleIndex = 0;
 
     public static Dictionary<int, int[]> KaijuMoveSetIDs = new Dictionary<int, int[]>()
         {
             {0, new int[] {0, 1, 4, 6}},  // Tutorial battle
-            {1, new int[] {0, 1, 3, 4, 6, 9}},  // Weak monster battle
-            {2, new int[] {0, 1, 3, 4, 6, 8, 9, 11, 12, 15, 18}},  // Middle monster battle
-            {3, new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
-                           10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+            {1, new int[] {0, 1, 3, 4, 6, 
+                            9}},  // Weak monster battle
+            {2, new int[] {0, 1, 3, 4, 6, 
+                            8, 9, 11, 12, 15, 
+                            18}},  // Middle monster battle
+            {3, new int[] {0, 1, 2, 3, 4, 
+                            5, 6, 7, 8, 9, 
+                           10, 11, 12, 13, 14, 
+                            15, 16, 17, 18, 19,
                            20, 21}}   // Final monster battle
         }; 
 
-    public static Dictionary<int, string> IDNumToActionName = new Dictionary<int, string>()
+    public static Dictionary<int, string> IDNumToActionID = new Dictionary<int, string>()
         {
             {0, "Mech00"}, {1, "Mech01"}, {2, "Mech02"}, {3, "Mech03"}, {4, "Mech04"}, {5, "Mech05"}, {6, "Mech06"}, {7, "Mech07"}, {8, "Mech08"}, {9, "Mech09"},
             {10, "Mech10"}, {11, "Mech11"}, {12, "Mech12"}, {13, "Mech13"}, {14, "Mech14"}, {15, "Mech15"}, {16, "Mech16"}, {17, "Mech17"}, {18, "Mech18"}, {19, "Mech19"},

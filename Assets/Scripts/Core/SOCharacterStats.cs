@@ -6,4 +6,9 @@ using UnityEngine;
 public class SOCharacterStats : ScriptableObject
 {
     public int[] HPSubSystems = new int[5]; // HPHead, HPChest, HPLeftArm, HPRightArm, HPLegs;
+    public int BaseEnergyGeneration;
+
+    public GameProperties.CharacterType CharacterType;
+    public SOFightMoves[] MovePool;
+
 }

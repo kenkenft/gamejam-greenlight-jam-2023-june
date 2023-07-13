@@ -6140,9 +6140,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5980e13d50487c488f21fed6e5f7819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fighters:
+  Fighters:
   - {fileID: 21393363}
   - {fileID: 518438075}
+  CPUMoveSelector: {fileID: 1674461458}
   PlayerMove: {fileID: 0}
   CPUMove: {fileID: 0}
   CPUMoveList:
@@ -6187,7 +6188,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AllMoves: []
-  AllFightMoves: []
+  MFM: {fileID: 1674461455}
+  Opponents:
+  - {fileID: 11400000, guid: 5940fee6723969a42a5db85c5e7ced91, type: 2}
+  - {fileID: 11400000, guid: d8d5061d80d67b84a9aad66cf1cb3156, type: 2}
+  - {fileID: 11400000, guid: 5b0eab13769024640aabc1a3ec346edb, type: 2}
 --- !u!1 &1706609384
 GameObject:
   m_ObjectHideFlags: 0
