@@ -28,6 +28,7 @@ public class MatchFlowManager : MonoBehaviour
     public static IntForBool TileOccupationRequested, CheckTileWithinRangeRequested;
     public static BoolRequested TurnHasEnded;
     public static SendInt EndConditionsMet, WhichEndingDetermined;
+    public static SOFightMoveRequested CPUMoveRequested;
     
     void OnEnable()
     {
@@ -126,7 +127,9 @@ public class MatchFlowManager : MonoBehaviour
 
     SOFightMoves ComputerMove()
     {
-        return CPUMoveList[Random.Range(0, CPUMoveList.Length - 1)];
+        // return CPUMoveList[Random.Range(0, CPUMoveList.Length - 1)];
+        return CPUMoveRequested.Invoke();
+        // Invoke delegate that CPUMoveSelect.SelectMove is subscribed to returns 
     }
 
     int ResolvePriority()

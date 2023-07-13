@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CPUMoveSelect : MonoBehaviour
 {
-    [SerializeField] List<SOFightMoves> AllMoves;
+    [SerializeField] List<SOFightMoves> KaijuMovePool;
     SOFightMoves[] AllFightPossibleMoves;
     public MatchFlowManager MFM;
     public SOCharacterStats[] Opponents;
@@ -13,6 +13,17 @@ public class CPUMoveSelect : MonoBehaviour
     // {
     //     SetUp();
     // }
+
+    void OnEnable()
+    {
+        MatchFlowManager.CPUMoveRequested += SelectMove;
+    }
+
+    void OnDisable()
+    {
+        MatchFlowManager.CPUMoveRequested -= SelectMove;
+    }
+
     public void SetUp()
     {
         MFM.Fighters[1].SOCS = Opponents[GameProperties.BattleIndex];
@@ -22,10 +33,10 @@ public class CPUMoveSelect : MonoBehaviour
 
     void SetUpMovePool()
     {
-        AllMoves.Clear();
+        KaijuMovePool.Clear();
         foreach(SOFightMoves move in MFM.Fighters[1].SOCS.MovePool)
         {
-            AllMoves.Add(move);
+            KaijuMovePool.Add(move);
         }
     }
 
@@ -39,7 +50,7 @@ public class CPUMoveSelect : MonoBehaviour
         {    
             moveToAdd = MoveIndexToSOFM( moveIDs[i] );
             if(moveToAdd != null) 
-                AllMoves.Add( moveToAdd );
+                KaijuMovePool.Add( moveToAdd );
             else
                 Debug.Log($"Error: moveID Mech{moveIDs[i]} is invalid. Did not add");
         }
@@ -56,5 +67,17 @@ public class CPUMoveSelect : MonoBehaviour
         }
 
         return null;
+    }
+
+    SOFightMoves SelectMove()
+    {
+        SOFightMoves CPUMove = null;
+        List<SOFightMoves> potentialMoves = KaijuMovePool;
+        // Determine which moves are valid given the kaiju's state
+        // List<SOFightMoves> filteredListA = HaveEnoughEnergy(KaijuMovePool);
+        // List<SOFightMoves> filteredListB = WithinRange(filteredListA);
+        // List<SOFightMoves> filteredListC = AvailableSubSystems(filteredListB);
+        // CPUMove = PickAMove(filteredListC);
+        return CPUMove; 
     }
 }

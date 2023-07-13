@@ -12,6 +12,8 @@ public delegate void SendBool(bool state);
 public delegate void FightMoveSent(SOFightMoves fightMove);
 public delegate void SOFightMovesRequired(List<SOFightMoves> relevantActions);
 
+public delegate SOFightMoves SOFightMoveRequested();
+
 public class GameProperties
 {
     public static Dictionary<string, string> ColourPalleteHex = new Dictionary<string, string>()
