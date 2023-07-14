@@ -76,12 +76,12 @@ public class CPUMoveSelect : MonoBehaviour
         // Determine which moves are valid given the kaiju's state
         List<SOFightMoves> filteredListA = HaveEnoughEnergy(potentialMoves);
         List<SOFightMoves> filteredListB = AvailableSubSystems(filteredListA);
-        List<SOFightMoves> filteredListC = WithinRange(filteredListB);
-        // List<SOFightMoves> filteredListD = WhichBuffEnabled(filteredListC);
+        List<SOFightMoves> filteredListC = AttacksWithinRange(filteredListB);
+        List<SOFightMoves> filteredListD = RemoveEnabledBuffMoves(filteredListC);
 
         // int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBiases(filteredListD);
         // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
-        return filteredListB[0];
+        return filteredListD[0];
         // return CPUMove; 
     }
 
@@ -192,7 +192,7 @@ public class CPUMoveSelect : MonoBehaviour
         return true;    // i.e All mandatory subsystems are active
     }   // End of CheckSubSystemRequirement
 
-    List<SOFightMoves> WithinRange(List<SOFightMoves> movePool)
+    List<SOFightMoves> AttacksWithinRange(List<SOFightMoves> movePool)
     {
         List<SOFightMoves> filteredList = new List<SOFightMoves>(movePool);
         int distanceFromPlayer = MFM.Fighters[1].CurrentTileID - MFM.Fighters[0].CurrentTileID;
@@ -213,4 +213,21 @@ public class CPUMoveSelect : MonoBehaviour
 
         return filteredList;
     }
+
+    List<SOFightMoves> RemoveEnabledBuffMoves(List<SOFightMoves> movePool)
+    {
+        List<SOFightMoves> filteredList = new List<SOFightMoves>(movePool);
+        int activeBuff = MFM.Fighters[1].GetActiveHeadBuff();
+        // Debug.Log($"Active buff: {(GameProperties.BuffTypes)activeBuff}");
+        foreach(SOFightMoves move in movePool)
+        {
+            if(move.ActionType == GameProperties.ActionType.Special && move.MainEffectValue[0] == activeBuff)
+            {
+                filteredList.Remove(move);
+                // Debug.Log($"Remove buff move: {move.Name}");
+            }
+        }
+        return filteredList;
+    }
+    
 }
