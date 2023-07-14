@@ -84,7 +84,7 @@ public class CPUMoveSelect : MonoBehaviour
 
     SOFightMoves SelectMove()
     {
-        SOFightMoves CPUMove = null;
+        
         List<SOFightMoves> potentialMoves = new List<SOFightMoves>(KaijuMovePool);
         // Determine which moves are valid given the kaiju's state
         List<SOFightMoves> filteredListA = HaveEnoughEnergy(potentialMoves);
@@ -94,17 +94,28 @@ public class CPUMoveSelect : MonoBehaviour
 
         if(filteredListD.Count > 1)     // Kaiju can do something
         {
-            
             int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBaseBiases(filteredListD);
             
             CurrentBehaviour = MFM.Fighters[1].CurrentBehaviour; // Debugging line. Comment out when not using inspector
             // CurrentBehaviour = SetNewBehaviour(); // ToDo
+
             MoveTypeProbabilityRatioModifiers = AdjustRatiosBasedOnFactors(MoveTypeProbabilityRatioModifiers);
-            bool canOnlyDoNothing = CheckForNothing(MoveTypeProbabilityRatioModifiers);
-            // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
-            
-            if (CPUMove != null && !canOnlyDoNothing)    
-                return CPUMove;
+            bool canDoSomething = CheckForSomething(MoveTypeProbabilityRatioModifiers);
+            if (canDoSomething)
+            {
+                
+                List<SOFightMoves> filteredListE = FilterByActionType(filteredListD, MoveTypeProbabilityRatioModifiers);
+                // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
+                // if(filteredListE.Count > 0)
+                // {
+                //     SOFightMoves CPUMove = null;
+                //     // CPUMove = PickAMove(filteredListE);    
+                //     return CPUMove;
+                // // }
+                // else
+                    return KaijuMovePool[0];
+                
+            }
             else
                 return KaijuMovePool[0];    //  Assumes index 0 contains SOFightMoves called "Nothing".
         } 
@@ -259,15 +270,15 @@ public class CPUMoveSelect : MonoBehaviour
     
     int[] CalculateMoveTypeBaseBiases(List<SOFightMoves> movePool)
     {
-        GameProperties.ActionType[] buffTypes = (GameProperties.ActionType[])System.Enum.GetValues(typeof(GameProperties.ActionType));
-        int[] probabilityRatios = new int [buffTypes.Length]; 
+        GameProperties.ActionType[] actionTypes = (GameProperties.ActionType[])System.Enum.GetValues(typeof(GameProperties.ActionType));
+        int[] probabilityRatios = new int [actionTypes.Length]; 
 
         // Set ratios to 0
         for(int i = 0; i < probabilityRatios.Length; i++)
             probabilityRatios[i] = 0;
         
         // Give non-zero positive value to the corresponding action type ratio IF a single move of that type is found.
-        foreach(GameProperties.ActionType actionType in buffTypes)
+        foreach(GameProperties.ActionType actionType in actionTypes)
         {
             foreach(SOFightMoves move in movePool)
             {
@@ -296,20 +307,62 @@ public class CPUMoveSelect : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < probabilityRatios.Length; i++)
-            Debug.Log($"{(GameProperties.ActionType)i} modified ratio value: {probabilityRatios[i]}");
+        // for(int i = 0; i < probabilityRatios.Length; i++)
+        //     Debug.Log($"{(GameProperties.ActionType)i} modified ratio value: {probabilityRatios[i]}");
         
         return probabilityRatios;
     }
 
-    bool CheckForNothing(int[] probabilityModifiers)
+    bool CheckForSomething(int[] probabilityModifiers)
     {
         for(int i = 0; i < probabilityModifiers.Length; i++)
         {
             if(probabilityModifiers[i] > 0)
-                return false;
+                return true;
         }
         //if all probabilityModifiers are 0, then the only move that the kaiju can do is Nothing.
-        return true;
+        return false;
+    }
+
+    List<SOFightMoves> FilterByActionType(List<SOFightMoves> movePool, int[] probabilityRatios)
+    {
+        List<SOFightMoves> filteredList = new List<SOFightMoves>(movePool);
+        int[] probabilityUpperBounds = new int[System.Enum.GetValues(typeof(GameProperties.ActionType)).Length];
+        int randInt;
+        GameProperties.ActionType targetType = GameProperties.ActionType.None;
+
+        for(int i = 0; i < probabilityRatios.Length; i++)
+        {
+            if(i != 0)
+                probabilityUpperBounds[i] = probabilityUpperBounds[i - 1] + probabilityRatios[i];
+            else
+                probabilityUpperBounds[i] = probabilityRatios[i];
+        }
+
+        randInt = Random.Range(0, probabilityUpperBounds[probabilityUpperBounds.Length - 1]);
+        for(int i = 0; i < probabilityRatios.Length; i++)
+        {
+            if(i != 0)
+            {
+                if(probabilityRatios[i] != 0 && randInt > probabilityUpperBounds[i - 1] && randInt <= probabilityUpperBounds[i])
+                    targetType = (GameProperties.ActionType)i;          
+            }
+            else
+            {
+                if(probabilityRatios[i] != 0 && randInt > 0 && randInt <= probabilityUpperBounds[i])
+                    targetType = (GameProperties.ActionType)i;
+            }
+        }
+
+        foreach(SOFightMoves move in movePool)
+        {
+            if(move.ActionType != targetType)
+                filteredList.Remove(move);
+        }
+
+        // for(int i = 0; i < filteredList.Count; i++)
+        //     Debug.Log($"{targetType} move: {filteredList[i]}");
+
+        return filteredList;
     }
 }
