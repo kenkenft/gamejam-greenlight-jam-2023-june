@@ -76,7 +76,7 @@ public class CPUMoveSelect : MonoBehaviour
         // Determine which moves are valid given the kaiju's state
         List<SOFightMoves> filteredListA = HaveEnoughEnergy(potentialMoves);
         List<SOFightMoves> filteredListB = AvailableSubSystems(filteredListA);
-        // List<SOFightMoves> filteredListC = WithinRange(filteredListB);
+        List<SOFightMoves> filteredListC = WithinRange(filteredListB);
         // List<SOFightMoves> filteredListD = WhichBuffEnabled(filteredListC);
 
         // int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBiases(filteredListD);
@@ -145,7 +145,7 @@ public class CPUMoveSelect : MonoBehaviour
         {
             subSystemIndex = i + 1; //SOFightMoves.Requirements is a 6 item array, where subsystem related data starts at index 1
             requirementValue = move.Requirements[subSystemIndex];
-            
+
             if(requirementValue == 1)
                 mandatoryRequirements.Add(subSystemIndex);
             else if (requirementValue == 2)
@@ -191,4 +191,26 @@ public class CPUMoveSelect : MonoBehaviour
         }
         return true;    // i.e All mandatory subsystems are active
     }   // End of CheckSubSystemRequirement
+
+    List<SOFightMoves> WithinRange(List<SOFightMoves> movePool)
+    {
+        List<SOFightMoves> filteredList = new List<SOFightMoves>(movePool);
+        int distanceFromPlayer = MFM.Fighters[1].CurrentTileID - MFM.Fighters[0].CurrentTileID;
+        bool withinAttacksRange;
+        foreach(SOFightMoves move in movePool)
+        {
+            if(move.ActionType == GameProperties.ActionType.Attack)
+            {
+                withinAttacksRange = distanceFromPlayer <= move.Range;
+                if(!withinAttacksRange)
+                    filteredList.Remove(move);  
+                // Debug.Log($"Can {move.Name} hit target? {withinAttacksRange}");
+            }
+        }
+
+        // for(int i = 0; i < filteredList.Count; i++)
+        //     Debug.Log($"Range requirement met for: {filteredList[i].Name}");
+
+        return filteredList;
+    }
 }
