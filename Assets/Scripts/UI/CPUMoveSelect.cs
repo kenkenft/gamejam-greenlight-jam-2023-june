@@ -104,113 +104,91 @@ public class CPUMoveSelect : MonoBehaviour
     {
         List<SOFightMoves> filteredList = new List<SOFightMoves>(movePool);
 
-        int[] kaijuEnergyAndSubSystemsData = GetKaijuEnergyAndSusbSystemData();
-        
+        int[] kaijuSubSystemsData = GetKaijuSubSystemData();
+        foreach(SOFightMoves move in movePool)
+        {
+            if(!AbleToDoMove(kaijuSubSystemsData, move))
+                filteredList.Remove(move);
+        }
+        // for(int i = 0; i < filteredList.Count; i++)
+        //     Debug.Log($"SubSystem requirements met for: {filteredList[i].Name}");
 
         return filteredList;
     }
 
-    int[] GetKaijuEnergyAndSusbSystemData()
+    int[] GetKaijuSubSystemData()
     {
-        int[] kaijuEnergyAndSubSystemsData = {0, 0, 0, 0, 0, 0},
+        int[] SubSystemsData = {0, 0, 0, 0, 0},
                 kaijuHealthData = MFM.Fighters[1].HealthSystemData;
 
-        kaijuEnergyAndSubSystemsData[0] = MFM.Fighters[1].EnergyData[0];
-
-        for(int i = 1; i < kaijuEnergyAndSubSystemsData.Length ; i++)
+        for(int i = 0; i < SubSystemsData.Length ; i++)
         {
-            int index = (i * 2) + 1 ;
+            int index = (i * 2) + 3;
             if(kaijuHealthData[index] > 0)
-                kaijuEnergyAndSubSystemsData[i] = 1;
+                SubSystemsData[i] = 1;
         }
 
-        for(int i = 0; i < kaijuEnergyAndSubSystemsData.Length; i++)
-            Debug.Log("kaijuEnergyAndSubSystemsData[" + i +"]: "+ kaijuEnergyAndSubSystemsData[i]);
+        // for(int i = 0; i < SubSystemsData.Length; i++)
+        //     Debug.Log("kaijuEnergyAndSubSystemsData[" + i +"]: "+ SubSystemsData[i]);
 
-
-        return kaijuEnergyAndSubSystemsData;
+        return SubSystemsData;
     }
 
-    // void AbleToDoMove(int[] playerEnergyAndSubSystemsData)
-    // {
-    //     // playerEnergyAndSubSystemsData // index 0 is the amount of energy available; indexes 1 through 5 are truthy values (0 is broken; 1 is not broken)
-    //     bool hasEnoughEnergy = true;
-    //     // Check if enough energy is available
-    //     if(playerEnergyAndSubSystemsData[0] < FightMove.Requirements[0])   
-    //         hasEnoughEnergy = false;
-
-    //     //Check if required subsystems are still active
-    //     AreRequirementsMet = CheckSubSystems(playerEnergyAndSubSystemsData, hasEnoughEnergy);
+    bool AbleToDoMove(int[] subSystemsData, SOFightMoves move)
+    {
+        bool isRequirementMet = true;
         
-    //     //For Buff/Special moves, check whether corresponding buff is already active before enabling button interactable to true 
-    //     if(FightMove.ActionType == GameProperties.ActionType.Special)
-    //         FightMoveButton.interactable = !CurrentBuffRequested.Invoke(FightMove.MainEffectValue[0]);
-    //     else    
-    //         FightMoveButton.interactable = AreRequirementsMet;
-    // }
-
-    // bool CheckSubSystems(int[] playerEnergyAndSubSystemsData, bool isRequirementMet)
-    // {
-    //     if(isRequirementMet)
-    //     {
-    //         List<int> mandatoryRequirements = new List<int>(), flexibleRequirements = new List<int>();
-    //         // Parse list into mandatory and flexible
-    //         for(int i = 1 ; i < playerEnergyAndSubSystemsData.Length ; i++)
-    //         {
-    //             // int index = i - 1;
-    //             switch(FightMove.Requirements[i])
-    //             {
-    //                 case 1:
-    //                 {
-    //                     mandatoryRequirements.Add(i);
-    //                     break;
-    //                 }
-    //                 case 2:
-    //                 {
-    //                     flexibleRequirements.Add(i);
-    //                     break;
-    //                 }
-    //                 default:
-    //                     break;
-    //             }
-    //         }
-
-    //         // Check for mandatory subsystems i.e. playerEnergyAndSubSystemsData[i] = 1
-    //         isRequirementMet = CheckSubSystemRequirement(playerEnergyAndSubSystemsData, mandatoryRequirements, true);
+        List<int> mandatoryRequirements = new List<int>(), flexibleRequirements = new List<int>();
+        int subSystemIndex, requirementValue;   
+        // Parse list into mandatory, and flexible requirement lists
+        for(int i = 0 ; i < subSystemsData.Length ; i++)
+        {
+            subSystemIndex = i + 1; //SOFightMoves.Requirements is a 6 item array, where subsystem related data starts at index 1
+            requirementValue = move.Requirements[subSystemIndex];
             
-    //         // Check for requirements where it requires only one of the arms i.e. playerEnergyAndSubSystemsData[i] = 2
-    //         if(isRequirementMet && flexibleRequirements.Count > 0)
-    //             isRequirementMet = CheckSubSystemRequirement(playerEnergyAndSubSystemsData, flexibleRequirements, false);
-    //     } 
+            if(requirementValue == 1)
+                mandatoryRequirements.Add(subSystemIndex);
+            else if (requirementValue == 2)
+                flexibleRequirements.Add(subSystemIndex);
+        }
 
-    //     return isRequirementMet;
-    // }   // End of CheckSubSystems
+        // Check for mandatory subsystems i.e. playerEnergyAndSubSystemsData[i] = 1
+        isRequirementMet = CheckSubSystemRequirement(subSystemsData, mandatoryRequirements, true);
+        
+        // Check for requirements where it requires only one of the arms i.e. playerEnergyAndSubSystemsData[i] = 2
+        if(isRequirementMet && flexibleRequirements.Count > 0)
+            isRequirementMet = CheckSubSystemRequirement(subSystemsData, flexibleRequirements, false);
 
-    // bool CheckSubSystemRequirement(int[] playerEnergyAndSubSystemsData, List<int> requirements, bool isMandatory)
-    // {
-    //     if(isMandatory)
-    //     {
-    //         for(int i = 0; i < requirements.Count ; i++)
-    //         {
-    //             int index = requirements[i];
-    //             if(playerEnergyAndSubSystemsData[index] == 0)
-    //             {    
-    //                 // Debug.Log("Mandatory subsytem broken for fightMove: " + FightMove.Name);
-    //                 return false;   // i.e. At least one mandatory subsystem is broken
-    //             }
-    //         }
-    //     }
-    //     else
-    //     {
-    //         for(int i = 0; i < requirements.Count ; i++)
-    //         {
-    //             int index = requirements[i];
-    //             if(playerEnergyAndSubSystemsData[index] == 1)
-    //                 return true;    // i.e. At least one of the valid subsystem candidates is available for the flexible requirement
-    //         }
-    //         // Debug.Log("All candidate subsytems broken for fightMove: " + FightMove.Name);
-    //         return false;   // i.e. All valid subsystem candidate that could be used for the flexible requirement are broken
-    //     }
-    //     return true;    // i.e All mandatory subsystems are active
-    // }   // End of CheckSubSystemRequirement
+        return isRequirementMet;
+    }   // End of CheckSubSystems
+
+    bool CheckSubSystemRequirement(int[] subSystemsData, List<int> requirements, bool isMandatory)
+    {
+        if(isMandatory)
+        {
+            int index;
+            for(int i = 0; i < requirements.Count ; i++)
+            {
+                index = requirements[i] - 1;    // Offset as subSystemData is of array 5 and indices in requirements derives from a 6-size integer
+                if(subSystemsData[index] == 0)
+                {    
+                    // Debug.Log("Mandatory subsytem broken for fightMove: " + FightMove.Name);
+                    return false;   // i.e. At least one mandatory subsystem is broken
+                }
+            }
+        }
+        else
+        {
+            int index;
+            for(int i = 0; i < requirements.Count ; i++)
+            {
+                index = requirements[i] - 1;
+                if(subSystemsData[index] == 1)
+                    return true;    // i.e. At least one of the valid subsystem candidates is available for the flexible requirement
+            }
+            // Debug.Log("All candidate subsytems broken for fightMove: " + FightMove.Name);
+            return false;   // i.e. All valid subsystem candidate that could be used for the flexible requirement are broken
+        }
+        return true;    // i.e All mandatory subsystems are active
+    }   // End of CheckSubSystemRequirement
 }
