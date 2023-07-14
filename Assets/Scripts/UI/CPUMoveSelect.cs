@@ -72,12 +72,29 @@ public class CPUMoveSelect : MonoBehaviour
     SOFightMoves SelectMove()
     {
         SOFightMoves CPUMove = null;
-        List<SOFightMoves> potentialMoves = KaijuMovePool;
+        List<SOFightMoves> potentialMoves = new List<SOFightMoves>(KaijuMovePool);
         // Determine which moves are valid given the kaiju's state
-        // List<SOFightMoves> filteredListA = HaveEnoughEnergy(KaijuMovePool);
-        // List<SOFightMoves> filteredListB = WithinRange(filteredListA);
-        // List<SOFightMoves> filteredListC = AvailableSubSystems(filteredListB);
+        List<SOFightMoves> filteredListA = HaveEnoughEnergy(potentialMoves);
+        // List<SOFightMoves> filteredListB = AvailableSubSystems(filteredListA);
+        // List<SOFightMoves> filteredListC = WithinRange(filteredListB);
+        // int[] TypeProbabilityRatioModifiers = CalculateMoveTypeBiases(filteredListC);
         // CPUMove = PickAMove(filteredListC);
-        return CPUMove; 
+        return filteredListA[0];
+        // return CPUMove; 
+    }
+
+    List<SOFightMoves> HaveEnoughEnergy(List<SOFightMoves> movePool)
+    {
+        int currEnergy = MFM.Fighters[1].EnergyData[0];
+        List<SOFightMoves> filteredList = new List<SOFightMoves>(movePool);
+        foreach(SOFightMoves move in movePool)
+        {
+            if(move.Requirements[0] > currEnergy)
+                filteredList.Remove(move);
+        }
+
+        for(int i = 0; i < filteredList.Count; i++)
+            Debug.Log($"Enough energy for: {filteredList[i].Name}");
+        return filteredList;
     }
 }
