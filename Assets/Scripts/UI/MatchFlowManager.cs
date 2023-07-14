@@ -76,7 +76,7 @@ public class MatchFlowManager : MonoBehaviour
     int[] GetTargetedParts(int playerID)
     {
         int[] targetedParts = {0, 0, 0, 0, 0};
-        for(int i = 0; i < _playerTargetedBodyParts.GetLength(playerID); i++)
+        for(int i = 0; i < _targetedBodyParts.GetLength(playerID); i++)
             targetedParts[i] = _targetedBodyParts[playerID, i];
         
         return targetedParts;

@@ -103,24 +103,23 @@ public class CPUMoveSelect : MonoBehaviour
             bool canDoSomething = CheckForSomething(MoveTypeProbabilityRatioModifiers);
             if (canDoSomething)
             {
-                
                 List<SOFightMoves> filteredListE = FilterByActionType(filteredListD, MoveTypeProbabilityRatioModifiers);
-                // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
-                // if(filteredListE.Count > 0)
-                // {
-                //     SOFightMoves CPUMove = null;
-                //     // CPUMove = PickAMove(filteredListE);    
-                //     return CPUMove;
-                // // }
-                // else
-                    return KaijuMovePool[0];
-                
+                if(filteredListE.Count > 0)
+                {
+                    SOFightMoves CPUMove = PickAMove(filteredListE);  
+                    Debug.Log($"Move selected: {CPUMove.Name}");  
+                    return CPUMove;
+                }
+                else
+                    Debug.Log($"FilterByActionType gave no moves");
             }
             else
-                return KaijuMovePool[0];    //  Assumes index 0 contains SOFightMoves called "Nothing".
-        } 
+                Debug.Log($"Kaiju can only do Nothing");
+        }
         else
-            return KaijuMovePool[0]; // Assume kaiju can only do nothing
+            Debug.Log($"filteredListD only had one move: {filteredListD[0]}");
+
+        return KaijuMovePool[0]; // Assume kaiju can only do Nothing //  Assumes index 0 contains SOFightMoves called "Nothing".
     }
 
     List<SOFightMoves> HaveEnoughEnergy(List<SOFightMoves> movePool)
@@ -364,5 +363,18 @@ public class CPUMoveSelect : MonoBehaviour
         //     Debug.Log($"{targetType} move: {filteredList[i]}");
 
         return filteredList;
+    }
+
+    SOFightMoves PickAMove(List<SOFightMoves> movePool)
+    {
+        List<SOFightMoves> filteredList = new List<SOFightMoves>(movePool);
+        int amountOfMoves = movePool.Count;
+        if(amountOfMoves > 1)
+        {
+            int randInt = Random.Range(0,amountOfMoves);
+            return movePool[randInt];
+        }
+        else
+            return movePool[0];
     }
 }
