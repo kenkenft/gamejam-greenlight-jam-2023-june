@@ -79,7 +79,7 @@ public class CPUMoveSelect : MonoBehaviour
         List<SOFightMoves> filteredListC = AttacksWithinRange(filteredListB);
         List<SOFightMoves> filteredListD = RemoveEnabledBuffMoves(filteredListC);
 
-        // int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBiases(filteredListD);
+        int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBiases(filteredListD);
         // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
         return filteredListD[0];
         // return CPUMove; 
@@ -230,4 +230,30 @@ public class CPUMoveSelect : MonoBehaviour
         return filteredList;
     }
     
+    int[] CalculateMoveTypeBiases(List<SOFightMoves> movePool)
+    {
+        GameProperties.ActionType[] buffTypes = (GameProperties.ActionType[])System.Enum.GetValues(typeof(GameProperties.ActionType));
+        int[] probabilityRatios = new int [buffTypes.Length]; 
+
+        // Set ratios to 0
+        for(int i = 0; i < probabilityRatios.Length; i++)
+            probabilityRatios[i] = 0;
+        
+        // Give non-zero positive value to the corresponding action type ratio IF a single move of that type is found.
+        foreach(GameProperties.ActionType actionType in buffTypes)
+        {
+            foreach(SOFightMoves move in movePool)
+            {
+                if(actionType == move.ActionType)
+                {
+                    probabilityRatios[ (int)actionType ] += 10;
+                    break;
+                }
+            }
+        }
+        
+        for(int i = 0; i < probabilityRatios.Length; i++)
+            Debug.Log($"{(GameProperties.ActionType)i} ratio value: {probabilityRatios[i]}");
+        return probabilityRatios;
+    }
 }
