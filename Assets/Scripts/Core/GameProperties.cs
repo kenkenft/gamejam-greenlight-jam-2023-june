@@ -133,6 +133,13 @@ public class GameProperties
         {KaijuPersonalities.Sedentary, new int[] {0, 0, -99, 0, 0, 0}},
         {KaijuPersonalities.StoneWall, new int[] {50, 200, -99, 0, 50, 0}},
 
+        {KaijuPersonalities.OnlyAttack, new int[] {0, -100, -100, -100, -100, 0}},
+        {KaijuPersonalities.OnlyDefense, new int[] {-100, 0, -100, -100, -100, 0}},
+        {KaijuPersonalities.OnlyMove, new int[] {-100, -100, 0, -100, -100, -0}},
+        {KaijuPersonalities.OnlySpecial, new int[] {-100, -100, -100, 0, -100, 0}},
+        {KaijuPersonalities.OnlyRepair, new int[] {-100, -100, -100, -100, 0, 0}},
+        {KaijuPersonalities.OnlyNothing, new int[] {-100, -100, -100, -100, -100, 0}},
+
 
     };
 

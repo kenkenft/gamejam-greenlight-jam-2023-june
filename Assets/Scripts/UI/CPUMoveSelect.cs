@@ -8,6 +8,8 @@ public class CPUMoveSelect : MonoBehaviour
     SOFightMoves[] AllFightPossibleMoves;
     public MatchFlowManager MFM;
     public SOCharacterStats[] Opponents;
+    GameProperties.KaijuPersonalities CurrentBehaviour;
+    List<GameProperties.KaijuPersonalities> PresetBehaviours = new List<GameProperties.KaijuPersonalities>(){};
 
     // void Start()
     // {
@@ -29,6 +31,7 @@ public class CPUMoveSelect : MonoBehaviour
         MFM.Fighters[1].SOCS = Opponents[GameProperties.BattleIndex];
         MFM.Fighters[1].SetUp();
         SetUpMovePool();
+        SetUpBehaviours();   // ToDo Set up behaviour
     }
 
     void SetUpMovePool()
@@ -38,6 +41,16 @@ public class CPUMoveSelect : MonoBehaviour
         {
             KaijuMovePool.Add(move);
         }
+    }
+
+    void SetUpBehaviours()
+    {
+        PresetBehaviours.Clear();
+        GameProperties.KaijuPersonalities[] behaviours = MFM.Fighters[1].SOCS.Behaviours;
+        for(int i = 0; i < behaviours.Length; i++)
+            PresetBehaviours.Add(behaviours[i]);
+        CurrentBehaviour = PresetBehaviours[0];
+        MFM.Fighters[1].CurrentBehaviour = CurrentBehaviour;
     }
 
     void GetMoveSet(int battleIndex)
@@ -79,16 +92,24 @@ public class CPUMoveSelect : MonoBehaviour
         List<SOFightMoves> filteredListC = AttacksWithinRange(filteredListB);
         List<SOFightMoves> filteredListD = RemoveEnabledBuffMoves(filteredListC);
 
-        int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBaseBiases(filteredListD);
-        
-        MoveTypeProbabilityRatioModifiers = AdjustRatiosBasedOnFactors(filteredListD, MoveTypeProbabilityRatioModifiers);
-        bool canOnlyDoNothing = CheckForNothing(MoveTypeProbabilityRatioModifiers);
-        // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
-        
-        if (CPUMove != null && !canOnlyDoNothing)    
-            return CPUMove;
+        if(filteredListD.Count > 1)     // Kaiju can do something
+        {
+            
+            int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBaseBiases(filteredListD);
+            
+            CurrentBehaviour = MFM.Fighters[1].CurrentBehaviour; // Debugging line. Comment out when not using inspector
+            // CurrentBehaviour = SetNewBehaviour(); // ToDo
+            MoveTypeProbabilityRatioModifiers = AdjustRatiosBasedOnFactors(MoveTypeProbabilityRatioModifiers);
+            bool canOnlyDoNothing = CheckForNothing(MoveTypeProbabilityRatioModifiers);
+            // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
+            
+            if (CPUMove != null && !canOnlyDoNothing)    
+                return CPUMove;
+            else
+                return KaijuMovePool[0];    //  Assumes index 0 contains SOFightMoves called "Nothing".
+        } 
         else
-            return KaijuMovePool[0];    //  Assumes index 0 contains SOFightMoves called "Nothing". 
+            return KaijuMovePool[0]; // Assume kaiju can only do nothing
     }
 
     List<SOFightMoves> HaveEnoughEnergy(List<SOFightMoves> movePool)
@@ -263,10 +284,22 @@ public class CPUMoveSelect : MonoBehaviour
         return probabilityRatios;
     }
 
-    int[] AdjustRatiosBasedOnFactors(List<SOFightMoves> movePool, int[] probabilityModifiers)
+    int[] AdjustRatiosBasedOnFactors(int[] probabilityRatios)
     {
+        int[] behaviourModifiers = GameProperties.PersonalitiyModifier[CurrentBehaviour];
+        for(int i = 0; i < probabilityRatios.Length; i++)
+        {
+            if(probabilityRatios[i] != 0)
+            {
+                probabilityRatios[i] += behaviourModifiers[i];
+                probabilityRatios[i] = Mathf.Clamp(probabilityRatios[i], 0, 1000);
+            }
+        }
+
+        for(int i = 0; i < probabilityRatios.Length; i++)
+            Debug.Log($"{(GameProperties.ActionType)i} modified ratio value: {probabilityRatios[i]}");
         
-        return probabilityModifiers;
+        return probabilityRatios;
     }
 
     bool CheckForNothing(int[] probabilityModifiers)

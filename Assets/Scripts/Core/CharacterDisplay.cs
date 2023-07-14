@@ -34,6 +34,8 @@ public class CharacterDisplay : MonoBehaviour
 
     [SerializeField] public GameProperties.BuffTypes ActiveBuff;
 
+    [SerializeField] public GameProperties.KaijuPersonalities CurrentBehaviour;
+
     public SOCharacterStats SOCS;
 
     [HideInInspector]
