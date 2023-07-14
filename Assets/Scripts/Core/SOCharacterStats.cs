@@ -11,4 +11,6 @@ public class SOCharacterStats : ScriptableObject
     public GameProperties.CharacterType CharacterType;
     public SOFightMoves[] MovePool;
 
+    public GameProperties.KaijuPersonalities[] Behaviours;
+
 }

@@ -79,10 +79,16 @@ public class CPUMoveSelect : MonoBehaviour
         List<SOFightMoves> filteredListC = AttacksWithinRange(filteredListB);
         List<SOFightMoves> filteredListD = RemoveEnabledBuffMoves(filteredListC);
 
-        int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBiases(filteredListD);
+        int[] MoveTypeProbabilityRatioModifiers = CalculateMoveTypeBaseBiases(filteredListD);
+        
+        MoveTypeProbabilityRatioModifiers = AdjustRatiosBasedOnFactors(filteredListD, MoveTypeProbabilityRatioModifiers);
+        bool canOnlyDoNothing = CheckForNothing(MoveTypeProbabilityRatioModifiers);
         // CPUMove = PickAMove(filteredListD, MoveTypeProbabilityRatioModifiers);
-        return filteredListD[0];
-        // return CPUMove; 
+        
+        if (CPUMove != null && !canOnlyDoNothing)    
+            return CPUMove;
+        else
+            return KaijuMovePool[0];    //  Assumes index 0 contains SOFightMoves called "Nothing". 
     }
 
     List<SOFightMoves> HaveEnoughEnergy(List<SOFightMoves> movePool)
@@ -230,7 +236,7 @@ public class CPUMoveSelect : MonoBehaviour
         return filteredList;
     }
     
-    int[] CalculateMoveTypeBiases(List<SOFightMoves> movePool)
+    int[] CalculateMoveTypeBaseBiases(List<SOFightMoves> movePool)
     {
         GameProperties.ActionType[] buffTypes = (GameProperties.ActionType[])System.Enum.GetValues(typeof(GameProperties.ActionType));
         int[] probabilityRatios = new int [buffTypes.Length]; 
@@ -246,14 +252,31 @@ public class CPUMoveSelect : MonoBehaviour
             {
                 if(actionType == move.ActionType)
                 {
-                    probabilityRatios[ (int)actionType ] += 10;
+                    probabilityRatios[ (int)actionType ] += 100;
                     break;
                 }
             }
         }
         
-        for(int i = 0; i < probabilityRatios.Length; i++)
-            Debug.Log($"{(GameProperties.ActionType)i} ratio value: {probabilityRatios[i]}");
+        // for(int i = 0; i < probabilityRatios.Length; i++)
+        //     Debug.Log($"{(GameProperties.ActionType)i} ratio value: {probabilityRatios[i]}");
         return probabilityRatios;
+    }
+
+    int[] AdjustRatiosBasedOnFactors(List<SOFightMoves> movePool, int[] probabilityModifiers)
+    {
+        
+        return probabilityModifiers;
+    }
+
+    bool CheckForNothing(int[] probabilityModifiers)
+    {
+        for(int i = 0; i < probabilityModifiers.Length; i++)
+        {
+            if(probabilityModifiers[i] > 0)
+                return false;
+        }
+        //if all probabilityModifiers are 0, then the only move that the kaiju can do is Nothing.
+        return true;
     }
 }

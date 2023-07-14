@@ -288,7 +288,6 @@ MonoBehaviour:
   SubSystemAmount: 0
   StartEnergy: 0
   BuffEnergyCost: 0
-  EnergyPerTurn: 50
   CurrentTileID: 0
   BuffPrimaryEffect: 0
   HealthSystemData: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -2030,7 +2029,6 @@ MonoBehaviour:
   SubSystemAmount: 0
   StartEnergy: 0
   BuffEnergyCost: 0
-  EnergyPerTurn: 25
   CurrentTileID: 0
   BuffPrimaryEffect: 0
   HealthSystemData: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -6187,7 +6185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb464432310591d4ab03ab6a13eb5da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllMoves: []
+  KaijuMovePool: []
   MFM: {fileID: 1674461455}
   Opponents:
   - {fileID: 11400000, guid: 5940fee6723969a42a5db85c5e7ced91, type: 2}

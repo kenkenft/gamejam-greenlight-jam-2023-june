@@ -108,4 +108,32 @@ public class GameProperties
             {20, "Mech10"}, {21, "Mech11"}, {22, "Mech12"}, {23, "Mech13"}, {24, "Mech24"}, {25, "Mech25"}, {26, "Mech26"}, {27, "Mech27"}, {28, "Mech28"}, {29, "Mech29"},
         };
 
+    public enum KaijuPersonalities
+    {
+        Neutral, Aggresive, Defensive, Flighty, BuffOrientated, Healing, 
+        Cautious, Desperate, ChangeBuff, Timid, Sedentary, StoneWall,
+
+        OnlyAttack, OnlyDefense, OnlyMove, OnlySpecial, OnlyRepair, OnlyNothing
+    };
+
+    public static Dictionary<KaijuPersonalities, int[]> PersonalitiyModifier = new Dictionary<KaijuPersonalities, int[]>
+    {
+        // Assume int[] is size 6 and order is based on ActionType i.e. Attack, Defend, Move, Special, Repair, None
+        {KaijuPersonalities.Neutral, new int[] {0, 0, 0, 0, 0, 0}},
+        {KaijuPersonalities.Aggresive, new int[] {200, 0, 0, 0, 0, 0}},
+        {KaijuPersonalities.Defensive, new int[] {0, 200, 0, 0, 0, 0}},
+        {KaijuPersonalities.Flighty, new int[] {0, 0, 200, 0, 0, 0}},
+        {KaijuPersonalities.BuffOrientated, new int[] {0, 0, 0, 200, 0, 0}},
+        {KaijuPersonalities.Healing, new int[] {0, 0, 0, 0, 200, 0}},
+
+        {KaijuPersonalities.Cautious, new int[] {-50, 50, 50, 0, 50, 0}},
+        {KaijuPersonalities.Desperate, new int[] {500, -90, 0, -90, 0, 0}},
+        {KaijuPersonalities.ChangeBuff, new int[] {-99, -99, -99, 1000, -99, 0}},
+        {KaijuPersonalities.Timid, new int[] {-50, -50, 100, 0, 0, 0}},
+        {KaijuPersonalities.Sedentary, new int[] {0, 0, -99, 0, 0, 0}},
+        {KaijuPersonalities.StoneWall, new int[] {50, 200, -99, 0, 50, 0}},
+
+
+    };
+
 }
