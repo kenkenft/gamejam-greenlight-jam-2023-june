@@ -139,6 +139,7 @@ public class MatchFlowManager : MonoBehaviour
     {
         
         CPUMove = CPUMoveRequested.Invoke();
+        Debug.Log($"CPUMove: {CPUMove.Name}");
         if(CPUMove.ActionType != GameProperties.ActionType.Move)
         {
             int[] CPUSubSystemTargets = {0,0,0,0,0};

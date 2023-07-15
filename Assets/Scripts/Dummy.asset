@@ -12,8 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5469da8ae6d3e194c8cbf01fb53db2ce, type: 3}
   m_Name: Dummy
   m_EditorClassIdentifier: 
-  HPSubSystems: 0000000000000000000000000000000000000000
+  HPSubSystems: e8030000d0070000b80b0000a00f000088130000
   BaseEnergyGeneration: 0
-  CharacterType: 0
-  MovePool: []
-  Behaviours: 
+  CharacterType: 1
+  MovePool:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  Behaviours: 00000000

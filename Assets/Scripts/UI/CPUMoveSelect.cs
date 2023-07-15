@@ -491,32 +491,51 @@ public class CPUMoveSelect : MonoBehaviour
 
     int[] TriageTargets(int[] subSystemTargets)
     {
-        int[] healthPercentages = new int[subSystemTargets.Length];
+        float[] healthPercentages = new float[subSystemTargets.Length];
         for(int i = 0; i < subSystemTargets.Length; i++)
+        {    
             healthPercentages[i] = MFM.Fighters[1].GetSystemHealthPercentage(i+1);
+            // Debug.Log($"System {i} health: {healthPercentages[i].ToString("0.00")}");
+        } 
         
-        if(CheckForNonZero(healthPercentages))
+        if(CheckForNonZeroFloat(healthPercentages))
         {
-            System.Array.Sort(healthPercentages);
+            
             bool[] doNotSelect = new bool[subSystemTargets.Length];
             for(int i = 0; i < subSystemTargets.Length; i++)
                 doNotSelect[i] = false;
             
             for(int i = 0; i < CPUMove.HasExtraTargets[1]; i++)
             {
+                float smallestNonZeroValue = 101f;
+                int smallestNonZeroValueIndex = -1;
                 for(int j = 0; j < healthPercentages.Length; j++)
                 {
-                    if(healthPercentages[j] > 0 && !doNotSelect[j])
+                    if(healthPercentages[j] > 0 && !doNotSelect[j] && smallestNonZeroValue > healthPercentages[j])
                     {    
-                        subSystemTargets[j] = 1;
-                        doNotSelect[j] = true;
-                        break;
+                        smallestNonZeroValue = healthPercentages[j];
+                        smallestNonZeroValueIndex = j;
                     }
-                    
-                    doNotSelect[j] = true;
+                }
+                if(smallestNonZeroValueIndex > -1)   // This conditional failing should not be possible
+                {   
+                    subSystemTargets[smallestNonZeroValueIndex] = 1;
+                    doNotSelect[smallestNonZeroValueIndex] = true;
                 }
             }
         }
         return subSystemTargets;
+    }
+
+    bool CheckForNonZeroFloat(float[] array)
+    {
+        for(int i = 0; i < array.Length; i++)
+        {
+            if(array[i] > 0)
+                return true;
+        }
+        //SelectMove() - if all of array is 0, then the only move that the kaiju can do is Nothing.
+        //
+        return false;
     }
 }

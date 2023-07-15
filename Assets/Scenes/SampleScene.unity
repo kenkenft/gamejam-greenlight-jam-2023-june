@@ -295,6 +295,7 @@ MonoBehaviour:
   EnergyData: 000000000000000000000000
   EnergyBarData: 000000000000000000000000
   ActiveBuff: 0
+  CurrentBehaviour: 0
   SOCS: {fileID: 11400000, guid: c6199eaa6efb9c14ba5864b1b205b75f, type: 2}
 --- !u!224 &21393367
 RectTransform:
@@ -2036,6 +2037,7 @@ MonoBehaviour:
   EnergyData: 000000000000000000000000
   EnergyBarData: 000000000000000000000000
   ActiveBuff: 0
+  CurrentBehaviour: 0
   SOCS: {fileID: 11400000, guid: d8d5061d80d67b84a9aad66cf1cb3156, type: 2}
 --- !u!222 &518438077
 CanvasRenderer:
@@ -6191,6 +6193,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5940fee6723969a42a5db85c5e7ced91, type: 2}
   - {fileID: 11400000, guid: d8d5061d80d67b84a9aad66cf1cb3156, type: 2}
   - {fileID: 11400000, guid: 5b0eab13769024640aabc1a3ec346edb, type: 2}
+  CPUMove: {fileID: 0}
 --- !u!1 &1706609384
 GameObject:
   m_ObjectHideFlags: 0
