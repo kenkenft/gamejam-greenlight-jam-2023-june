@@ -144,4 +144,28 @@ public class GameProperties
 
     };
 
-}
+    public static Dictionary<KaijuPersonalities, int> PersonalitiyDirection = new Dictionary<KaijuPersonalities, int>
+    {
+        {KaijuPersonalities.Neutral, (int)TargetDirection.Forward},
+        {KaijuPersonalities.Aggresive, (int)TargetDirection.Forward},
+        {KaijuPersonalities.Defensive, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.Flighty, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.BuffOrientated, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.Healing, (int)TargetDirection.Backwards},
+
+        {KaijuPersonalities.Cautious, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.Desperate, (int)TargetDirection.Forward},
+        {KaijuPersonalities.ChangeBuff, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.Timid, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.Sedentary, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.StoneWall, (int)TargetDirection.Forward},
+
+        {KaijuPersonalities.OnlyAttack, (int)TargetDirection.Forward},
+        {KaijuPersonalities.OnlyDefense, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.OnlyMove, (int)TargetDirection.Forward},
+        {KaijuPersonalities.OnlySpecial, (int)TargetDirection.Forward},
+        {KaijuPersonalities.OnlyRepair, (int)TargetDirection.Backwards},
+        {KaijuPersonalities.OnlyNothing, (int)TargetDirection.Forward},
+
+    };
+} // End of Class

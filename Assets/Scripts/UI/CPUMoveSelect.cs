@@ -21,12 +21,14 @@ public class CPUMoveSelect : MonoBehaviour
     {
         MatchFlowManager.CPUMoveRequested += SelectMove;
         MatchFlowManager.CPUSubSystemTargetsRequested += SelectSubSystemTargets;
+        MatchFlowManager.CPUDirectionRequested += SetRelativeDirection;
     }
 
     void OnDisable()
     {
         MatchFlowManager.CPUMoveRequested -= SelectMove;
         MatchFlowManager.CPUSubSystemTargetsRequested -= SelectSubSystemTargets;
+        MatchFlowManager.CPUDirectionRequested -= SetRelativeDirection;
     }
 
     public void SetUp()
@@ -537,5 +539,12 @@ public class CPUMoveSelect : MonoBehaviour
         //SelectMove() - if all of array is 0, then the only move that the kaiju can do is Nothing.
         //
         return false;
+    }
+
+    int[] SetRelativeDirection()
+    {
+        int[] RelativeDirectionData = {1, 1}; // Index 0 is PlayerID; index 1 is default direction (relative forward)
+        RelativeDirectionData[1] = GameProperties.PersonalitiyDirection[CurrentBehaviour];
+        return RelativeDirectionData;
     }
 }

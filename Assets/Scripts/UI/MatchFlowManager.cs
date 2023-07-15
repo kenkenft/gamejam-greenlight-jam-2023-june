@@ -151,7 +151,11 @@ public class MatchFlowManager : MonoBehaviour
         }
         else
         {
-            CPUDirectionRequested.Invoke();
+            
+            int[] CPUDirection = {1, 1};
+            CPUDirection = CPUDirectionRequested.Invoke();
+            SetRelativeDirection(CPUDirection);
+            Debug.Log($"CPUDirection: {CPUDirection[0]},{CPUDirection[1]}");
             //Set directions
         }
         
