@@ -385,12 +385,12 @@ public class CPUMoveSelect : MonoBehaviour
     {
         int[] subSystemTargets = {0, 0, 0, 0, 0};
         
-        subSystemTargets = SetMandatoryAndExtraTargets();
+        subSystemTargets = SetDefaultAndExtraTargets();
 
         return subSystemTargets;
     }
 
-    int[] SetMandatoryAndExtraTargets()
+    int[] SetDefaultAndExtraTargets()
     {
         int[] subSystemTargets = {0, 0, 0, 0, 0};
         GameProperties.ActionType actionType = CPUMove.ActionType;
@@ -422,13 +422,59 @@ public class CPUMoveSelect : MonoBehaviour
     int[] SetTargetsOpponent()
     {
         int[] subSystemTargets = {0, 0, 0, 0, 0};
+        subSystemTargets = SetDefaultTargets(subSystemTargets);
+        if(CPUMove.HasExtraTargets[0] != 0)
+            subSystemTargets = SelectExtraTargets(subSystemTargets, true);
 
         return subSystemTargets;
     }
 
+    int[] SetDefaultTargets(int[] subSystemTargets)
+    {
+        for(int i = 0; i < CPUMove.DefaultSubSystemTargets.Length; i++)
+            subSystemTargets[i] = CPUMove.DefaultSubSystemTargets[i];
+        return subSystemTargets;
+    }
+
+    int[] SelectExtraTargets(int[] subSystemTargets, bool isAttack)
+    {
+        if(isAttack)
+            return SelectRandomTargets(subSystemTargets);
+        else
+        {
+            return TriageTargets(subSystemTargets);
+        }
+    }
+
+    int[] SelectRandomTargets(int[] subSystemTargets)
+    {
+        for(int i = 0; i < CPUMove.HasExtraTargets[1]; i++)
+        {
+            List<int> nonDefaultSubSystemIndexes = new List<int>(){0, 1, 2, 3, 4};
+
+            foreach(int bodyPart in subSystemTargets)
+                nonDefaultSubSystemIndexes.Remove(bodyPart);
+
+            for(int j = 0; j < CPUMove.HasExtraTargets[1]; j++)
+            {
+                int rand = Random.Range(0,nonDefaultSubSystemIndexes.Count-1);
+                subSystemTargets[nonDefaultSubSystemIndexes[rand]] = 1;
+                nonDefaultSubSystemIndexes.Remove(rand);
+            }
+        }
+        return subSystemTargets;
+    }
+
+    int[] TriageTargets(int[] subSystemTargets)
+    {
+        
+
+        return subSystemTargets;
+    }
     int[] SetTargetsSelfDefense()
     {
         int[] subSystemTargets = {0, 0, 0, 0, 0};
+        subSystemTargets = SetDefaultTargets(subSystemTargets);
 
         return subSystemTargets;
     }
@@ -436,6 +482,9 @@ public class CPUMoveSelect : MonoBehaviour
     int[] SetTargetsSelfRepair()
     {
         int[] subSystemTargets = {0, 0, 0, 0, 0};
+        subSystemTargets = SetDefaultTargets(subSystemTargets);
+
+        //subSystemTargets = SetDefaultTargets(); Set to 0 any subsystems that have 0 health
 
         return subSystemTargets;
     }

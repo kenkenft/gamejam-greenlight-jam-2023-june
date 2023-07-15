@@ -29,7 +29,7 @@ public class MatchFlowManager : MonoBehaviour
     public static BoolRequested TurnHasEnded;
     public static SendInt EndConditionsMet, WhichEndingDetermined;
     public static SOFightMoveRequested CPUMoveRequested;
-    public static IntArrayRequested CPUSubSystemTargetsRequested;
+    public static IntArrayRequested CPUSubSystemTargetsRequested, CPUDirectionRequested;
     
     void OnEnable()
     {
@@ -137,17 +137,23 @@ public class MatchFlowManager : MonoBehaviour
 
     void GetCPUMoveAndTargets()
     {
-        int[] CPUSubSystemTargets = {0,0,0,0,0};
+        
         CPUMove = CPUMoveRequested.Invoke();
         if(CPUMove.ActionType != GameProperties.ActionType.Move)
         {
-            //Invoke method that gets direction
+            int[] CPUSubSystemTargets = {0,0,0,0,0};
+            CPUSubSystemTargets = CPUSubSystemTargetsRequested.Invoke();
+            Debug.Log($"CPUSubSystemTargets: {CPUSubSystemTargets[0]},{CPUSubSystemTargets[1]},{CPUSubSystemTargets[2]},{CPUSubSystemTargets[3]},{CPUSubSystemTargets[4]}");
+            SetTargetedParts(1, CPUSubSystemTargets);
+            Debug.Log($"_targetedBodyParts[1,x]: {_targetedBodyParts[1,0]},{_targetedBodyParts[1,1]},{_targetedBodyParts[1,2]},{_targetedBodyParts[1,3]},{_targetedBodyParts[1,4]}");
+            
         }
         else
         {
-            CPUSubSystemTargets = CPUSubSystemTargetsRequested.Invoke();
+            CPUDirectionRequested.Invoke();
+            //Set directions
         }
-        Debug.Log($"CPUSubSystemTargets: {CPUSubSystemTargets[0]},{CPUSubSystemTargets[1]},{CPUSubSystemTargets[2]},{CPUSubSystemTargets[3]},{CPUSubSystemTargets[4]}");
+        
     }
 
     int ResolvePriority()
@@ -461,7 +467,7 @@ public class MatchFlowManager : MonoBehaviour
         // {
         //     List<int> extraBodyPartIndexes = new List<int>(){0, 1, 2, 3, 4};
 
-        //     foreach(int bodyPart in targetedBodyPartIndexes)
+        //     foreach(int bodyPart in filteredTargetedBodyParts)
         //     {
         //         extraBodyPartIndexes.Remove(bodyPart);
         //     } 
@@ -469,7 +475,7 @@ public class MatchFlowManager : MonoBehaviour
         //     for(int i = 0; i < _selectedFightMoves[orderIndex].HasExtraTargets[1]; i++)
         //     {
         //         int rand = Random.Range(0,extraBodyPartIndexes.Count-1);
-        //         targetedBodyPartIndexes.Add(extraBodyPartIndexes[rand]);
+        //         filteredTargetedBodyParts.Add(extraBodyPartIndexes[rand]);
         //         extraBodyPartIndexes.Remove(rand);
         //     }
         // }
