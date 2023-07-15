@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: Mech01
   Name: Regular Movement
   Description: Move forward or backward 1 tile
-  Icon: {fileID: 21300000, guid: 91eb25dd0be096e45b15709a57e13686, type: 3}
+  Icon: {fileID: 21300000, guid: 56294b752b9fbfe4eb76382fe3d4d89d, type: 3}
   MainTarget: 2
   Priority: 2
   Range: 1

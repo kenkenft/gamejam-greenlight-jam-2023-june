@@ -9,6 +9,7 @@ public class TooltipSystem : MonoBehaviour
     public void Awake()
     {
         _current = this;
+        Hide();
     }
 
     public static void Show(string content, string header = "")

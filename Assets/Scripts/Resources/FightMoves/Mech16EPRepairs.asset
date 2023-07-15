@@ -16,7 +16,7 @@ MonoBehaviour:
   Name: 'Energy Priority: Repairs'
   Description: Enable passive repair system. Divert 20% of generated energy to repair
     10% of all active subsystems each turn that this is active.
-  Icon: {fileID: 21300000, guid: 91eb25dd0be096e45b15709a57e13686, type: 3}
+  Icon: {fileID: 21300000, guid: a599829ffa0ebe94e9b9c3975824efe0, type: 3}
   MainTarget: 3
   Priority: 4
   Range: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: Mech03
   Name: Focused Repairs
   Description: Repair 50% on one target subsystem
-  Icon: {fileID: 21300000, guid: 540c33d00097fbe469aa4f30ca9b65f9, type: 3}
+  Icon: {fileID: 21300000, guid: 6055101515e35e141a3055c9e0ba7283, type: 3}
   MainTarget: 0
   Priority: 4
   Range: 0

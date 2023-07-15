@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: Mech04
   Name: Quick Strike
   Description: Fast, but weak physical strike.
-  Icon: {fileID: 21300000, guid: 52eba2e11a22c614294ace79df1b5b81, type: 3}
+  Icon: {fileID: 21300000, guid: 76da52f038f4093499c4fd42894613e0, type: 3}
   MainTarget: 1
   Priority: 4
   Range: 1
