@@ -5,6 +5,7 @@ using UnityEngine;
 public delegate void OnSomeEvent();
 public delegate void SendInt(int data);
 public delegate void SendIntArray(int[] data);
+public delegate int[] SOFightMovesForIntArray(SOFightMoves move);
 public delegate bool IntForBool(int data);
 public delegate bool BoolRequested();
 public delegate void SendBool(bool state);

@@ -29,6 +29,7 @@ public class MatchFlowManager : MonoBehaviour
     public static BoolRequested TurnHasEnded;
     public static SendInt EndConditionsMet, WhichEndingDetermined;
     public static SOFightMoveRequested CPUMoveRequested;
+    public static SOFightMovesForIntArray CPUSubSystemTargetsRequested;
     
     void OnEnable()
     {
@@ -97,7 +98,8 @@ public class MatchFlowManager : MonoBehaviour
 
     void StartMoveResolution()
     {
-        CPUMove = ComputerMove(); // ToDO   //Currently, it randomly chooses a move from available move list
+        // CPUMove = ComputerMove(); // ToDO   //Currently, it randomly chooses a move from available move list
+        GetCPUMoveAndTargets();
         _priorityOutcome = ResolvePriority();
         CheckHyperArmourCapabilities();
         ResolveMoves();
@@ -130,6 +132,13 @@ public class MatchFlowManager : MonoBehaviour
         // return CPUMoveList[Random.Range(0, CPUMoveList.Length - 1)];
         return CPUMoveRequested.Invoke();
         // Invoke delegate that CPUMoveSelect.SelectMove is subscribed to returns 
+    }
+
+    void GetCPUMoveAndTargets()
+    {
+        CPUMove = CPUMoveRequested.Invoke();
+        int[] CPUSubSystemTargets = CPUSubSystemTargetsRequested.Invoke(CPUMove);
+        Debug.Log($"CPUSubSystemTargets: {CPUSubSystemTargets[0]},{CPUSubSystemTargets[1]},{CPUSubSystemTargets[2]},{CPUSubSystemTargets[3]},{CPUSubSystemTargets[4]}");
     }
 
     int ResolvePriority()

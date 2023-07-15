@@ -19,11 +19,13 @@ public class CPUMoveSelect : MonoBehaviour
     void OnEnable()
     {
         MatchFlowManager.CPUMoveRequested += SelectMove;
+        MatchFlowManager.CPUSubSystemTargetsRequested += SelectSubSystemTargets;
     }
 
     void OnDisable()
     {
         MatchFlowManager.CPUMoveRequested -= SelectMove;
+        MatchFlowManager.CPUSubSystemTargetsRequested -= SelectSubSystemTargets;
     }
 
     public void SetUp()
@@ -376,5 +378,12 @@ public class CPUMoveSelect : MonoBehaviour
         }
         else
             return movePool[0];
+    }
+
+    int[] SelectSubSystemTargets(SOFightMoves fightMove)
+    {
+        int[] subSystemTargets = {0, 0, 0, 0, 0};
+
+        return subSystemTargets;
     }
 }
