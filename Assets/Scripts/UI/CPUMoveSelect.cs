@@ -8,6 +8,7 @@ public class CPUMoveSelect : MonoBehaviour
     SOFightMoves[] AllFightPossibleMoves;
     public MatchFlowManager MFM;
     public SOCharacterStats[] Opponents;
+    public SOFightMoves CPUMove;
     GameProperties.KaijuPersonalities CurrentBehaviour;
     List<GameProperties.KaijuPersonalities> PresetBehaviours = new List<GameProperties.KaijuPersonalities>(){};
 
@@ -86,7 +87,7 @@ public class CPUMoveSelect : MonoBehaviour
 
     SOFightMoves SelectMove()
     {
-        
+        CPUMove = KaijuMovePool[0];
         List<SOFightMoves> potentialMoves = new List<SOFightMoves>(KaijuMovePool);
         // Determine which moves are valid given the kaiju's state
         List<SOFightMoves> filteredListA = HaveEnoughEnergy(potentialMoves);
@@ -108,7 +109,7 @@ public class CPUMoveSelect : MonoBehaviour
                 List<SOFightMoves> filteredListE = FilterByActionType(filteredListD, MoveTypeProbabilityRatioModifiers);
                 if(filteredListE.Count > 0)
                 {
-                    SOFightMoves CPUMove = PickAMove(filteredListE);  
+                    CPUMove = PickAMove(filteredListE);  
                     Debug.Log($"Move selected: {CPUMove.Name}");  
                     return CPUMove;
                 }
@@ -380,7 +381,59 @@ public class CPUMoveSelect : MonoBehaviour
             return movePool[0];
     }
 
-    int[] SelectSubSystemTargets(SOFightMoves fightMove)
+    int[] SelectSubSystemTargets()
+    {
+        int[] subSystemTargets = {0, 0, 0, 0, 0};
+        
+        subSystemTargets = SetMandatoryAndExtraTargets();
+
+        return subSystemTargets;
+    }
+
+    int[] SetMandatoryAndExtraTargets()
+    {
+        int[] subSystemTargets = {0, 0, 0, 0, 0};
+        GameProperties.ActionType actionType = CPUMove.ActionType;
+
+        switch(actionType)
+        {
+            case GameProperties.ActionType.Attack:
+            {
+                subSystemTargets = SetTargetsOpponent();
+                break;
+            }
+            case GameProperties.ActionType.Defend:
+            {
+                subSystemTargets = SetTargetsSelfDefense();
+                break;
+            }
+            case GameProperties.ActionType.Repair:
+            {
+                subSystemTargets = SetTargetsSelfRepair();
+                break;
+            }
+            default:    //ActionType is Move, Special, or None. Note that type Move is handled externally in MatchFlowManager.GetCPUMoveAndTargets()
+                break;
+        }
+
+        return subSystemTargets;
+    }
+
+    int[] SetTargetsOpponent()
+    {
+        int[] subSystemTargets = {0, 0, 0, 0, 0};
+
+        return subSystemTargets;
+    }
+
+    int[] SetTargetsSelfDefense()
+    {
+        int[] subSystemTargets = {0, 0, 0, 0, 0};
+
+        return subSystemTargets;
+    }
+
+    int[] SetTargetsSelfRepair()
     {
         int[] subSystemTargets = {0, 0, 0, 0, 0};
 

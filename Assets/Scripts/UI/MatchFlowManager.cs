@@ -29,7 +29,7 @@ public class MatchFlowManager : MonoBehaviour
     public static BoolRequested TurnHasEnded;
     public static SendInt EndConditionsMet, WhichEndingDetermined;
     public static SOFightMoveRequested CPUMoveRequested;
-    public static SOFightMovesForIntArray CPUSubSystemTargetsRequested;
+    public static IntArrayRequested CPUSubSystemTargetsRequested;
     
     void OnEnable()
     {
@@ -85,6 +85,7 @@ public class MatchFlowManager : MonoBehaviour
 
     void SetRelativeDirection(int[] relativeDirectionData)
     {
+        // index 0 is playerID; index 1 is relative direction
         _forwardsOrBackwards[relativeDirectionData[0]] = relativeDirectionData[1]; 
     }
     
@@ -136,8 +137,16 @@ public class MatchFlowManager : MonoBehaviour
 
     void GetCPUMoveAndTargets()
     {
+        int[] CPUSubSystemTargets = {0,0,0,0,0};
         CPUMove = CPUMoveRequested.Invoke();
-        int[] CPUSubSystemTargets = CPUSubSystemTargetsRequested.Invoke(CPUMove);
+        if(CPUMove.ActionType != GameProperties.ActionType.Move)
+        {
+            //Invoke method that gets direction
+        }
+        else
+        {
+            CPUSubSystemTargets = CPUSubSystemTargetsRequested.Invoke();
+        }
         Debug.Log($"CPUSubSystemTargets: {CPUSubSystemTargets[0]},{CPUSubSystemTargets[1]},{CPUSubSystemTargets[2]},{CPUSubSystemTargets[3]},{CPUSubSystemTargets[4]}");
     }
 
