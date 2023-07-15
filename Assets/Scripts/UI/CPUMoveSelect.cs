@@ -103,7 +103,7 @@ public class CPUMoveSelect : MonoBehaviour
             // CurrentBehaviour = SetNewBehaviour(); // ToDo
 
             MoveTypeProbabilityRatioModifiers = AdjustRatiosBasedOnFactors(MoveTypeProbabilityRatioModifiers);
-            bool canDoSomething = CheckForSomething(MoveTypeProbabilityRatioModifiers);
+            bool canDoSomething = CheckForNonZero(MoveTypeProbabilityRatioModifiers);
             if (canDoSomething)
             {
                 List<SOFightMoves> filteredListE = FilterByActionType(filteredListD, MoveTypeProbabilityRatioModifiers);
@@ -315,14 +315,15 @@ public class CPUMoveSelect : MonoBehaviour
         return probabilityRatios;
     }
 
-    bool CheckForSomething(int[] probabilityModifiers)
+    bool CheckForNonZero(int[] array)
     {
-        for(int i = 0; i < probabilityModifiers.Length; i++)
+        for(int i = 0; i < array.Length; i++)
         {
-            if(probabilityModifiers[i] > 0)
+            if(array[i] > 0)
                 return true;
         }
-        //if all probabilityModifiers are 0, then the only move that the kaiju can do is Nothing.
+        //SelectMove() - if all of array is 0, then the only move that the kaiju can do is Nothing.
+        //
         return false;
     }
 
@@ -423,8 +424,27 @@ public class CPUMoveSelect : MonoBehaviour
     {
         int[] subSystemTargets = {0, 0, 0, 0, 0};
         subSystemTargets = SetDefaultTargets(subSystemTargets);
-        if(CPUMove.HasExtraTargets[0] != 0)
-            subSystemTargets = SelectExtraTargets(subSystemTargets, true);
+        subSystemTargets = SelectExtraTargets(subSystemTargets, true);
+
+        return subSystemTargets;
+    }
+
+    int[] SetTargetsSelfDefense()
+    {
+        int[] subSystemTargets = {0, 0, 0, 0, 0};
+        subSystemTargets = SetDefaultTargets(subSystemTargets);
+        subSystemTargets = SelectExtraTargets(subSystemTargets, false);
+
+        return subSystemTargets;
+    }
+
+    int[] SetTargetsSelfRepair()
+    {
+        int[] subSystemTargets = {0, 0, 0, 0, 0};
+        subSystemTargets = SetDefaultTargets(subSystemTargets);
+        subSystemTargets = SelectExtraTargets(subSystemTargets, false);
+
+        //subSystemTargets = SetDefaultTargets(); Set to 0 any subsystems that have 0 health
 
         return subSystemTargets;
     }
@@ -438,12 +458,16 @@ public class CPUMoveSelect : MonoBehaviour
 
     int[] SelectExtraTargets(int[] subSystemTargets, bool isAttack)
     {
-        if(isAttack)
-            return SelectRandomTargets(subSystemTargets);
-        else
+        if(CPUMove.HasExtraTargets[0] != 0)
         {
-            return TriageTargets(subSystemTargets);
+            if(isAttack)
+                return SelectRandomTargets(subSystemTargets);
+            else
+            {
+                return TriageTargets(subSystemTargets);
+            }
         }
+        return subSystemTargets;
     }
 
     int[] SelectRandomTargets(int[] subSystemTargets)
@@ -467,25 +491,32 @@ public class CPUMoveSelect : MonoBehaviour
 
     int[] TriageTargets(int[] subSystemTargets)
     {
+        int[] healthPercentages = new int[subSystemTargets.Length];
+        for(int i = 0; i < subSystemTargets.Length; i++)
+            healthPercentages[i] = MFM.Fighters[1].GetSystemHealthPercentage(i+1);
         
-
-        return subSystemTargets;
-    }
-    int[] SetTargetsSelfDefense()
-    {
-        int[] subSystemTargets = {0, 0, 0, 0, 0};
-        subSystemTargets = SetDefaultTargets(subSystemTargets);
-
-        return subSystemTargets;
-    }
-
-    int[] SetTargetsSelfRepair()
-    {
-        int[] subSystemTargets = {0, 0, 0, 0, 0};
-        subSystemTargets = SetDefaultTargets(subSystemTargets);
-
-        //subSystemTargets = SetDefaultTargets(); Set to 0 any subsystems that have 0 health
-
+        if(CheckForNonZero(healthPercentages))
+        {
+            System.Array.Sort(healthPercentages);
+            bool[] doNotSelect = new bool[subSystemTargets.Length];
+            for(int i = 0; i < subSystemTargets.Length; i++)
+                doNotSelect[i] = false;
+            
+            for(int i = 0; i < CPUMove.HasExtraTargets[1]; i++)
+            {
+                for(int j = 0; j < healthPercentages.Length; j++)
+                {
+                    if(healthPercentages[j] > 0 && !doNotSelect[j])
+                    {    
+                        subSystemTargets[j] = 1;
+                        doNotSelect[j] = true;
+                        break;
+                    }
+                    
+                    doNotSelect[j] = true;
+                }
+            }
+        }
         return subSystemTargets;
     }
 }

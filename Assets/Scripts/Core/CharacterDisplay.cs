@@ -151,4 +151,12 @@ public class CharacterDisplay : MonoBehaviour
         EnergyAffected?.Invoke(EnergyBarData);
     }
 
+    public int GetSystemHealthPercentage(int systemIndex)
+    {
+        // 0 is main health; 1 is head; 2 is chest; 3 is LArm; 4 is RArm; 5 is Legs 
+        int targetSystemMaxHealthIndex = (systemIndex * 2);
+        int healthPercent = (100 * HealthSystemData[targetSystemMaxHealthIndex + 1]) / HealthSystemData[targetSystemMaxHealthIndex];
+        return healthPercent;
+    }
+
 }
