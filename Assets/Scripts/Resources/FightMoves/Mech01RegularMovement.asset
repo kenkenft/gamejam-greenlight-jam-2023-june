@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech01
   Name: Regular Movement
-  Description: Move forward or backward 1 tile
+  Description: Move forward or backward 1 tile. Consumes 2% energy. Requires functioning
+    legs.
   Icon: {fileID: 21300000, guid: 56294b752b9fbfe4eb76382fe3d4d89d, type: 3}
   MainTarget: 2
   Priority: 2

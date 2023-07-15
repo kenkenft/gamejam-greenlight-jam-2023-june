@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech12
   Name: Reactor Energy Burst
-  Description: Open chest plating to fire a large burst of energy from chest reactor.
-    However, chest is vulnerable to damage.
+  Description: 'Open chest plating to fire a large burst of energy from chest reactor.
+    Range: 2 tiles. Targets 1 subsystem. Consumes 18% energy. Requires functioning
+    Chest subsystem.'
   Icon: {fileID: 21300000, guid: 76da52f038f4093499c4fd42894613e0, type: 3}
   MainTarget: 1
   Priority: 1

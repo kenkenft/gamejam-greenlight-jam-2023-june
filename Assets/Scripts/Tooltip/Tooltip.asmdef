@@ -2,7 +2,8 @@
     "name": "Tooltip",
     "rootNamespace": "",
     "references": [
-        "GUID:6a7e97f262f089047903a81a85e74e4d"
+        "GUID:6a7e97f262f089047903a81a85e74e4d",
+        "GUID:8dfc038e0adaa7a4a923e8ebe3c313cb"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -15,7 +15,8 @@ MonoBehaviour:
   ID: Mech08
   Name: Cautious Strike
   Description: 'Medium strike that keeps the other arm up as a guard. Applies hyper
-    armour. '
+    armour. Range: 1 tile. Targets 1 subsystem. Consumes 15% energy. Requires both
+    arm subsystems.'
   Icon: {fileID: 21300000, guid: 76da52f038f4093499c4fd42894613e0, type: 3}
   MainTarget: 1
   Priority: 3

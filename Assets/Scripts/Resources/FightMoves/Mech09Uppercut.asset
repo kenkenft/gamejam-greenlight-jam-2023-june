@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech09
   Name: Uppercut
-  Description: Heavily damaging upwards strike. Inflicts knockback.
+  Description: 'Heavily damaging upwards strike. Range: 1. Targets Head and Chest
+    subsystems. Consumes 20% energy. Requires at least 1 functioning arm subsystem.'
   Icon: {fileID: 21300000, guid: 76da52f038f4093499c4fd42894613e0, type: 3}
   MainTarget: 1
   Priority: 3

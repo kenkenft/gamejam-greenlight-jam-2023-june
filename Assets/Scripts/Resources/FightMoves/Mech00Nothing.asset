@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech00
   Name: Nothing
-  Description: To be used when player can't or won't do anything.
+  Description: To be used when you can't or won't do anything. Consumes 0% energy
   Icon: {fileID: 21300000, guid: 56294b752b9fbfe4eb76382fe3d4d89d, type: 3}
   MainTarget: 3
   Priority: 5

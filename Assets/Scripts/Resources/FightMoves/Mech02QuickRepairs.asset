@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech02
   Name: Quick Repairs
-  Description: Repair 10% of all active subsystems. However, any subsystem damage
-    is increased by 15%
+  Description: Repair 10% of all active subsystems. Consumes 10% energy. Requires
+    functioning chest subsytem.
   Icon: {fileID: 21300000, guid: 6055101515e35e141a3055c9e0ba7283, type: 3}
   MainTarget: 0
   Priority: 4

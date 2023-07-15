@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech10
   Name: Full Weight Strike
-  Description: Throw a poweful fullbodied strike. Grants hyper armour. However, incoming
-    damage is doubled, and causes a turn loss on miss.
+  Description: 'Throw a poweful fullbodied strike. Grants hyper armour. Range: 1
+    tile. Targets Chest a,d one additional subsystem. Consumes 30% energy. Requires
+    functioning leg subsystem, and at least 1 arm arm subsystem..'
   Icon: {fileID: 21300000, guid: 76da52f038f4093499c4fd42894613e0, type: 3}
   MainTarget: 1
   Priority: 2

@@ -15,8 +15,8 @@ MonoBehaviour:
   ID: Mech06
   Name: Arm Block
   Description: Raises arms to defend, reducing incoming damage below certain threshold.
-    If threshold exceeded, damage is still applied and you will be knockbacked 1
-    tile.
+    If threshold exceeded, damage is still applied. Consumes 4% energy. Requires
+    at least 1 functioning arm subsystem.
   Icon: {fileID: 21300000, guid: e29d25a66e1446f419dabc2a92174cd1, type: 3}
   MainTarget: 0
   Priority: 4

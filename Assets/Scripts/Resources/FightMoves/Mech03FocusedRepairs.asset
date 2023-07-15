@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech03
   Name: Focused Repairs
-  Description: Repair 50% on one target subsystem
+  Description: Repair 50% on one target subsystem. Consumes 15% energy. Requires
+    functioning legs.
   Icon: {fileID: 21300000, guid: 6055101515e35e141a3055c9e0ba7283, type: 3}
   MainTarget: 0
   Priority: 4

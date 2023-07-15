@@ -8,10 +8,17 @@ public class ToolipHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     // public static System.Action<GameObject, PointerEventData> onPointerEnter;
     // public static System.Action<GameObject> onPointerExit;
 
+    public ActionButton actionButton;
+
     public string Content, Header;
     public void OnPointerEnter(PointerEventData eventData)
     {
         // Debug.Log("ShowToolTip called");
+        Content = actionButton.FightMove.Description;
+        Header = actionButton.FightMove.Name;
+        
+        foreach(GameObject item in eventData.hovered)
+            Debug.Log($"{item.name}");
         TooltipSystem.Show(Content, Header);
     }
 

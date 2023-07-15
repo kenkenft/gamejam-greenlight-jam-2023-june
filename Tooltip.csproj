@@ -700,6 +700,10 @@
       <Project>{c668f457-a731-808d-84b8-9a08e10ab989}</Project>
       <Name>Core</Name>
     </ProjectReference>
+    <ProjectReference Include="UI.csproj">
+      <Project>{fb92cdf7-add9-5604-e14d-567317935124}</Project>
+      <Name>UI</Name>
+    </ProjectReference>
     <ProjectReference Include="UnityEditor.UI.csproj">
       <Project>{4389e16e-02bd-9e86-7f19-27f7f06aa945}</Project>
       <Name>UnityEditor.UI</Name>
