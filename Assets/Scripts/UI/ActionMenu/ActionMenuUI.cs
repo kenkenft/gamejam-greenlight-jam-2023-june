@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ActionMenuUI : MonoBehaviour
 {
+    public CharacterDisplay player;
     public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, DirectionTargetTray;
     
     public GameObject ActiveTargetTray = null;
@@ -158,6 +159,7 @@ public class ActionMenuUI : MonoBehaviour
         ToggleTargetTrays(targetTrayIndex);
         SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
         SetDefaultTargets(selectedMove);
+        //DisabledTargetIfZeroHealth(selectedMove);
         ToggleButtonsInteractable();
     }
     void ResetTargetedBodyParts()
@@ -279,5 +281,15 @@ public class ActionMenuUI : MonoBehaviour
 
         if(isDirectionSet)
             RelativeDirectionConfirmed?.Invoke(relativeDirection);
+    }
+
+    void DisabledTargetIfZeroHealth(SOFightMoves selectedMove)
+    {
+        //Check if move is of type Healing
+        // If true, then disable any target buttons whose health is zero
+        if(selectedMove.ActionType == GameProperties.ActionType.Repair)
+        {
+            // If true, then disable any target buttons whose health is zero
+        }
     }
 }
