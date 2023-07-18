@@ -33,8 +33,22 @@ public class SubSystemUI : MonoBehaviour
         if(_isShowing)
         {
             // ToDo update subsystem fill
-            Debug.Log("Showing display");
+            // Debug.Log("Showing display");
+            UpdateSubSystemDisplay();
         }
     }
 
+    void UpdateSubSystemDisplay()
+    {
+        // Get health precentages
+        // Apply percentages to fill
+        float[] subSystemsHealth = {0f, 0f, 0f, 0f, 0f};
+        for(int i = 0; i < subSystemsHealth.Length; i++)
+        {
+            subSystemsHealth[i] = Character.GetSystemHealthPercentage(i + 1);
+            SubSystems[i].value = subSystemsHealth[i];
+            // Debug.Log($"Subsystem {i}: {subSystemsHealth[i].ToString("0.00")}");
+        }
+        
+    }
 }
