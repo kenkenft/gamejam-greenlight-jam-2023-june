@@ -1740,7 +1740,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Icon: {fileID: 295306660}
   UIButton: {fileID: 295306663}
-  TargetPalleteCombo: 0
+  TargetPalleteCombo: 4
 --- !u!114 &295306663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4341,6 +4341,7 @@ MonoBehaviour:
   - {fileID: 1488595430}
   - {fileID: 104562131}
   SubSystemDisplay: {fileID: 1750956436}
+  ToggleButton: {fileID: 295306662}
 --- !u!1 &945116981
 GameObject:
   m_ObjectHideFlags: 0
