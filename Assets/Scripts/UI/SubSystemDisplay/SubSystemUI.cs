@@ -25,6 +25,9 @@ public class SubSystemUI : MonoBehaviour
     {
         SubSystemDisplay.SetActive(true); //Enabled so that colour fill can be BoolRequested
         ToggleButton.SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
+
+        foreach(Slider subSystem in SubSystems)
+            subSystem.gameObject.GetComponent<SubSystemPart>().PlayerID = Character.HealthBarNum;
         SetUpBorderAndFill();
         _isShowing = false;
         SubSystemDisplay.SetActive(false);
@@ -48,21 +51,26 @@ public class SubSystemUI : MonoBehaviour
         // Get health precentages
         // Apply percentages to fill
         float[] subSystemsHealth = {0f, 0f, 0f, 0f, 0f};
+
         for(int i = 0; i < subSystemsHealth.Length; i++)
         {
             subSystemsHealth[i] = Character.GetSystemHealthPercentage(i + 1);
             SubSystems[i].value = subSystemsHealth[i];
+            SubSystems[i].gameObject.GetComponent<SubSystemPart>().Health = subSystemsHealth[i];
+            
             // Debug.Log($"Subsystem {i}: {subSystemsHealth[i].ToString("0.00")}");
             if(subSystemsHealth[i] <= 0f)
-            {
                 SetDisabledPart(i);
-            }
+            else
+                SubSystems[i].gameObject.GetComponent<SubSystemPart>().IsDestroyed = true;
+
         }
         
     }
 
     void SetDisabledPart(int subSystemIndex)
     {
+        SubSystems[subSystemIndex].gameObject.GetComponent<SubSystemPart>().IsDestroyed = false;
         GameObject border = SubSystems[subSystemIndex].transform.Find("Border").gameObject;
         if(border != null)
         {

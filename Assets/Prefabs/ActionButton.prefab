@@ -181,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60168c5758607574e9a2a10803395f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionButton: {fileID: 1346047801124331939}
+  AB: {fileID: 1346047801124331939}
+  SSB: {fileID: 0}
+  ButtonType: 1
   Content: 
   Header: 
