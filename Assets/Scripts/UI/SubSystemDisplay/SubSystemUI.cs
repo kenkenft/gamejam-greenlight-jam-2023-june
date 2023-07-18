@@ -22,6 +22,8 @@ public class SubSystemUI : MonoBehaviour
 
     void SetUp()
     {
+        SubSystemDisplay.SetActive(true); //Enabled so that colour fill can be BoolRequested
+        SetUpBorderAndFill();
         _isShowing = false;
         SubSystemDisplay.SetActive(false);
     }
@@ -48,7 +50,34 @@ public class SubSystemUI : MonoBehaviour
             subSystemsHealth[i] = Character.GetSystemHealthPercentage(i + 1);
             SubSystems[i].value = subSystemsHealth[i];
             // Debug.Log($"Subsystem {i}: {subSystemsHealth[i].ToString("0.00")}");
+            if(subSystemsHealth[i] <= 0f)
+            {
+                SetDisabledPart(i);
+            }
         }
         
+    }
+
+    void SetDisabledPart(int subSystemIndex)
+    {
+        GameObject border = SubSystems[subSystemIndex].transform.Find("Border").gameObject;
+        if(border != null)
+        {
+            border.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["Black"];
+        }
+    }
+
+    void SetUpBorderAndFill()
+    {
+        GameObject tempObj;
+        for(int i = 0; i < SubSystems.Length; i++)
+        {
+            tempObj = SubSystems[i].transform.Find("Border").gameObject;
+            if(tempObj != null)
+                tempObj.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["LightGrey"];
+            tempObj = SubSystems[i].transform.Find("Fill").gameObject;
+            if(tempObj != null)
+                tempObj.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["DarkBlue"];
+        }
     }
 }
