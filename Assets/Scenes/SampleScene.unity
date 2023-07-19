@@ -3766,6 +3766,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abaa8724becd0547b6dde1f12096327, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 21393363}
   TrayUIs:
   - {fileID: 114841878}
   - {fileID: 1507445073}

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ActionMenuUI : MonoBehaviour
 {
-    public CharacterDisplay player;
+    public CharacterDisplay Player;
     public GameObject[] TrayUIs; // CategoryTray, ActionTray, SubSystemSelfTargetTray, SubSystemOpponentTargetTray, DirectionTargetTray;
     
     public GameObject ActiveTargetTray = null;
@@ -159,8 +159,8 @@ public class ActionMenuUI : MonoBehaviour
         ToggleTargetTrays(targetTrayIndex);
         SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
         SetDefaultTargets(selectedMove);
-        //DisabledTargetIfZeroHealth(selectedMove);
         ToggleButtonsInteractable();
+        DisabledTargetIfZeroHealth(selectedMove);
     }
     void ResetTargetedBodyParts()
     {
@@ -285,11 +285,23 @@ public class ActionMenuUI : MonoBehaviour
 
     void DisabledTargetIfZeroHealth(SOFightMoves selectedMove)
     {
-        //Check if move is of type Healing
+        // This only applies to Healing type moves, as repairing destroyed parts is not allowed
         // If true, then disable any target buttons whose health is zero
-        if(selectedMove.ActionType == GameProperties.ActionType.Repair)
+        if(selectedMove.ActionType == GameProperties.ActionType.Repair && ActiveTargetTray != null)
         {
             // If true, then disable any target buttons whose health is zero
+            TargetButton[] buttons = ActiveTargetTray.GetComponentsInChildren<TargetButton>();
+            bool isSubSystemActive = true;
+            foreach(TargetButton button in buttons)
+            {
+                isSubSystemActive = Player.GetSystemHealthPercentage((int)button.WhichSubSystem + 1) > 0f;
+                if(!isSubSystemActive)
+                {    
+                    button.TargettingButton.interactable = isSubSystemActive;
+                    button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
+                    TargetedBodyParts[(int)button.WhichSubSystem] = 0;
+                }
+            } 
         }
     }
 }
