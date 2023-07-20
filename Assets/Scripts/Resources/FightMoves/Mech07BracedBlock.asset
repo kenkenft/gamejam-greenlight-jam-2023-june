@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: Mech07
   Name: Braced Block
-  Description: Raising guard and bracing yourself to greatly reduce incoming damage
-    and increase break threshold. If threshold exceeded, damage is increased by 50%.
-    Grants hyperarmour. Consumes 15% energy. Requires functioning legs subsystem
-    and at least 1 arm subsystem.
+  Description: Brace yourself to greatly reduce incoming damage and increase break
+    threshold. If threshold exceeded, damage is increased by 50%. Grants hyperarmour.
+    Consumes 15% energy. Requires functioning legs subsystem and at least 1 arm subsystem.
   Icon: {fileID: 21300000, guid: e29d25a66e1446f419dabc2a92174cd1, type: 3}
   MainTarget: 0
   Priority: 4

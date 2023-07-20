@@ -42,8 +42,10 @@
      <Compile Include="Assets\Scripts\UI\ActionMenu\ActionButtonPool.cs" />
      <Compile Include="Assets\Scripts\UI\CPUMoveSelect.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\TargetButton.cs" />
+     <Compile Include="Assets\Scripts\UI\SubSystemDisplay\SubSystemUI.cs" />
      <Compile Include="Assets\Scripts\UI\UIManager.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\ActionButton.cs" />
+     <Compile Include="Assets\Scripts\UI\SubSystemDisplay\SubSystemPart.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\ConfirmationButton.cs" />
      <Compile Include="Assets\Scripts\UI\GridManager.cs" />
      <Compile Include="Assets\Scripts\UI\GridTile.cs" />
@@ -52,8 +54,6 @@
      <Compile Include="Assets\Scripts\UI\ActionMenu\CategoryButton.cs" />
      <Compile Include="Assets\Scripts\UI\Timer.cs" />
      <Compile Include="Assets\Scripts\UI\ActionMenu\TargetDirectionButton.cs" />
-     <Compile Include="Assets\Scripts\UI\SubSystemDisplay\SubSystemUI.cs" />
-     <Compile Include="Assets\Scripts\UI\SubSystemDisplay\SubSystemPart.cs" />
      <None Include="Assets\Scripts\UI\UI.asmdef" />
     <Reference Include="UnityEngine">
         <HintPath>C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
