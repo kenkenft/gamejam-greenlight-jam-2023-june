@@ -26,7 +26,7 @@ public class ColorTintButtonSetUp : MonoBehaviour
             {
                 GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["Special"], 
                 GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["LightGrey"], 
-                GameProperties.ColourPalleteRGBA["Special"] }
+                GameProperties.ColourPalleteRGBA["DarkBlue"] }
             },
         {
             GameProperties.ColorCombo.TargetButtonIsOptional, new [] 
@@ -40,8 +40,8 @@ public class ColorTintButtonSetUp : MonoBehaviour
             GameProperties.ColorCombo.TargetSelected, new [] 
             {
                 GameProperties.ColourPalleteRGBA["DarkBlue"], GameProperties.ColourPalleteRGBA["LightBlue"], 
-                GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["DarkBlue"], 
-                GameProperties.ColourPalleteRGBA["Black"] 
+                GameProperties.ColourPalleteRGBA["LightGrey"], GameProperties.ColourPalleteRGBA["DarkBlue"], 
+                GameProperties.ColourPalleteRGBA["DarkGrey"] 
             }
         },
         {
@@ -49,10 +49,14 @@ public class ColorTintButtonSetUp : MonoBehaviour
             {
                 GameProperties.ColourPalleteRGBA["LightGrey"], GameProperties.ColourPalleteRGBA["LightBlue"], 
                 GameProperties.ColourPalleteRGBA["DarkBlue"], GameProperties.ColourPalleteRGBA["LightGrey"], 
-                GameProperties.ColourPalleteRGBA["Black"] 
+                GameProperties.ColourPalleteRGBA["DarkGrey"] 
             }
         }
     };
+
+    // GameProperties.ColourPalleteRGBA["DarkBlue"], GameProperties.ColourPalleteRGBA["LightBlue"], 
+    //             GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["DarkBlue"], 
+    //             GameProperties.ColourPalleteRGBA["Black"] 
 
     // GameProperties.ColourPalleteRGBA["MediumGrey"], GameProperties.ColourPalleteRGBA["LightGrey"], 
     //             GameProperties.ColourPalleteRGBA["DarkGrey"], GameProperties.ColourPalleteRGBA["MediumGrey"], 

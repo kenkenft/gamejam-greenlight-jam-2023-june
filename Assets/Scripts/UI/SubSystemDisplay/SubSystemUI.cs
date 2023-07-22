@@ -74,7 +74,7 @@ public class SubSystemUI : MonoBehaviour
         GameObject border = SubSystems[subSystemIndex].transform.Find("Border").gameObject;
         if(border != null)
         {
-            border.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["Black"];
+            border.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["DarkGrey"];
         }
     }
 

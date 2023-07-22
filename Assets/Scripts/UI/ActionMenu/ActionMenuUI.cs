@@ -268,7 +268,7 @@ public class ActionMenuUI : MonoBehaviour
                 if(isDefaultTarget)
                     button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsDefault);
                 else
-                    button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
+                    button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
             } 
         }
     }
@@ -298,7 +298,7 @@ public class ActionMenuUI : MonoBehaviour
                 if(!isSubSystemActive)
                 {    
                     button.TargettingButton.interactable = isSubSystemActive;
-                    button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetButtonIsOptional);
+                    button.gameObject.GetComponent<ColorTintButtonSetUp>().SetUpButtonColours(GameProperties.ColorCombo.TargetIsNotSelected);
                     TargetedBodyParts[(int)button.WhichSubSystem] = 0;
                 }
             } 

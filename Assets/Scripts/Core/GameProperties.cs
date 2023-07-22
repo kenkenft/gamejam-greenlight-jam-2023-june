@@ -33,8 +33,8 @@ public class GameProperties
             {"DarkGrey", new Color((float)68/255, (float)68/255, (float)68/255, 1f)},
             {"Black", new Color((float)0/255, (float)0/255, (float)0/255, 1f)},
             {"Special", new Color((float)49/255, (float)55/255, (float)253/255, 1f)},
-            {"LightBlue", new Color((float)95/255, (float)184/255, (float)184/255, 1f)},
-            {"DarkBlue", new Color((float)00/255, (float)68/255, (float)120/255, 1f)}
+            {"LightBlue", new Color((float)8/255, (float)184/255, (float)184/255, 1f)},
+            {"DarkBlue", new Color((float)4/255, (float)68/255, (float)132/255, 1f)}
         };
 
     public static Dictionary<ActionType, int> ActionTypePriority = new Dictionary<ActionType, int>()
