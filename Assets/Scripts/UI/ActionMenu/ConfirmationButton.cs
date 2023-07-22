@@ -7,9 +7,12 @@ public class ConfirmationButton : MonoBehaviour
 {
     public Button confirmationButton;
     public SOFightMoves SelectedMove;
-    // public int RelativeDirection = 1;
     public int[] TargetedBodyParts = {0, 0, 0, 0, 0}, 
                 RelativeDirectionData = {0, 1};
+
+    // public ColorTintButtonSetUp CTBS;
+
+    public Text text;
 
     [HideInInspector]
     public static SendBool AllTargetsSet, ButtonPressed;
@@ -37,6 +40,10 @@ public class ConfirmationButton : MonoBehaviour
     void SetInteractable(bool state)
     {
         confirmationButton.interactable = state;
+        if(state)
+            text.color = GameProperties.ColourPalleteRGBA["DarkBlue"];
+        else
+            text.color = GameProperties.ColourPalleteRGBA["DarkGrey"];
     } 
 
     void SetSelectedMove(SOFightMoves selectedMove)
@@ -51,9 +58,7 @@ public class ConfirmationButton : MonoBehaviour
 
     void SetRelativeDirection(int relativeDirection)
     {
-        // RelativeDirection = relativeDirection;
-        RelativeDirectionData[1] = relativeDirection;
-        
+        RelativeDirectionData[1] = relativeDirection;        
     }
 
     public void OnClick()
