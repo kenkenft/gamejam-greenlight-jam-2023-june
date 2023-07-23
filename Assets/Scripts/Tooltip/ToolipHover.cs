@@ -33,10 +33,6 @@ public class ToolipHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         // Debug.Log("ShowToolTip called");
         SetStringsByButtonType();
-        
-        
-        // foreach(GameObject item in eventData.hovered)
-        //     Debug.Log($"{item.name}");
         TooltipSystem.Show(Content, Header);
     }
 
@@ -61,11 +57,17 @@ public class ToolipHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
                 string partState = GetSubSystemState();
                 string fullStatus = "";
                 if(SSB.PlayerID == 0)
+                {    
                     fullStatus =  "Status: " + partState;
+                    Content = $"{SSB.Health.ToString("0.00")}%\n{fullStatus}";
+                }
                 else
+                {
                     fullStatus = "Analysis: " + partState;
+                    Content = $"{fullStatus}";
+                }
                 Header = SSB.Name;
-                Content = $"{SSB.Health.ToString("0.00")}%\n{fullStatus}";
+                
                 break;
             }
         }

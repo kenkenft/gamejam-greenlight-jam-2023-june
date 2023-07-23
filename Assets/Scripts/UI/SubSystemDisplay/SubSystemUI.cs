@@ -88,7 +88,7 @@ public class SubSystemUI : MonoBehaviour
                 tempObj.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["LightGrey"];
             tempObj = SubSystems[i].transform.Find("Fill").gameObject;
             if(tempObj != null)
-                tempObj.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["LightBlue"];
+                tempObj.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["DarkBlue"];
         }
     }
 }
