@@ -13,10 +13,12 @@ public class SubSystemUI : MonoBehaviour
     void OnEnable()
     {
         GameManager.RoundHasStarted += SetUp;
+        MatchFlowManager.NewTurnStarted += CheckSubSystemDisplayOpen;
     }
     void OnDisable()
     {
         GameManager.RoundHasStarted -= SetUp;
+        MatchFlowManager.NewTurnStarted -= CheckSubSystemDisplayOpen;
     }
 
     private bool _isShowing = false;
@@ -90,5 +92,11 @@ public class SubSystemUI : MonoBehaviour
             if(tempObj != null)
                 tempObj.GetComponent<Image>().color = GameProperties.ColourPalleteRGBA["DarkBlue"];
         }
+    }
+
+    void CheckSubSystemDisplayOpen()
+    {
+        if(_isShowing)
+            UpdateSubSystemDisplay();
     }
 }

@@ -30,6 +30,7 @@ public class MatchFlowManager : MonoBehaviour
     public static SendInt EndConditionsMet, WhichEndingDetermined;
     public static SOFightMoveRequested CPUMoveRequested;
     public static IntArrayRequested CPUSubSystemTargetsRequested, CPUDirectionRequested;
+    public static OnSomeEvent NewTurnStarted;
     
     void OnEnable()
     {
@@ -544,7 +545,7 @@ public class MatchFlowManager : MonoBehaviour
     {
         // ToDo scripts for any tutorial or cutscene 
         // e.g. CutSceneTriggered?.Invoke();
-
+        NewTurnStarted?.Invoke();
         
     }
     void UpdateButtonUI()
