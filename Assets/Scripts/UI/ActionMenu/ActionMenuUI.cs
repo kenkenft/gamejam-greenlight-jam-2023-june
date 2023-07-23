@@ -204,6 +204,7 @@ public class ActionMenuUI : MonoBehaviour
 
     void SetSubSystemTarget(int[] targetData)
     {
+        // Debug.Log($"ActionMenuUI.SetSubSystemTarget {(GameProperties.SubSystem)targetData[0]}: {targetData[1]}");
         TargetedBodyParts[targetData[0]] = targetData[1];  // Assumes targetData is an array of size 2. Index 0 is the subsystem part; index 1 is a truthy integer
         if(targetData[1] == 1)
             SelectableSubSystemsCounter--;

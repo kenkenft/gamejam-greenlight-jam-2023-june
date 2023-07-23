@@ -72,14 +72,20 @@ public class MatchFlowManager : MonoBehaviour
     void SetTargetedParts(int playerID, int[] targetedParts)
     {
         for(int i = 0; i < targetedParts.Length; i++)
+        {
             _targetedBodyParts[playerID, i] = targetedParts[i];
+            // Debug.Log($"Player {playerID} targeting {(GameProperties.SubSystem)i}: {_targetedBodyParts[playerID, i]}");
+        }
     }
 
     int[] GetTargetedParts(int playerID)
     {
         int[] targetedParts = {0, 0, 0, 0, 0};
-        for(int i = 0; i < _targetedBodyParts.GetLength(playerID); i++)
+        for(int i = 0; i < targetedParts.Length; i++)
+        {    
             targetedParts[i] = _targetedBodyParts[playerID, i];
+            // Debug.Log($"Fetched Player {playerID} targeting {(GameProperties.SubSystem)i}: {targetedParts[i]}");
+        }
         
         return targetedParts;
     }
@@ -358,7 +364,9 @@ public class MatchFlowManager : MonoBehaviour
             int targetID;
             // Check which body parts are default targets and extra targets       
             List<int> filteredTargetedIndexes = GetTargetedSubSystems(playerID, orderIndex);                      
-
+            
+            // foreach(int part in filteredTargetedIndexes)
+            //     Debug.Log($"MatchFlowManager.ModifyHealth Targeted: {(GameProperties.SubSystem)part}");
             //Only apply defense calculations if attack move
             if(_selectedFightMoves[orderIndex].ActionType == GameProperties.ActionType.Attack)
             {
@@ -369,6 +377,7 @@ public class MatchFlowManager : MonoBehaviour
                     healthChanges = CalculateRawDamage(_selectedFightMoves[orderIndex].MainEffectValue[0], targetID, filteredTargetedIndexes);
                     healthChanges = ApplyAttackModifications(orderIndex, playerID, healthChanges);
                     healthChanges = ApplyDefenseReductions(orderIndex, playerID, healthChanges);
+                    healthChanges = ApplyCriticalDamagePenalties(orderIndex, targetID, healthChanges);
 
                     //healthChanges' values will subtract from health when calling UpdateCharacterHealth
                     for(int i = 0; i < healthChanges.Length; i++)
@@ -408,6 +417,7 @@ public class MatchFlowManager : MonoBehaviour
         {    
             int tempInt = targetedSubsystems[i] + 1;
             rawDamage[tempInt] =  (attackPercentage * Fighters[playerID].HealthSystemData[(tempInt * 2)]) / 100;
+            // Debug.Log($"rawDamage to {(GameProperties.SubSystem)targetedSubsystems[i]}: {rawDamage[tempInt]}");
             rawDamage[0] += rawDamage[tempInt];
         };
         return rawDamage;
@@ -457,6 +467,22 @@ public class MatchFlowManager : MonoBehaviour
         return potentialDamage;
     } // End of ApplyDefenseReductions
 
+    int[] ApplyCriticalDamagePenalties(int orderIndex, int playerID, int[] potentialDamage)
+    {
+        int criticalBonusDamage = 0;
+        for(int i = 1; i < potentialDamage.Length; i++)
+        {
+            if(Fighters[playerID].GetSystemHealthPercentage(i) <= 0f)
+            {
+                criticalBonusDamage = (50 * potentialDamage[i] ) / 100;
+                // Debug.Log($"criticalBonusDamage to {(GameProperties.SubSystem)i}: {criticalBonusDamage}");
+                potentialDamage[i] += criticalBonusDamage;
+                potentialDamage[0] += criticalBonusDamage;
+            }
+        }
+        return potentialDamage;
+    }
+
     
     List<int> GetTargetedSubSystems(int playerID, int orderIndex)
     {
@@ -464,6 +490,7 @@ public class MatchFlowManager : MonoBehaviour
         int[] manuallyTargetedParts = GetTargetedParts(playerID);
         for(int i = 0; i < _selectedFightMoves[orderIndex].DefaultSubSystemTargets.Length; i++)
         {
+            // Debug.Log($"{(GameProperties.SubSystem)i}: Default target: {_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i]}: Manual target: {manuallyTargetedParts[i]}");
             if(_selectedFightMoves[orderIndex].DefaultSubSystemTargets[i] == 1 || manuallyTargetedParts[i] == 1)  
                 filteredTargetedBodyParts.Add(i);
         }

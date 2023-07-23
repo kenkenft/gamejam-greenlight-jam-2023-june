@@ -1417,7 +1417,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1001 &248305895
 PrefabInstance:
@@ -2133,7 +2133,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 15
+  m_SortingOrder: 18
   m_TargetDisplay: 0
 --- !u!1001 &428863707
 PrefabInstance:
@@ -2863,7 +2863,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1 &484087743
 GameObject:
@@ -3045,7 +3045,7 @@ MonoBehaviour:
   EnergyBarData: 000000000000000000000000
   ActiveBuff: 0
   CurrentBehaviour: 0
-  SOCS: {fileID: 11400000, guid: 5b0eab13769024640aabc1a3ec346edb, type: 2}
+  SOCS: {fileID: 11400000, guid: 5940fee6723969a42a5db85c5e7ced91, type: 2}
 --- !u!222 &518438077
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3802,7 +3802,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1 &697629630
 GameObject:
@@ -3903,7 +3903,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 15
+  m_SortingOrder: 18
   m_TargetDisplay: 0
 --- !u!1001 &723619693
 PrefabInstance:
@@ -5790,7 +5790,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1001 &1132622892
 PrefabInstance:
@@ -6807,7 +6807,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1 &1280165456
 GameObject:
@@ -7849,7 +7849,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 17
   m_TargetDisplay: 0
 --- !u!1001 &1597256905
 PrefabInstance:
@@ -8211,7 +8211,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1 &1706609384
 GameObject:
@@ -9374,7 +9374,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1001 &1910711552
 PrefabInstance:
@@ -9881,7 +9881,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 16
+  m_SortingOrder: 19
   m_TargetDisplay: 0
 --- !u!1001 &2079248051
 PrefabInstance:
