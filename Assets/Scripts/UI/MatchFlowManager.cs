@@ -545,6 +545,7 @@ public class MatchFlowManager : MonoBehaviour
     {
         // ToDo scripts for any tutorial or cutscene 
         // e.g. CutSceneTriggered?.Invoke();
+        UpdateButtonUI();
         NewTurnStarted?.Invoke();
         
     }

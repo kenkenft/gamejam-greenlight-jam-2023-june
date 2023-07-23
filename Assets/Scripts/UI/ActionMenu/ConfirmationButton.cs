@@ -63,7 +63,7 @@ public class ConfirmationButton : MonoBehaviour
 
     public void OnClick()
     {
-        ButtonPressed?.Invoke(false);
+        ButtonPressed?.Invoke(true);
         AllTargetsConfirmed?.Invoke(TargetedBodyParts);
         RelativeDirectionConfirmed?.Invoke(RelativeDirectionData);
         FightMoveConfirmed?.Invoke(SelectedMove);

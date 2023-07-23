@@ -60,13 +60,13 @@ public class ActionMenuUI : MonoBehaviour
     public void ShowActionTray(int actionCategory)
     {
         _actionCategories = (GameProperties.ActionCategories)actionCategory;
-        ToggleCategoryButtonInteractable(actionCategory);
+        ToggleCategoryButtonInteractable((int)_actionCategories);
         ToggleActionTray(true, _actionCategories);
     }
 
     void CloseOtherTrays(bool state)
     {
-        ToggleActionTray(state);
+        ToggleActionTray(state, _actionCategories);
     }
 
     void ToggleActionTray(bool targetState, GameProperties.ActionCategories actionType = GameProperties.ActionCategories.None)
