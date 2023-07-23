@@ -123,7 +123,7 @@ public class GameProperties
     {
         // Assume int[] is size 6 and order is based on ActionType i.e. Attack, Defend, Move, Special, Repair, None
         {KaijuPersonalities.Neutral, new int[] {0, 0, 0, 0, 0, 0}},
-        {KaijuPersonalities.Aggresive, new int[] {500, 0, 0, 0, 0, 0}},
+        {KaijuPersonalities.Aggresive, new int[] {1000, 0, 0, 0, 0, 0}},
         {KaijuPersonalities.Defensive, new int[] {0, 200, 0, 0, 0, 0}},
         {KaijuPersonalities.Flighty, new int[] {0, 0, 200, 0, 0, 0}},
         {KaijuPersonalities.BuffOrientated, new int[] {0, 0, 0, 200, 0, 0}},
