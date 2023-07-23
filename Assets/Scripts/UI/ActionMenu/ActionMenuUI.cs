@@ -305,6 +305,6 @@ public class ActionMenuUI : MonoBehaviour
     void DisableConfirmationButton(SOFightMoves selectedMove)
     {
         SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
-        ToggleButtonsInteractable();
+        AllTargetsSet.Invoke(false);
     }
 }
