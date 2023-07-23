@@ -120,10 +120,10 @@ public class MatchFlowManager : MonoBehaviour
         {
             EndConditionsMet?.Invoke(-2);   // Disable Category buttons
             // SetUpEndScreen();
-            if(_hasTimerExpired)
-                Debug.Log("Game Over. Time has expired");
-            if(_isSomeoneDead)
-                Debug.Log("Game Over. Player has died");
+            // if(_hasTimerExpired)
+            //     Debug.Log("Game Over. Time has expired");
+            // if(_isSomeoneDead)
+            //     Debug.Log("Game Over. Player has died");
             SetUpEndScreen();
             // ToDo determine detailed cause of death i.e. All subsystems destroyed and/or main health is zero
         }
@@ -140,14 +140,14 @@ public class MatchFlowManager : MonoBehaviour
     {
         
         CPUMove = CPUMoveRequested.Invoke();
-        Debug.Log($"CPUMove: {CPUMove.Name}");
+        // Debug.Log($"CPUMove: {CPUMove.Name}");
         if(CPUMove.ActionType != GameProperties.ActionType.Move)
         {
             int[] CPUSubSystemTargets = {0,0,0,0,0};
             CPUSubSystemTargets = CPUSubSystemTargetsRequested.Invoke();
-            Debug.Log($"CPUSubSystemTargets: {CPUSubSystemTargets[0]},{CPUSubSystemTargets[1]},{CPUSubSystemTargets[2]},{CPUSubSystemTargets[3]},{CPUSubSystemTargets[4]}");
+            // Debug.Log($"CPUSubSystemTargets: {CPUSubSystemTargets[0]},{CPUSubSystemTargets[1]},{CPUSubSystemTargets[2]},{CPUSubSystemTargets[3]},{CPUSubSystemTargets[4]}");
             SetTargetedParts(1, CPUSubSystemTargets);
-            Debug.Log($"_targetedBodyParts[1,x]: {_targetedBodyParts[1,0]},{_targetedBodyParts[1,1]},{_targetedBodyParts[1,2]},{_targetedBodyParts[1,3]},{_targetedBodyParts[1,4]}");
+            // Debug.Log($"_targetedBodyParts[1,x]: {_targetedBodyParts[1,0]},{_targetedBodyParts[1,1]},{_targetedBodyParts[1,2]},{_targetedBodyParts[1,3]},{_targetedBodyParts[1,4]}");
             
         }
         else
@@ -156,7 +156,7 @@ public class MatchFlowManager : MonoBehaviour
             int[] CPUDirection = {1, 1};
             CPUDirection = CPUDirectionRequested.Invoke();
             SetRelativeDirection(CPUDirection);
-            Debug.Log($"CPUDirection: {CPUDirection[0]},{CPUDirection[1]}");
+            // Debug.Log($"CPUDirection: {CPUDirection[0]},{CPUDirection[1]}");
             //Set directions
         }
         
@@ -396,7 +396,7 @@ public class MatchFlowManager : MonoBehaviour
         // Check if target tile or tiles on the way to target tile is either occupied or out of indexed tile range
         bool isTargetInRange = !(CheckValidTargetTile(currentTileID, attackRange, _positiveDirection[playerID]));   //Inverted output as it returns true when no obstacles present
 
-        Debug.Log($"targetHit: {isTargetInRange}");
+        // Debug.Log($"targetHit: {isTargetInRange}");
         return isTargetInRange;
     }
 
@@ -582,7 +582,7 @@ public class MatchFlowManager : MonoBehaviour
     // void CheckEndConditions()
     void SetUpEndScreen()
     {
-        Debug.Log("SetUpEndScreen called");
+        // Debug.Log("SetUpEndScreen called");
         if(_areAllSusbSytemsDestroyed[0] || _isMainHealthZero[0])
         {
             // Player has died. You lose

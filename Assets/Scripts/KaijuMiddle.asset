@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: KaijuMiddle
   m_EditorClassIdentifier: 
   HPSubSystems: e8030000e8030000e8030000e8030000e8030000
-  BaseEnergyGeneration: 20
+  BaseEnergyGeneration: 14
   CharacterType: 2
   MovePool:
   - {fileID: 11400000, guid: 42e16284c357d424ea8aea810671dc7f, type: 2}

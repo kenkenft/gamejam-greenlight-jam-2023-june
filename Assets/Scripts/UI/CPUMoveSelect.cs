@@ -112,17 +112,17 @@ public class CPUMoveSelect : MonoBehaviour
                 if(filteredListE.Count > 0)
                 {
                     CPUMove = PickAMove(filteredListE);  
-                    Debug.Log($"Move selected: {CPUMove.Name}");  
+                    // Debug.Log($"Move selected: {CPUMove.Name}");  
                     return CPUMove;
                 }
-                else
-                    Debug.Log($"FilterByActionType gave no moves");
+                // else
+                    // Debug.Log($"FilterByActionType gave no moves");
             }
-            else
-                Debug.Log($"Kaiju can only do Nothing");
+            // else
+                // Debug.Log($"Kaiju can only do Nothing");
         }
-        else
-            Debug.Log($"filteredListD only had one move: {filteredListD[0]}");
+        // else
+            // Debug.Log($"filteredListD only had one move: {filteredListD[0]}");
 
         return KaijuMovePool[0]; // Assume kaiju can only do Nothing //  Assumes index 0 contains SOFightMoves called "Nothing".
     }
