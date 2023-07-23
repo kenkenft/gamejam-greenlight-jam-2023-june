@@ -16,12 +16,6 @@ public class ActionMenuUI : MonoBehaviour
     public Text SelectableSubSystemsCounterText;
 
     public GameProperties.ActionCategories _actionCategories;
-    Dictionary<int, GameProperties.ActionCategories> IntToActionCategory = new Dictionary<int, GameProperties.ActionCategories>(){
-                                                                                                        {0, GameProperties.ActionCategories.Attack},
-                                                                                                        {1, GameProperties.ActionCategories.Defend},
-                                                                                                        {2, GameProperties.ActionCategories.Move},
-                                                                                                        {3, GameProperties.ActionCategories.Special}
-                                                                                                    };
 
     public List<SOFightMoves> ActionListAttack = new List<SOFightMoves>(), ActionListDefense = new List<SOFightMoves>(), 
                               ActionListMove = new List<SOFightMoves>(), ActionListSpecial = new List<SOFightMoves>();
@@ -65,9 +59,9 @@ public class ActionMenuUI : MonoBehaviour
 
     public void ShowActionTray(int actionCategory)
     {
-        // Debug.Log("Category button pressed: " + IntToActionCategory[actionCategory]);
+        _actionCategories = (GameProperties.ActionCategories)actionCategory;
         ToggleCategoryButtonInteractable(actionCategory);
-        ToggleActionTray(true, IntToActionCategory[actionCategory]);
+        ToggleActionTray(true, _actionCategories);
     }
 
     void CloseOtherTrays(bool state)
