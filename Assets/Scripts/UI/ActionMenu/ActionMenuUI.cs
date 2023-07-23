@@ -35,6 +35,7 @@ public class ActionMenuUI : MonoBehaviour
         TargetButton.TargetButtonClicked += SetSubSystemTarget;
         TargetDirectionButton.DirectionButtonClicked += SetMoveDirection;
         ConfirmationButton.ButtonPressed += CloseOtherTrays;
+        ConfirmationButton.FightMoveConfirmed += DisableConfirmationButton;
         MatchFlowManager.EndConditionsMet += ToggleCategoryButtonInteractable;
     }
 
@@ -46,6 +47,7 @@ public class ActionMenuUI : MonoBehaviour
         TargetButton.TargetButtonClicked -= SetSubSystemTarget;
         TargetDirectionButton.DirectionButtonClicked -= SetMoveDirection;
         ConfirmationButton.ButtonPressed -= CloseOtherTrays;
+        ConfirmationButton.FightMoveConfirmed += DisableConfirmationButton;
         MatchFlowManager.EndConditionsMet -= ToggleCategoryButtonInteractable;
     }
     
@@ -298,5 +300,11 @@ public class ActionMenuUI : MonoBehaviour
                 }
             } 
         }
+    }
+
+    void DisableConfirmationButton(SOFightMoves selectedMove)
+    {
+        SetUpTargetTrayDefaults(selectedMove);    // Set up default targets, and selectable body parts counter
+        ToggleButtonsInteractable();
     }
 }

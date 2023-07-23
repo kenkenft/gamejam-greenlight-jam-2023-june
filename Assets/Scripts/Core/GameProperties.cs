@@ -87,7 +87,7 @@ public class GameProperties
         None, Mech, Kaiju
     }
 
-    public static int BattleIndex = 0;
+    public static int BattleIndex = 2;
 
     public static Dictionary<int, int[]> KaijuMoveSetIDs = new Dictionary<int, int[]>()
         {

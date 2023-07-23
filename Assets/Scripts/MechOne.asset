@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MechOne
   m_EditorClassIdentifier: 
   HPSubSystems: e8030000d0070000dc050000dc050000d0070000
-  BaseEnergyGeneration: 50
+  BaseEnergyGeneration: 12
   CharacterType: 1
   MovePool: []
   Behaviours: 
